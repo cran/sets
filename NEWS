@@ -1,0 +1,8 @@
+Changes to 0.1:
+
+  Initial release, implementing data structures and methods for
+  o ordinary sets
+  o generalized sets (fuzzy sets, multisets, fuzzy multisets)
+  o as well as support for fuzzy logic.
+
+  
