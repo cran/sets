@@ -1,0 +1,56 @@
+## set Summary methods
+Summary.set <-
+function(..., na.rm = FALSE)
+{
+    l <- list(...)
+    if (.Generic == "sum")
+        return(Reduce(function(i, j) sum(i, as.numeric(j)), l, 0))
+    else if (.Generic == "prod")
+        return(Reduce(function(i, j) prod(i, as.numeric(j)), l, 1))
+    do.call(.Generic, c(do.call(set_union, l), na.rm = na.rm))
+}
+
+mean.set <-
+function(x, ...)
+{
+    mean(as.numeric(x), ...)
+}
+
+median.set <-
+function(x, na.rm = FALSE)
+{
+    median(as.numeric(x), na.rm = na.rm)
+}
+
+## gset Summary methods
+
+Summary.gset <-
+function(..., na.rm = FALSE)
+{
+    l <- list(...)
+    if (any(sapply(l, gset_is_fuzzy_multiset)))
+        stop("Operation not defined for fuzzy multisets.")
+    l <- lapply(l, function(i) as.set(as.numeric(i) * .get_memberships(i)))
+    do.call(.Generic, c(l, na.rm = na.rm))
+}
+
+mean.gset <-
+function(x, ...)
+{
+    if (gset_is_fuzzy_multiset(x))
+        stop("Operation not defined for fuzzy multisets.")
+    weighted.mean(as.numeric(x), .get_memberships(x), ...)
+}
+
+median.gset <-
+function(x, na.rm = FALSE)
+{
+    if (gset_is_fuzzy_multiset(x))
+        stop("Operation not defined for fuzzy multisets.")
+    x <- if (gset_is_fuzzy_set(x))
+        as.numeric(x) * .get_memberships(x)
+    else
+        rep.int(as.numeric(x), times = .get_memberships(x))
+    median(x, na.rm = na.rm)
+}
+
