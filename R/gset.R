@@ -103,7 +103,7 @@ sort.gset <-
 function(x, decreasing = FALSE, ...)
 {
     D <- .get_support(x)
-    O <- order(LABELS(D), decreasing = decreasing)
+    O <- order(LABELS(D), decreasing = decreasing, ...)
     .make_gset_from_support_and_memberships(support = as.set(D[O]),
                                             memberships = .get_memberships(x)[O])
 }

@@ -26,7 +26,7 @@ fuzzy_logic(new, \dots)
   components \code{N}, \code{T}, \code{S}, and \code{I} containing the
   corresponding functions for negation, conjunction
   (\dQuote{\eqn{t}-norm}), disjunction (\dQuote{\eqn{t}-conorm}), and
-  implication (which may not be available).
+  residual implication (which may not be available).
 
   The package provides several fuzzy logic \emph{families}.
   A concrete fuzzy logic is selected 
@@ -43,7 +43,7 @@ fuzzy_logic(new, \dots)
       \eqn{S = \max}.  Note that the minimum \eqn{t}-norm, also known as
       the Gödel \eqn{t}-norm, is the pointwise largest \eqn{t}-norm, and
       that the maximum \eqn{t}-conorm is the smallest \eqn{t}-conorm.}
-    \item{\code{"drastic"}}{the family with the drastic \eqn{t}-norm
+    \item{\code{"drastic"}}{the drastic logic with \eqn{t}-norm
       \eqn{T(x, y) = y} if \eqn{x = 1}, \eqn{x} if \eqn{y = 1}, and 0
       otherwise, and complementary \eqn{t}-conorm \eqn{S(x, y) = y} if
       \eqn{x = 0}, \eqn{x} if \eqn{y = 0}, and 1 otherwise.  Note that
@@ -114,12 +114,12 @@ fuzzy_logic(new, \dots)
       \eqn{T_p(x, y) = \max(0, (x + y - 1 + pxy) / (1 + p))}.}
   }
 
-  By default, the Zadeh family is used.
+  By default, the Zadeh logic is used.
 
   \code{.N.}, \code{.T.}, \code{.S.}, and \code{.I.} are dynamic
   functions, i.e., wrappers that call the corresponding function of the
-  current fuzzy logic family.  Thus, the behavior of code using these
-  functions will change according to the chosen family.
+  current fuzzy logic.  Thus, the behavior of code using these
+  functions will change according to the chosen logic.
 }
 \references{
   C. Alsina, M. J. Frank and B. Schweizer (2006),

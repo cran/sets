@@ -139,7 +139,7 @@ as.tuple.default <-
 function(x)
     stop("Not implemented!")
 
-as.tuple.tuple <- .identity
+as.tuple.tuple <- identity
 
 as.tuple.numeric <-
 as.tuple.factor <-

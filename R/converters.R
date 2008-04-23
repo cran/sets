@@ -10,7 +10,7 @@ as.set.default <-
 function(x)
     stop("Not implemented.")
 
-as.set.set <- .identity
+as.set.set <- identity
 
 as.set.gset <-
 function(x)
@@ -58,7 +58,7 @@ as.gset.default <-
 function(x)
     gset(x)
 
-as.gset.gset <- .identity
+as.gset.gset <- identity
 
 as.gset.tuple <-
 function(x)

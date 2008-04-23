@@ -51,7 +51,7 @@ set_combn(x, m)
   \code{|} for the union,
   \code{-} for the difference (or complement), \code{&} for the
   intersection, \code{\%D\%} for the symmetric difference,
-  \code{*} and \code{^n} for the
+  \code{*} and \code{^\var{n}} for the
   (\eqn{n}-fold) cartesian product, \code{2^} for the power set,
   \code{\%e\%} for the element-of predicate,
   \code{<} and \code{<=} for
