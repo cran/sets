@@ -83,7 +83,7 @@ e(x, memberships = 1L)
   \item{e}{An \R object.}
   \item{m}{Number of elements to choose.}
   \item{support}{A set of elements giving the support of the gset.}
-  \item{memberships}{For an ordinary set: 1 (or simply missing).
+  \item{memberships}{For an ordinary set: 1L (or simply missing).
     For a fuzzy set: a value between 0 and 1.  For a multiset: a
     positive integer.  For a fuzzy multiset: a multiset with elements
     from the unit interval.  Otherwise, the argument will be transformed
@@ -92,11 +92,15 @@ e(x, memberships = 1L)
     object/memberships-pairs.}
   \item{charfun}{A function taking an object and returning the
     membership.}
-  \item{method}{Currently, only \code{Jaccard} is implemented.}
+  \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{level}{The minimum membership level.}
-  \item{na.rm}{logical indicating whether \code{NA} values should be removed.}
+  \item{na.rm}{logical indicating whether \code{NA} values should be
+    removed.}
   \item{decreasing}{Logical indicating the sorting direction.}
-  \item{\dots}{For \code{gset()}: \R objects, and set objects otherwise.}
+  \item{\dots}{For \code{gset_\emph{foo}()}: (g)set objects objects. For
+    the mean and sort methods: additional parameters internally passed to
+    \code{\link{mean}} and \code{\link{order}}, respectively. For
+    \code{cut}: currently not used.}
 }
 \details{
   These functions represent basic infrastructure for handling
@@ -115,7 +119,7 @@ e(x, memberships = 1L)
   \code{|} for the union, \code{&} for the
   intersection, \code{+} for the sum, \code{-} for
   the difference,  \code{\%D\%} for the symmetric difference,
-  \code{*} and \code{^n} for the
+  \code{*} and \code{^\var{n}} for the
   (\eqn{n}-fold) cartesian product, \code{2^} for the power set,
   \code{\%e\%} for the element-of predicate,
   \code{<} and \code{<=} for
