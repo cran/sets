@@ -10,7 +10,7 @@ function(x, memberships = 1L)
 print.element <-
 function(x, ...)
 {
-    writeLines(format(x))
+    writeLines(format(x, ...))
     invisible(x)
 }
 
@@ -18,7 +18,7 @@ format.element <-
 function(x, ...)
 {
     x <- .remove_element_class(x)
-    paste(paste(LABEL(x), collapse = " "),
+    paste(paste(LABEL(x, ...), collapse = " "),
           " [",
           paste(format(.get_memberships(x)), collapse = ", "),
           "]",
@@ -26,6 +26,6 @@ function(x, ...)
 }
 
 LABEL.element <-
-function(x)
-    format(x)
+function(x, ...)
+    format(x, ...)
 

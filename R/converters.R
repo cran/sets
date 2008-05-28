@@ -39,7 +39,7 @@ function(x)
 
 format.set <-
 function(x, ...) {
-    .format_set_or_tuple(x, "{", "}")
+    .format_set_or_tuple(x, "{", "}", ...)
 }
 
 as.list.set <-

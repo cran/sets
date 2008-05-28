@@ -23,7 +23,7 @@
 ## length of 5 which is sort of ad-hoc.
 
 LABELS <-
-function(x, max_width = NULL, dots = "...", unique = FALSE)
+function(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL)
 {
     x <- as.list(x)
     l <- length(x)
@@ -40,7 +40,7 @@ function(x, max_width = NULL, dots = "...", unique = FALSE)
     ## create a label for components without given one
     empty <- ret == ""
     if (any(empty))
-        ret[empty] <- sapply(x[empty], LABEL)
+        ret[empty] <- sapply(x[empty], LABEL, limit)
 
     ## check maximum width (max_width == NULL => unbounded)
     if (!is.null(max_width)) {
@@ -61,15 +61,15 @@ function(x, max_width = NULL, dots = "...", unique = FALSE)
 }
 
 LABEL <-
-function(x)
+function(x, limit = NULL)
     UseMethod("LABEL")
 
 LABEL.default <-
-function(x)
+function(x, limit = NULL)
     paste("<<", class(x)[1L], ">>", sep = "")
 
 LABEL.matrix <-
-function(x)
+function(x, limit = NULL)
     sprintf("<<%ix%i matrix>>", nrow(x), ncol(x))
 
 LABEL.numeric <-
@@ -77,18 +77,27 @@ LABEL.factor <-
 LABEL.character <-
 LABEL.integer <-
 LABEL.logical <-
-function(x)
-    .format_or_class(x, 2L)
+function(x, limit = NULL) {
+    if (is.null(limit))
+        limit <- 2L
+    .format_or_class(x, limit)
+}
 
 LABEL.list <-
-function(x)
-    .format_or_class(x, 1L)
+function(x, limit = NULL ) {
+    if (is.null(limit))
+        limit <- 1L
+    .format_or_class(x, limit)
+}
 
 LABEL.set <-
 LABEL.gset <-
 LABEL.tuple <-
-function(x)
-    .format_or_class(x, 6L)
+function(x, limit = NULL) {
+    if (is.null(limit))
+        limit <- 6L
+    .format_or_class(x, limit)
+}
 
 .format_or_class <-
 function(x, limit)

@@ -10,7 +10,7 @@ function(...)
 print.set <-
 function(x, ...)
 {
-    writeLines(strwrap(format(x), exdent = 1L))
+    writeLines(strwrap(format(x, ...), exdent = 1L))
     invisible(x)
 }
 
@@ -116,7 +116,7 @@ function(x)
     structure(x, class = c("set", "gset"))
 
 .format_set_or_tuple <-
-function(x, left, right)
+function(x, left, right, ...)
 {
     nms <- names(x)
     names(x) <- NULL
@@ -125,7 +125,7 @@ function(x, left, right)
       SEP[nms != ""] <- " = "
     paste(left,
           if (length(x) > 0)
-              paste(nms, SEP, LABELS(unclass(x)),
+              paste(nms, SEP, LABELS(unclass(x), ...),
                     sep = "", collapse = ", "),
           right,
           sep = "")
