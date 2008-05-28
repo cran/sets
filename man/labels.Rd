@@ -6,8 +6,8 @@
   Creates \dQuote{nice} labels from objects.
 }
 \usage{
-LABELS(x, max_width = NULL, dots = "...", unique = FALSE)
-LABEL(x)
+LABELS(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL)
+LABEL(x, limit = NULL)
 }
 \arguments{
   \item{x}{For \code{LABELS}, a vector of \R objects (if the object is
@@ -22,6 +22,8 @@ LABEL(x)
   \item{unique}{Logical indicating whether
     \code{\link[base]{make.unique}} should be called on the final
     result.}
+  \item{limit}{maximum length of vectors or sets to be represented as
+    is. Longer elements will be replaced by a label.}
 }
 \value{
   A character vector of labels generated from the supplied object(s).
@@ -32,12 +34,13 @@ LABEL(x)
   \code{LABEL} is generic to allow user extensions.
   The current methods return the result of \code{\link{format}} if the
   argument is of length 1 (for objects of classes \code{\link{set}} and
-  \code{\link{tuple}}: of length 5), and create a simple class
+  \code{\link{tuple}}: by default of length 5), and create a simple class
   information otherwise.
 }
 \examples{
 LABELS(list(1, "test", X = "1", 1:5))
 LABELS(set(X = as.tuple(1:20), "test", list(list(list(1,2)))))
 LABELS(set(pair(1,2), set("a", 2), as.tuple(1:10)))
+LABELS(set(pair(1,2), set("a", 2), as.tuple(1:10)), limit = 11)
 }
 \keyword{math}

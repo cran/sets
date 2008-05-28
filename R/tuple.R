@@ -229,13 +229,13 @@ tuple_outer <- set_outer
 print.tuple <-
 function(x, ...)
 {
-    writeLines(strwrap(format(x), exdent = 1L))
+    writeLines(strwrap(format(x, ...), exdent = 1L))
     invisible(x)
 }
 
 format.tuple <-
 function(x, ...)
-    .format_set_or_tuple(x, "(", ")")
+    .format_set_or_tuple(x, "(", ")", ...)
 
 .ntuple <-
 function(i, a = FALSE, A = FALSE, plural = FALSE)

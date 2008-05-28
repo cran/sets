@@ -66,7 +66,7 @@ function(support = NULL, memberships = NULL, charfun = NULL, elements = NULL)
 print.gset <-
 function(x, ...)
 {
-    writeLines(strwrap(format(x), exdent = 1L))
+    writeLines(strwrap(format(x, ...), exdent = 1L))
     invisible(x)
 }
 
@@ -96,7 +96,7 @@ function(x, ...) {
         lapply(x, .remove_element_class)
     else
         mapply(e, as.list(x), .get_memberships(x), SIMPLIFY = FALSE)
-    .format_set_or_tuple(x, "{", "}")
+    .format_set_or_tuple(x, "{", "}", ...)
 }
 
 sort.gset <-
