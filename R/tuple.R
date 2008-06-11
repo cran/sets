@@ -129,41 +129,6 @@ function(x)
 ## tuple_is_decuple <- function(x)
 ##   tuple_is_ntuple(x, 10L)
 
-### converters
-
-as.tuple <-
-function(x)
-    UseMethod("as.tuple")
-
-as.tuple.default <-
-function(x)
-    stop("Not implemented!")
-
-as.tuple.tuple <- identity
-
-as.tuple.numeric <-
-as.tuple.factor <-
-as.tuple.character <-
-as.tuple.integer <-
-as.tuple.ordered <-
-as.tuple.logical <-
-function(x)
-    .make_tuple_from_list(as.list(x))
-
-as.tuple.set <-
-as.tuple.list <-
-function(x)
-    do.call(tuple, x)
-
-as.tuple.data.frame <-
-function(x)
-{
-    ret <- as.list(x)
-    attributes(ret) <- NULL
-    names(ret) <- colnames(x)
-    .make_tuple_from_list(ret)
-}
-
 ### operators, methods
 
 c.tuple <-
@@ -184,7 +149,7 @@ function(x, i, value)
 
 rep.tuple <-
 function(x, ...)
-    .make_tuple_from_list(rep(unclass(x), ...))
+    .make_tuple_from_list(rep(as.list(x), ...))
 
 Ops.tuple <-
 function(e1, e2)

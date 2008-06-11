@@ -5,7 +5,7 @@
 ### Basic stuff (constructors, print/summary methods)
 set <-
 function(...)
-    .make_set_from_list(.set_unique(list(...)))
+    .make_set_from_list(.list_sort(.list_unique(list(...))))
 
 print.set <-
 function(x, ...)
@@ -92,24 +92,47 @@ function(e1, e2)
 `[.set` <-
 function(x, i)
 {
-    if(is.numeric(i))
-        stop("Numeric subscripting of sets is not defined.")
+    if(!is.character(i))
+        stop("Subscripting of sets is only defined using labels.")
     .make_set_from_list(NextMethod("["))
 }
 
 `[[.set` <-
 function(x, i)
 {
-    if(is.numeric(i))
-        stop("Numeric subscripting of sets is not defined.")
+    if(!is.character(i))
+        stop("Subscripting of sets is only defined using labels.")
     NextMethod("[[")
 }
 
 ### internal stuff
 
-.set_unique <-
+.list_order <-
+function(x, decreasing = FALSE, ...) {
+    ch <- as.character(x)
+
+    if (capabilities("iconv")) {
+        loc <- Sys.getlocale("LC_COLLATE")
+        warn <- options()$warn
+        on.exit({Sys.setlocale("LC_COLLATE", loc); options(warn = warn)})
+        options(warn = -1)
+        Sys.setlocale("LC_COLLATE", "en_US.UTF-8")
+        ch <- iconv(ch, to = "UTF-8")
+    }
+
+    order(sapply(x, length),
+          sapply(x, typeof),
+          ch,
+          decreasing = decreasing, ...)
+}
+
+.list_sort <-
+function(x, decreasing = FALSE, ...)
+    as.list(x)[.list_order(x, decreasing = decreasing, ...)]
+
+.list_unique <-
 function(x)
-    .make_set_from_list(as.list(x)[!duplicated(x)])
+    as.list(x)[!duplicated(x)]
 
 .make_set_from_list <-
 function(x)
@@ -125,7 +148,7 @@ function(x, left, right, ...)
       SEP[nms != ""] <- " = "
     paste(left,
           if (length(x) > 0)
-              paste(nms, SEP, LABELS(unclass(x), ...),
+              paste(nms, SEP, LABELS(as.list(x), ...),
                     sep = "", collapse = ", "),
           right,
           sep = "")

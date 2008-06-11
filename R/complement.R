@@ -4,7 +4,7 @@ function(x, y)
     if (missing(y))
         return(set())
     y <- as.list(y)
-    ind <- unique(na.omit(match(x, y)))
+    ind <- unique(na.omit(.exact_match(x, y)))
     .make_set_from_list(if(length(ind)) y[-ind] else y)
 }
 
@@ -16,15 +16,15 @@ function(x, y = NULL)
         if (gset_is_crisp(x))
             return(gset())
         else if (gset_is_fuzzy_set(x))
-            return(.make_gset_from_support_and_memberships(as.set(.get_support(x)),
+            return(.make_gset_from_support_and_memberships(.get_support(x),
                                                           .N.(.get_memberships(x))))
         else {
             memberships <- lapply(.get_memberships(x), function(i) {
                 .make_gset_from_support_and_memberships(lapply(.get_support(i), .N.),
                                                        .get_memberships(i))
             })
-            return(.make_gset_from_support_and_memberships(as.set(.get_support(x)),
-                                                          memberships = memberships))
+            return(.make_gset_from_support_and_memberships(.get_support(x),
+                                                           memberships))
         }
     }
 
@@ -59,7 +59,7 @@ function(x, y = NULL)
         memberships <- sapply(memberships, sum)
 
     ## return resulting gset
-    .make_gset_from_support_and_memberships(support = support,
-                                            memberships = .canonicalize_memberships(memberships))
+    .make_gset_from_support_and_memberships(support,
+                                            .canonicalize_memberships(memberships))
 }
 

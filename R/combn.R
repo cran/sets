@@ -10,10 +10,10 @@ function(x, m)
 gset_combn <-
 function(x, m)
 {
-    if (m == 0)
+    if (m == 0L)
         gset()
     else {
-        support <- apply(combn(unclass(x), m), 2L, as.set)
+        support <- apply(combn(as.list(x), m), 2L, as.set)
         memberships <- unlist(apply(combn(.get_memberships(x), m), 2L, list),
                               recursive = FALSE)
         .make_gset_from_list(Map(gset, support, memberships))

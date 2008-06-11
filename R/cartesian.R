@@ -15,8 +15,8 @@ function(...)
     ## handle arguments
     if (nargs() < 2L)
         return(..1)
-    l <- lapply(list(...), unclass)
-    if (all(Map(gset_is_set, l)))
+    l <- lapply(list(...), as.list)
+    if (all(sapply(l, gset_is_set)))
         return(as.gset(set_cartesian(...)))
 
     ## handle empty sets
@@ -47,12 +47,10 @@ function(...)
 
                 ## compute T-norm
                 S <- Reduce(.T., m)
-                .make_gset_from_support_and_memberships(support = as.list(S),
-                                                        memberships = mult)
+                .make_gset_from_support_and_memberships(as.list(S), mult)
             })
         }
     ## create target set
-    .make_gset_from_support_and_memberships(support = support,
-                                            memberships = memberships)
+    .make_gset_from_support_and_memberships(support, memberships)
 }
 

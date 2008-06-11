@@ -5,13 +5,15 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
 {
     if (is.null(x))
         x <- 0
+    if (!is.atomic(x))
+        x <- as.list(x)
     M <- .get_memberships(x)
 
     ## create vector from gset
     ret <- if (rep) {
         if (is.list(x))
             rep.int(as.numeric(x), M)
-        else if (x > 1)
+        else if ((length(x) == 1L) && (x > 1))
             rep.int(1, x)
         else
             x
@@ -39,14 +41,10 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
         structure(ret, memberships = M)
 }
 
-.list_of_normalized_memberships_from_list_of_gsets_and_support<-
-function(l, support)
-    lapply(l, .memberships_for_support, support)
-
 .memberships_for_support <-
 function(x, support)
 {
-    tmp <- .get_memberships(x)[match(support, .get_support(x))]
+    tmp <- .get_memberships(x)[.exact_match(support, .get_support(x))]
     tmp[is.na(tmp)] <- 0
     tmp
 }

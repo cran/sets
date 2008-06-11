@@ -1,9 +1,14 @@
+set_cardinality <-
+length.set <-
+function(x)
+    length(as.list(x))
+
 gset_cardinality <-
 length.gset <-
 function(x)
 {
     if (gset_is_set(x))
-        length(unclass(x))
+        length(as.list(x))
     else if (gset_is_multiset(x) || gset_is_fuzzy_set(x))
         sum(.get_memberships(x))
     else

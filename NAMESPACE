@@ -1,8 +1,11 @@
+useDynLib("sets")
+
 importFrom("stats", "median")
 
 export("%e%",
        "%D%",
        "as.set",
+       "make_set_with_order",
        "is.set",
        "set",
        "set_contains_element",
@@ -10,6 +13,7 @@ export("%e%",
        "set_is_equal",
        "set_is_proper_subset",
        "set_is_subset",
+       "set_cardinality",
        "set_cartesian",
        "set_combn",
        "set_complement",
@@ -17,7 +21,8 @@ export("%e%",
        "set_power",
        "set_symdiff",
        "set_union",
-       "set_outer"
+       "set_outer",
+       "canonicalize_set_and_mapping"
        )
 
 S3method("[", "set")
@@ -25,20 +30,22 @@ S3method("[[", "set")
 S3method("Ops","set")
 S3method("Summary","set")
 S3method("as.list", "set")
-S3method("as.set", "character")
-S3method("as.set", "data.frame")
-S3method("as.set", "default")
-S3method("as.set", "factor")
-S3method("as.set", "integer")
-S3method("as.set", "list")
-S3method("as.set", "logical")
-S3method("as.set", "numeric")
-S3method("as.set", "ordered")
-S3method("as.set", "set")
-S3method("as.set", "gset")
-S3method("as.set", "tuple")
+S3method("as.list", "function")
+S3method("make_set_with_order", "character")
+S3method("make_set_with_order", "data.frame")
+S3method("make_set_with_order", "default")
+S3method("make_set_with_order", "factor")
+S3method("make_set_with_order", "integer")
+S3method("make_set_with_order", "list")
+S3method("make_set_with_order", "logical")
+S3method("make_set_with_order", "numeric")
+S3method("make_set_with_order", "ordered")
+S3method("make_set_with_order", "set")
+S3method("make_set_with_order", "gset")
+S3method("make_set_with_order", "tuple")
 S3method("c","set")
 S3method("format", "set")
+S3method("length", "set")
 S3method("mean", "set")
 S3method("median", "set")
 S3method("print","set")
@@ -49,6 +56,7 @@ S3method("summary","set")
 
 ## Generalized set stuff.
 export("e")
+export("is_element")
 S3method("format","element")
 S3method("LABEL","element")
 S3method("print","element")
@@ -66,6 +74,8 @@ export("%e%",
        "gset_is_set",
        "gset_is_multiset",
        "gset_is_fuzzy_set",
+       "gset_is_set_or_fuzzy_set",
+       "gset_is_set_or_multiset",
        "gset_is_fuzzy_multiset",
        "gset_is_crisp",
        "gset_cardinality",
@@ -111,9 +121,19 @@ S3method("plot", "gset")
 S3method("print","gset")
 S3method("print","summary.gset")
 S3method("rep","gset")
-S3method("sort","gset")
 S3method("str","gset")
 S3method("summary","gset")
+
+## Closure and reduction
+export("binary_closure")
+export("closure")
+S3method("closure","set")
+S3method("closure","default")
+
+export("binary_reduction")
+export("reduction")
+S3method("reduction","set")
+S3method("reduction","default")
 
 ## Tuple stuff.
 export("%e%",
@@ -147,6 +167,7 @@ S3method("as.tuple", "ordered")
 S3method("as.tuple", "tuple")
 S3method("as.tuple", "data.frame")
 S3method("as.tuple", "set")
+S3method("as.list", "tuple")
 S3method("c", "tuple")
 S3method("mean", "tuple")
 S3method("median", "tuple")
@@ -164,6 +185,7 @@ S3method("LABEL", "logical")
 S3method("LABEL", "matrix")
 S3method("LABEL", "numeric")
 S3method("LABEL", "set")
+S3method("LABEL", "gset")
 S3method("LABEL", "tuple")
 S3method("LABEL", "list")
 

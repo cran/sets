@@ -189,7 +189,9 @@ power set.  \codefunind{set\_union}, \codefunind{set\_intersection}, and
   elements contained in an odd number of the sets in the collection.}
 The \code{length} method for sets gives the cardinality.
 \codefunind{set\_combn} returns the set of all subsets of specified
-length.  Note that (currently) the \codefun{rep} method for sets will
+length. \codefun{closure} and \codefun{reduction} compute the closure
+and reduction under union, intersection, and symmetric difference.
+Note that (currently) the \codefun{rep} method for sets will
 just return its argument since set elements are unique.
 <<setops,keep.source=TRUE>>=
 length(s)
@@ -218,6 +220,10 @@ s ^ 3
 
 ## subsets:
 set_combn(as.set(1:3),2)
+
+## closure and reduction (under union):
+cl <- closure(set(set(1), set(2), set(3)))
+reduction(cl)
 @
 The \codefun{Summary} methods will also work if defined for the
 elements:
@@ -344,7 +350,7 @@ For fuzzy (multi-)sets, the user can choose the logic underlying the
 operations using the \codefun{fuzzy\_logic} function.  Fuzzy logics are
 represented as named lists with four components \code{N}, \code{T},
 \code{S}, and \code{I} containing the corresponding functions for
-negation, conjunction (``$t$-norm''), disjunction (``$t$-conorm''), and
+negation, conjunction (``t-norm''), disjunction (``t-conorm''), and
 implication.  The fuzzy logic is selected by calling
 \codefun{fuzzy\_logic} with a character string specifying the fuzzy
 logic ``family'', and optional parameters.  Available families include:

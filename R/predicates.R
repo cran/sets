@@ -45,28 +45,21 @@ function(x, y)
         Vectorize(.help)(x, y)
 }
 
-"%e%" <-
-function(e, x)
-    set_contains_element(x, e)
-
 set_contains_element <-
 function(x, e)
 {
     if(set_is_empty(x))
         return(FALSE)
-    if(is.set(e)) {
-        if(!any(sapply(x, is.set)))
-            stop("Set to look into does not contain any set.")
+    if(is.tuple(e) || is.gset(e) || is_element(e))
         e <- list(e)
-    }
-    if(is.tuple(e))
-        e <- list(e)
-    e %in% x
+    !is.na(.exact_match(e, x))
 }
 
-
-
 ## gset-predicates
+
+is_element <-
+function(e)
+    inherits(e, "element")
 
 is.gset <-
 function(x)
@@ -114,29 +107,31 @@ function(x, y)
 }
 
 "%e%" <-
-function(e, x)
-    gset_contains_element(x, e)
+function(e, x) {
+    if (is.set(x))
+        set_contains_element(x, e)
+    else
+        gset_contains_element(x, e)
+}
+
 
 gset_contains_element <-
 function(x, e)
-{
-    if(gset_is_empty(x))
-        return(FALSE)
-    if(is.gset(e)) {
-        if(!any(sapply(x, is.gset)))
-            stop("Set to look into does not contain any (g)set.")
-        e <- list(e)
-    }
-    if(is.tuple(e))
-        e <- list(e)
-    e %in% x
-}
+    set_contains_element(.make_list_of_elements_from_gset(x), e(e))
 
 gset_is_multiset <-
 function(x)
 {
-     m <- .get_memberships(x)
+    m <- .get_memberships(x)
     !is.list(m) && any(m > 1)
+}
+
+gset_is_crisp <-
+gset_is_set_or_multiset <-
+function(x)
+{
+    m <- .get_memberships(x)
+    !is.list(m) && all(m >= 1)
 }
 
 gset_is_fuzzy_set <-
@@ -144,6 +139,13 @@ function(x)
 {
     m <- .get_memberships(x)
     !is.list(m) && (any(m < 1))
+}
+
+gset_is_set_or_fuzzy_set <-
+function(x)
+{
+    m <- .get_memberships(x)
+    !is.list(m) && (all(m <= 1))
 }
 
 gset_is_fuzzy_multiset <-
@@ -155,12 +157,5 @@ function(x)
 {
     m <- .get_memberships(x)
     !is.list(m) && all(m == 1)
-}
-
-gset_is_crisp <-
-function(x)
-{
-     m <- .get_memberships(x)
-    !is.list(m) && all(m >= 1)
 }
 

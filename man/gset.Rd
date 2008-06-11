@@ -19,6 +19,7 @@
 \alias{\%D\%}
 \alias{\%e\%}
 \alias{e}
+\alias{is_element}
 \alias{gset_cardinality}
 \alias{gset_charfun}
 \alias{gset_memberships}
@@ -27,12 +28,13 @@
 \alias{gset_is_crisp}
 \alias{gset_is_fuzzy_set}
 \alias{gset_is_multiset}
+\alias{gset_is_set_or_fuzzy_set}
+\alias{gset_is_set_or_multiset}
 \alias{gset_is_fuzzy_multiset}
 \alias{gset_is_set}
 \alias{length.gset}
 \alias{mean.gset}
 \alias{median.gset}
-\alias{sort.gset}
 \alias{cut.gset}
 
 \title{Generalized sets}
@@ -48,16 +50,18 @@ gset_is_proper_subset(x, y)
 gset_is_equal(x, y)
 gset_contains_element(x, e)
 
-gset_is_multiset(x)
 gset_is_set(x)
+gset_is_multiset(x)
 gset_is_fuzzy_set(x)
+gset_is_set_or_multiset(x)
+gset_is_set_or_fuzzy_set(x)
 gset_is_fuzzy_multiset(x)
 gset_is_crisp(x)
 
 gset_cardinality(x)
 gset_union(\dots)
 gset_sum(\dots)
-gset_difference(x, y)
+gset_difference(\dots)
 gset_intersection(\dots)
 gset_symdiff(\dots)
 gset_complement(x, y)
@@ -68,8 +72,7 @@ gset_combn(x, m)
 gset_similarity(x, y, method = "Jaccard")
 
 e(x, memberships = 1L)
-
-\method{sort}{gset}(x, decreasing = FALSE, \dots)
+is_element(e)
 
 \method{cut}{gset}(x, level = 1, \dots)
 \method{mean}{gset}(x, \dots)
@@ -80,14 +83,15 @@ e(x, memberships = 1L)
   \item{x}{For \code{e()}, \code{as.gset()} and \code{is.gset()}:
     an \R object. A (g)set object otherwise.}
   \item{y}{A (g)set object.}
-  \item{e}{An \R object.}
+  \item{e}{An object of class element.}
   \item{m}{Number of elements to choose.}
   \item{support}{A set of elements giving the support of the gset.}
   \item{memberships}{For an ordinary set: 1L (or simply missing).
     For a fuzzy set: a value between 0 and 1.  For a multiset: a
-    positive integer.  For a fuzzy multiset: a multiset with elements
-    from the unit interval.  Otherwise, the argument will be transformed
-    using \code{as.gset}.} 
+    positive integer.  For a fuzzy multiset: a list of
+    multisets with elements from the unit interval (or a list of vectors
+    interpreted as such).
+    Otherwise, the argument will be transformed using \code{as.gset}.} 
   \item{elements}{A set (or list) of \code{e} objects which are
     object/memberships-pairs.}
   \item{charfun}{A function taking an object and returning the
@@ -96,7 +100,6 @@ e(x, memberships = 1L)
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
-  \item{decreasing}{Logical indicating the sorting direction.}
   \item{\dots}{For \code{gset_\emph{foo}()}: (g)set objects objects. For
     the mean and sort methods: additional parameters internally passed to
     \code{\link{mean}} and \code{\link{order}}, respectively. For
@@ -152,7 +155,7 @@ e(x, memberships = 1L)
   \code{gset_contains_element} is vectorized in \code{e}, that is, if \code{e}
   is an atomic vector or list, the is-element operation is performed
   element-wise, and a logical vector returned. Note that, however,
-  objects of class \code{"tuple"} are taken as atomic objects to
+  objects of class \code{tuple} are taken as atomic objects to
   correctly handle sets of tuples.
   
 }
@@ -163,9 +166,8 @@ e(x, memberships = 1L)
 }
 \examples{
 ## multisets
-A = gset(letters[1:5], memberships = c(3, 2, 1, 1, 1))
-B = gset(c("a", "c", "e", "f"), memberships = c(2, 2, 1, 2))
-cut(B, 0.5)
+(A <- gset(letters[1:5], memberships = c(3, 2, 1, 1, 1)))
+(B <- gset(c("a", "c", "e", "f"), memberships = c(2, 2, 1, 2)))
 rep(B, 2)
 
 gset_union(A, B)
@@ -177,15 +179,16 @@ gset_sum(A, B)
 gset_difference(A, B)
 
 ## fuzzy sets
-A = gset(letters[1:5], memberships = c(1, 0.3, 0.8, 0.6, 0.2))
-B = gset(c("a", "c", "e", "f"), memberships = c(0.7, 1, 0.4, 0.9))
+(A <- gset(letters[1:5], memberships = c(1, 0.3, 0.8, 0.6, 0.2)))
+(B <- gset(c("a", "c", "e", "f"), memberships = c(0.7, 1, 0.4, 0.9)))
+cut(B, 0.5)
 A * B
 
 ## fuzzy multisets
-A = gset(c("a", "b", "d"),
-         memberships = list(c(0.3, 1, 0.5), c(0.9, 0.1), gset(c(0.4, 0.7), c(1, 2))))
-B = gset(c("a", "c", "d", "e"),
-         memberships = list(c(0.6, 0.7), c(1, 0.3), c(0.4, 0.5), 0.9))
+(A <- gset(c("a", "b", "d"),
+         memberships = list(c(0.3, 1, 0.5), c(0.9, 0.1), gset(c(0.4, 0.7), c(1, 2)))))
+(B <- gset(c("a", "c", "d", "e"),
+         memberships = list(c(0.6, 0.7), c(1, 0.3), c(0.4, 0.5), 0.9)))
 gset_union(A, B)
 gset_intersection(A, B)
 gset_complement(A, B)
