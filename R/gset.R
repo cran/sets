@@ -1,4 +1,4 @@
-######################
+########################
 ### Generalized Sets ###
 ########################
 
@@ -31,36 +31,30 @@ function(support = NULL, memberships = NULL, charfun = NULL, elements = NULL)
     ### element specification:
     ## split support and memberships, and proceed
     if (!is.null(elements)) {
-        support <- sapply(elements, .remove_element_class_and_memberships)
+        support <- unlist(elements, recursive = FALSE)
         memberships <- lapply(elements, .get_memberships)
-        if (all(sapply(memberships, length) == 1L))
-            memberships <- do.call(c, memberships)
     }
 
-    ## make sure we have a valid support
-    support <- if (is.null(support))
-        set()
-    else
-        as.set(support)
+    ## handle empty set
+    if (is.null(support))
+        return(set())
 
     ### support & charfun specification:
     ## create memberships from charfun, and proceed
     if (!is.null(charfun)) {
-        memberships <- sapply(support, charfun)
+        support <- as.set(support)
+        memberships <- sapply(support, charfun, simplify = FALSE)
         .stop_if_memberships_are_invalid(memberships,
                                          "Membership function invalid.\n  ")
     }
 
-    ### support & memberships
-    if (!is.null(memberships)) {
-        memberships <- .canonicalize_memberships(memberships)
+    ### support & membership specification:
+    ## just check memberships
+    if (!is.null(memberships))
         .stop_if_memberships_are_invalid(memberships)
-        if (length(memberships) != length(support))
-            stop("Length of support must match length of memberships.")
-    }
 
-    .make_gset_from_support_and_memberships(support = support,
-                                            memberships = memberships)
+    ### canonicalize memberships & create gset
+    .make_gset_from_support_and_memberships(support, memberships)
 }
 
 print.gset <-
@@ -93,20 +87,17 @@ function(x, ...)
 format.gset <-
 function(x, ...) {
     x <- if (gset_is_set(x))
-        lapply(x, .remove_element_class)
+        as.list(x)
     else
-        mapply(e, as.list(x), .get_memberships(x), SIMPLIFY = FALSE)
+        .make_list_of_elements_from_gset(x)
     .format_set_or_tuple(x, "{", "}", ...)
 }
 
-sort.gset <-
-function(x, decreasing = FALSE, ...)
-{
-    D <- .get_support(x)
-    O <- order(LABELS(D), decreasing = decreasing, ...)
-    .make_gset_from_support_and_memberships(support = as.set(D[O]),
-                                            memberships = .get_memberships(x)[O])
-}
+.make_list_of_elements_from_gset <-
+function(x)
+    Map(.make_element_from_support_and_memberships,
+        as.list(x),
+        as.list(.get_memberships(x)))
 
 ### operators
 
@@ -119,16 +110,16 @@ function(x, decreasing = FALSE, ...)
 `[.gset` <-
 function(x, i)
 {
-    if(is.numeric(i))
-        stop("Numeric subscripting of generalied sets is not defined.")
+    if(!is.character(i))
+        stop("Numeric subscripting of generalied sets is only defined by labels.")
     .make_gset_from_list(NextMethod("["))
 }
 
 `[[.gset` <-
 function(x, i)
 {
-    if(is.numeric(i))
-        stop("Numeric subscripting of generalized sets is not defined.")
+    if(!is.character(i))
+        stop("Numeric subscripting of generalized sets is only defined by labels.")
     NextMethod("[[")
 }
 
@@ -186,52 +177,74 @@ function(list)
 .make_gset_from_support_and_memberships <-
 function(support, memberships)
 {
-    # remove entries with 0 memberships
+    ## simplify memberships:
     if (!is.null(memberships)) {
-        z <- if (is.list(memberships)) {
-            memberships <- lapply(memberships, function(i) {
-                z <- unlist(i) == 0
-                if (all(z))
-                    list()
-                else
-                    .make_gset_from_support_and_memberships(i[!z],
-                                                            .get_memberships(i)[!z]
-                                                            )
-            })
-            sapply(memberships, length) == 0
-        } else {
-            memberships == 0
+        ## canonicalize (i.e., make sure that fuzzy multiset memberships
+        ## are valid gset objects)
+        memberships <- .canonicalize_memberships(memberships)
+
+        ## check length
+        if (length(as.list(memberships)) != length(as.list(support)))
+            stop("Length of support must match length of memberships.")
+
+        ## for fuzzy multisets, remove elements in membership with
+        ## zero support
+        if (is.list(memberships)) {
+            # find zero elements in list
+            z <- lapply(memberships, sapply, `>`, 0)
+            # empty sets should have length 0
+            z <- lapply(z, function(i) if (is.list(i)) 0 else i)
+            # filter 0 elements
+            memberships <-
+                Map(.make_gset_by_support_and_memberships,
+                    Map("[", lapply(memberships, as.list), z),
+                    Map("[", lapply(memberships, gset_memberships), z))
         }
-        if (all(z)) {
-            support <- set()
-            memberships <- NULL
-        } else {
-            support <- support[!z]
-            memberships <- memberships[!z]
+
+        ## compute index of entries with 0 memberships.
+        z <- if (is.list(memberships))
+            sapply(memberships, length) == 0
+        else
+            memberships == 0
+
+        ## all zero? return empty set.
+        if (all(z)) return(set())
+
+        ## remove entries with zero membership.
+        support <- as.list(support)[!z]
+        memberships <- memberships[!z]
+    }
+
+    ## if gset has no or trivial membership, return set.
+    if (is.null(memberships) || is.atomic(memberships) && all(memberships == 1))
+        return(.make_set_from_list(support))
+
+    ## if gset has fuzzy multiset representation, but
+    ## is really only multi or fuzzy, simplify memberships.
+    tmp <- lapply(memberships, as.list)
+    if (all(sapply(tmp, length) == 1L)) {
+        if (all(unlist(memberships) == 1L))
+            memberships <- as.integer(sapply(memberships, .get_memberships))
+        else if (all(sapply(memberships, .get_memberships) == 1L)) {
+            memberships <- unlist(memberships)
+            if (all(memberships >= 1))
+                memberships <- as.integer(memberships)
         }
     }
 
+    ## convert support to set. Reorder memberships accordingly, if needed.
+    S <- canonicalize_set_and_mapping(x = support, mapping = memberships)
+
+    ## return gset.
+    .make_gset_by_support_and_memberships(support = S$set,
+                                          memberships = S$mapping)
+}
+
+.make_gset_by_support_and_memberships <-
+function(support, memberships)
     structure(support,
               memberships = memberships,
               class = "gset")
-}
-
-.remove_element_class <-
-function(x)
-{
-    s <- setdiff(class(x), "element")
-    if (length(s) < 1)
-        s <- NULL
-    class(x) <- s
-    x
-}
-
-.remove_element_class_and_memberships <-
-function(x)
-{
-    attr(x, "memberships") <- NULL
-    .remove_element_class(x)
-}
 
 .stop_if_memberships_are_invalid <-
 function(memberships, errmsg = NULL)
@@ -258,16 +271,14 @@ function(memberships, errmsg = NULL)
 .make_gset_from_list_of_gsets_and_support_and_connector <-
 function(l, support, connector)
 {
-    ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
-        return(support)
-
     ## extract memberships according to support
-    m <- .list_of_normalized_memberships_from_list_of_gsets_and_support(l, support)
+    m <- lapply(l, .memberships_for_support, support)
 
     ## apply connector to memberships
     memberships <-
-        if (all(sapply(l, function(i) gset_is_multiset(i) || gset_is_fuzzy_set(i)))) {
+        if (all(sapply(l, gset_is_crisp)) ||
+            all(sapply(l, gset_is_set_or_fuzzy_set)))
+        {
             ## - for multisets and fuzzy sets, just use normalized memberships
             Reduce(connector, m)
         } else {
@@ -279,15 +290,13 @@ function(l, support, connector)
             mlen <- max(if (any(is_list)) sapply(m[is_list], sapply, length),
                         if (any(!is_list)) sapply(m[!is_list], max))
 
-            ## group by support & expand memberships
+            ## group by support, expand memberships, and apply connector
             lapply(seq_along(support), function(i) {
                 Reduce(connector,
                        lapply(m, function(j) .expand_membership(j[[i]], len = mlen)))
             })
         }
-
     ## create resulting gset
-    .make_gset_from_support_and_memberships(support = support,
-                                            memberships = .canonicalize_memberships(memberships))
+    .make_gset_from_support_and_memberships(support, memberships)
 }
 

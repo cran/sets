@@ -1,6 +1,7 @@
 \name{set}
 \alias{set}
 \alias{as.set}
+\alias{make_set_with_order}
 \alias{is.set}
 \alias{set_is_empty}
 \alias{set_is_subset}
@@ -11,6 +12,7 @@
 \alias{set_intersection}
 \alias{set_symdiff}
 \alias{set_complement}
+\alias{set_cardinality}
 \alias{set_power}
 \alias{set_cartesian}
 \alias{set_combn}
@@ -19,6 +21,7 @@
 \usage{
 set(\dots)
 as.set(x)
+make_set_with_order(x)
 is.set(x)
 
 set_is_empty(x)
@@ -31,6 +34,7 @@ set_union(\dots)
 set_intersection(\dots)
 set_symdiff(\dots)
 set_complement(x, y)
+set_cardinality(x)
 set_power(x)
 set_cartesian(\dots)
 set_combn(x, m)
@@ -69,6 +73,17 @@ set_combn(x, m)
   (except using labels). However, it is possible to iterate over
   \emph{all} elements using \code{for} and \code{lapply}/\code{sapply}.
 
+  Note that converting objects to sets may change the internal order
+  of the elements, so that iterating over the original data
+  might give different results than iterating over the corresponding
+  set. The permutation can be obtained by using the generic function
+  \code{make_set_with_order}, returning both the set and the ordering.
+  \code{as.set} simply calls the generic function
+  \code{make_set_with_order} internally and strips the order
+  information, so user-defined
+  converter methods have to be provided for the latter and not for
+  \code{as.set}.
+
   Note that \code{set_union}, \code{set_intersection}, and
   \code{set_symdiff} accept any number of arguments. The \eqn{n}-ary
   symmetric difference of sets contains
@@ -77,9 +92,14 @@ set_combn(x, m)
   \code{set_contains_element} is vectorized in \code{e}, that is, if \code{e}
   is an atomic vector or list, the is-element operation is performed
   element-wise, and a logical vector returned. Note that, however,
-  objects of class \code{"tuple"} are taken as atomic objects to
+  objects of class \code{tuple} are taken as atomic objects to
   correctly handle sets of tuples.
   
+}
+\value{
+  For the predicate functions, a logical. For \code{make_set_with_order},
+  a list with two components \code{"set"} and \code{"order"}. For all
+  others, a set.
 }
 \seealso{
   \code{\link{set_outer}},
@@ -104,6 +124,9 @@ set(c, "test", list(1, 2, 3))
 ## converter
 s2 <- as.set(2:5)
 s2
+
+## converter with order
+make_set_with_order(5:1)
 
 ## set of sets
 set(set(), set(1))

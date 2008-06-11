@@ -1,5 +1,7 @@
 set_power <-
 function(x)
+{
+    if (length(x) < 1L) return(set(set()))
     set_union(set(set()),
               as.set(unlist(lapply(seq_along(x),
                                    function(i)
@@ -8,9 +10,12 @@ function(x)
                             recursive = FALSE)
                      )
               )
+}
 
 gset_power <-
 function(x)
+{
+    if (length(x) == 0L) return(set(set()))
     .make_gset_from_list(c(list(gset()),
                            unlist(lapply(seq_along(x),
                                          function(i) gset_combn(x, i)
@@ -18,4 +23,5 @@ function(x)
                                   recursive = FALSE)
                            )
                          )
+}
 

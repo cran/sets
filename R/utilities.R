@@ -38,7 +38,26 @@ function(x)
     as.set(apply(ret, 1L, as.tuple))
 }
 
+### make sure that list elements are not destroyed during set unions
+
+.make_list_elements <-
+function(i)
+    if (!is.gset(i)) list(i) else i
+
 ### Local variables: ***
 ### mode: outline-minor ***
 ### outline-regexp: "### [*]+" ***
 ### End: ***
+
+### exact_match
+
+.exact_match <-
+function(x, table)
+{
+    table <- as.list(table)
+    FUN <- function(i) {
+        ind <- unlist(lapply(table, identical, i))
+        if (any(ind)) seq_along(ind)[ind][1] else NA
+    }
+    unlist(lapply(as.list(x), FUN))
+}

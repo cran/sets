@@ -25,51 +25,49 @@ fuzzy_logic(new, \dots)
   set fuzzy logic, i.e., a named list with four
   components \code{N}, \code{T}, \code{S}, and \code{I} containing the
   corresponding functions for negation, conjunction
-  (\dQuote{\eqn{t}-norm}), disjunction (\dQuote{\eqn{t}-conorm}), and
-  residual implication (which may not be available).
+  (\dQuote{t-norm}), disjunction (\dQuote{t-conorm}), and residual
+  implication (which may not be available).
 
   The package provides several fuzzy logic \emph{families}.
   A concrete fuzzy logic is selected 
   by calling \code{fuzzy_logic} with a character
   string specifying the family name, and optional parameters.  Let us
   refer to \eqn{N(x) = 1 - x} as the \emph{standard} negation, and,
-  for a \eqn{t}-norm \eqn{T}, let \eqn{S(x, y) = 1 - T(1 - x, 1 - y)} by
-  the \emph{dual} (or complementary) \eqn{t}-conorm.  Available
-  specifications and corresponding families are as follows, with the
-  standard negation used unless stated otherwise.
+  for a t-norm \eqn{T}, let \eqn{S(x, y) = 1 - T(1 - x, 1 - y)} by the
+  \emph{dual} (or complementary) t-conorm.  Available specifications and
+  corresponding families are as follows, with the standard negation used
+  unless stated otherwise.
   
   \describe{
     \item{\code{"Zadeh"}}{Zadeh's logic with \eqn{T = \min} and
-      \eqn{S = \max}.  Note that the minimum \eqn{t}-norm, also known as
-      the Gödel \eqn{t}-norm, is the pointwise largest \eqn{t}-norm, and
-      that the maximum \eqn{t}-conorm is the smallest \eqn{t}-conorm.}
-    \item{\code{"drastic"}}{the drastic logic with \eqn{t}-norm
+      \eqn{S = \max}.  Note that the minimum t-norm, also known as the
+      Gödel t-norm, is the pointwise largest t-norm, and that the
+      maximum t-conorm is the smallest t-conorm.}
+    \item{\code{"drastic"}}{the drastic logic with t-norm
       \eqn{T(x, y) = y} if \eqn{x = 1}, \eqn{x} if \eqn{y = 1}, and 0
-      otherwise, and complementary \eqn{t}-conorm \eqn{S(x, y) = y} if
+      otherwise, and complementary t-conorm \eqn{S(x, y) = y} if
       \eqn{x = 0}, \eqn{x} if \eqn{y = 0}, and 1 otherwise.  Note that
-      the drastic \eqn{t}-norm and \eqn{t}-conorm are the smallest
-      \eqn{t}-norm and largest \eqn{t}-conorm, respectively.}
-    \item{\code{"product"}}{the family with the product \eqn{t}-norm
-      \eqn{T(x, y) = xy} and dual \eqn{t}-conorm
-      \eqn{S(x, y) = x + y - xy}.} 
-    \item{\code{"Lukasiewicz"}}{the Lukasiewicz logic with \eqn{t}-norm
-      \eqn{T(x, y) = \max(0, x + y - 1)} and dual \eqn{t}-conorm
+      the drastic t-norm and t-conorm are the smallest t-norm and
+      largest t-conorm, respectively.}
+    \item{\code{"product"}}{the family with the product t-norm
+      \eqn{T(x, y) = xy} and dual t-conorm \eqn{S(x, y) = x + y - xy}.} 
+    \item{\code{"Lukasiewicz"}}{the Lukasiewicz logic with t-norm
+      \eqn{T(x, y) = \max(0, x + y - 1)} and dual t-conorm
       \eqn{S(x, y) = \min(x + y, 1)}.}
     \item{\code{"Fodor"}}{the family with Fodor's \emph{nilpotent
-	minimum} \eqn{t}-norm given by \eqn{T(x, y) = \min(x, y)} if
-      \eqn{x + y > 1}, and 0 otherwise, and the dual \eqn{t}-conorm
-      given by \eqn{S(x, y) = \max(x, y)} if \eqn{x + y < 1}, and 1
-      otherwise.}
-    \item{\code{"Frank"}}{the family of Frank \eqn{t}-norms \eqn{T_p},
+	minimum} t-norm given by \eqn{T(x, y) = \min(x, y)} if
+      \eqn{x + y > 1}, and 0 otherwise, and the dual t-conorm given by
+    \eqn{S(x, y) = \max(x, y)} if \eqn{x + y < 1}, and 1 otherwise.}
+    \item{\code{"Frank"}}{the family of Frank t-norms \eqn{T_p},
       \eqn{p \ge 0}, which gives the Zadeh, product and Lukasiewicz
-      \eqn{t}-norms for \eqn{p = 0}, 1, and \eqn{\infty}{Inf},
-      respectively, and otherwise is given by
+      t-norms for \eqn{p = 0}, 1, and \eqn{\infty}{Inf}, respectively,
+      and otherwise is given by 
       \eqn{T(x, y) = \log_p (1 + (p^x - 1) (p^y - 1) / (p - 1))}.}
     \item{\code{"Hamacher"}}{the three-parameter family of Hamacher,
       with negation \eqn{N_\gamma(x) = (1 - x) / (1 + \gamma x)},
-      \eqn{t}-norm
+      t-norm
       \eqn{T_\alpha(x, y) = xy / (\alpha + (1 - \alpha)(x + y - xy))},
-      and \eqn{t}-conorm
+      and t-conorm
       \eqn{S_\beta(x, y) = (x + y + (\beta - 1) xy) / (1 + \beta xy)},
       where \eqn{\alpha \ge 0} and \eqn{\beta, \gamma \ge -1}.  This
       gives a deMorgan triple iff \eqn{\alpha = (1 + \beta) / (1 +
@@ -82,34 +80,34 @@ fuzzy_logic(new, \dots)
   }
 
   The following parametric families are obtained by combining the
-  corresponding families of \eqn{t}-norms with the standard negation.
+  corresponding families of t-norms with the standard negation.
 
   \describe{
     \item{\code{"Schweizer-Sklar"}}{the Schweizer-Sklar family
       \eqn{T_p}, \eqn{-\infty \le p \le \infty}{-Inf <= p <= Inf}, which
-      gives the Zadeh (minimum), product and drastic \eqn{t}-norms for
+      gives the Zadeh (minimum), product and drastic t-norms for
       \eqn{p = -\infty}{p = -Inf}, \eqn{0}, and \eqn{\infty}{Inf},
       respectively, and otherwise is given by
       \eqn{T_p(x, y) = \max(0, (x^p + y^p - 1)^{1/p})}.}
     \item{\code{"Yager"}}{the Yager family \eqn{T_p}, \eqn{p \ge 0},
-      which gives the drastic and minimum \eqn{t}-norms for \eqn{p = 0}
+      which gives the drastic and minimum t-norms for \eqn{p = 0}
       and \eqn{\infty}{Inf}, respectively, and otherwise is given by
       \eqn{T_p(x, y) = \max(0, 1 - ((1-x)^p + (1-y)^p)^{1/p})}.}
     \item{\code{"Dombi"}}{the Dombi family \eqn{T_p}, \eqn{p \ge 0},
-      which gives the drastic and minimum \eqn{t}-norms for \eqn{p = 0}
+      which gives the drastic and minimum t-norms for \eqn{p = 0}
       and \eqn{\infty}{Inf}, respectively, and otherwise is given by
       \eqn{T_p(x, y) = 0} if \eqn{x = 0} or \eqn{y = 0}, and
       \eqn{T_p(x, y) = 1 / (1 + ((1/x - 1)^p + (1/y - 1)^p)^{1/p})} if
       both \eqn{x > 0} and \eqn{y > 0}.}
-    \item{\code{"Aczel-Alsina"}}{the family of \eqn{t}-norms \eqn{T_p},
+    \item{\code{"Aczel-Alsina"}}{the family of t-norms \eqn{T_p},
       \eqn{p \ge 0}, introduced by Aczél and Alsina, which gives the
-      drastic and minimum \eqn{t}-norms for \eqn{p = 0} and
+      drastic and minimum t-norms for \eqn{p = 0} and
       \eqn{\infty}{Inf}, respectively, and otherwise is given by
       \eqn{T_p(x, y) = \exp(-(|\log(x)|^p + |\log(y)|^p)^{1/p})}.}
-    \item{\code{"Sugeno-Weber"}}{the family of \eqn{t}-norms \eqn{T_p},
+    \item{\code{"Sugeno-Weber"}}{the family of t-norms \eqn{T_p},
       \eqn{-1 \le p \le \infty}{-1 <= p <= Inf}, introduced by Weber
-      with dual \eqn{t}-conorms introduce by Sugeno, which gives the
-      drastic and product \eqn{t}-norms for \eqn{p = -1} and
+      with dual t-conorms introduce by Sugeno, which gives the
+      drastic and product t-norms for \eqn{p = -1} and
       \eqn{\infty}{Inf}, respectively, and otherwise is given by
       \eqn{T_p(x, y) = \max(0, (x + y - 1 + pxy) / (1 + p))}.}
   }

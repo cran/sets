@@ -6,8 +6,8 @@
   Creates \dQuote{nice} labels from objects.
 }
 \usage{
-LABELS(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL)
-LABEL(x, limit = NULL)
+LABELS(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL, ...)
+LABEL(x, limit = NULL, ...)
 }
 \arguments{
   \item{x}{For \code{LABELS}, a vector of \R objects (if the object is
@@ -24,6 +24,7 @@ LABEL(x, limit = NULL)
     result.}
   \item{limit}{maximum length of vectors or sets to be represented as
     is. Longer elements will be replaced by a label.}
+  \item{\dots}{Optional arguments passed to the \code{LABEL} methods.}
 }
 \value{
   A character vector of labels generated from the supplied object(s).

@@ -15,8 +15,8 @@ function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
     FUN <- match.fun(FUN)
 
     ## loop
-    xrep <- rep(unclass(X), times = (ylen <- length(Y)))
-    yrep <- rep(unclass(Y), each = (xlen <- length(X)))
+    xrep <- rep(as.list(X), times = (ylen <- length(Y)))
+    yrep <- rep(as.list(Y), each = (xlen <- length(X)))
     ret <- mapply(FUN, xrep, yrep, MoreArgs = list(...), SIMPLIFY = FALSE)
 
     ## simplify if sensible

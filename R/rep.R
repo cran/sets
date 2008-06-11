@@ -18,7 +18,7 @@ function(x, ...)
     else
         lapply(m, function(i) gset(.get_support(i), .get_memberships(i) * each))
 
-    .make_gset_from_support_and_memberships(support = as.set(.get_support(x)),
-                                           .canonicalize_memberships(memberships = memberships))
+    .make_gset_from_support_and_memberships(.get_support(x),
+                                           .canonicalize_memberships(memberships))
 }
 
