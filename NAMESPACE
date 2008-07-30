@@ -21,6 +21,7 @@ export("%e%",
        "set_power",
        "set_symdiff",
        "set_union",
+       "set_options",
        "set_outer",
        "canonicalize_set_and_mapping"
        )

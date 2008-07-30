@@ -59,5 +59,6 @@ function(x, table)
         ind <- unlist(lapply(table, identical, i))
         if (any(ind)) seq_along(ind)[ind][1] else NA
     }
-    unlist(lapply(as.list(x), FUN))
+    ret <- lapply(as.list(x), FUN)
+    if (length(ret) < 1L) integer() else unlist(ret)
 }
