@@ -83,7 +83,7 @@ function(x, limit = NULL, ...) {
 }
 
 LABEL.character <-
-function(x, limit = NULL, quote = FALSE, ...) {
+function(x, limit = NULL, quote = set_options("quote"), ...) {
     if (is.null(limit))
         limit <- 2L
     if (quote)

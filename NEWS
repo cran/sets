@@ -1,3 +1,12 @@
+Changes to 0.2-1:
+
+  o set_options() added
+
+Changes to 0.2:
+
+  o A *lot* of bug fixes
+  o closure and reduction of sets added
+
 Changes to 0.1:
 
   Initial release, implementing data structures and methods for

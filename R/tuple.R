@@ -141,11 +141,11 @@ function(...)
 
 "[.tuple" <-
 function(x, i)
-    .make_tuple_from_list(NextMethod(x, i))
+    .make_tuple_from_list(NextMethod("["))
 
 "[<-.tuple" <-
 function(x, i, value)
-    .make_tuple_from_list(NextMethod(x, i, value = value))
+    .make_tuple_from_list(NextMethod("[<-"))
 
 rep.tuple <-
 function(x, ...)
