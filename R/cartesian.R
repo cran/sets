@@ -54,3 +54,18 @@ function(...)
     .make_gset_from_support_and_memberships(support, memberships)
 }
 
+cset_cartesian <-
+function(...)
+{
+    ## handle arguments
+    if (nargs() < 2L)
+        return(..1)
+    l <- list(...)
+
+    ## check match and order-functions
+    matchfun <- .check_matchfun(l)
+    orderfun <- .check_orderfun(l)
+
+    ## delegate to gset_cartesian and transform afterwards
+    cset(gset_cartesian(...), matchfun = matchfun, orderfun = orderfun)
+}

@@ -2,7 +2,7 @@
 plot.gset <-
 function(x, ylim = NULL, ...)
 {
-    m <- .get_memberships(x)
+    m <- .get_memberships(as.list(x))
     if (gset_is_fuzzy_multiset(x)) {
         maxlen <- max(sapply(m, length))
         m <- sapply(m, .expand_membership, len = maxlen)
@@ -18,3 +18,6 @@ function(x, ylim = NULL, ...)
             ...)
 }
 
+plot.cset <-
+function(x, ylim = NULL, ...)
+    plot.gset(x, ylim = ylim, ...)

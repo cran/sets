@@ -54,3 +54,23 @@ function(x, na.rm = FALSE)
     median(x, na.rm = na.rm)
 }
 
+## cset Summary methods
+## FIXME: can we call Summary.gset directly?
+
+Summary.cset <-
+function(..., na.rm = FALSE)
+{
+    l <- list(...)
+    if (any(sapply(l, gset_is_fuzzy_multiset)))
+        stop("Operation not defined for fuzzy multisets.")
+    l <- lapply(l, function(i) as.set(as.numeric(i) * .get_memberships(i)))
+    do.call(.Generic, c(l, na.rm = na.rm))
+}
+
+mean.cset <-
+function(x, ...)
+    mean.gset(x, ...)
+
+median.cset <-
+function(x, na.rm = FALSE)
+    median.gset(x, na.rm = na.rm)

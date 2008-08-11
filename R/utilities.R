@@ -1,12 +1,3 @@
-### * as.list.function
-
-## Make sure that as.list() on functions always returns an object of
-## length one, so that LABELS() remains happy.
-
-as.list.function <-
-function(x, ...)
-    list(x)
-
 ### * .cartesian_product
 
 .cartesian_product <-
@@ -21,7 +12,7 @@ function(x)
         nx <- d[i]
         orep <- orep / nx
         out[[i]] <-
-            as.list(x[[i]])[rep.int(rep.int(seq_len(nx),
+            .as.list(x[[i]])[rep.int(rep.int(seq_len(nx),
                                             rep.int(rep_fac, nx)), orep)]
         rep_fac <- rep_fac * nx
     }
@@ -42,7 +33,7 @@ function(x)
 
 .make_list_elements <-
 function(i)
-    if (!is.gset(i)) list(i) else i
+    if (!is.cset(i)) list(i) else i
 
 ### Local variables: ***
 ### mode: outline-minor ***
@@ -51,14 +42,53 @@ function(i)
 
 ### exact_match
 
-.exact_match <-
-function(x, table)
+.make_matchfun_from_equalityfun <-
+function(equalityfun)
 {
-    table <- as.list(table)
-    FUN <- function(i) {
-        ind <- unlist(lapply(table, identical, i))
-        if (any(ind)) seq_along(ind)[ind][1] else NA
+    equalityfun <- match.fun(equalityfun)
+    function(x, table)
+    {
+        table <- .as.list(table)
+        FUN <- function(i) {
+            ind <- unlist(lapply(table, equalityfun, i))
+            if (any(ind)) seq_along(ind)[ind][1] else NA
+        }
+        ret <- lapply(.as.list(x), FUN)
+        if (length(ret) < 1L) integer() else unlist(ret)
     }
-    ret <- lapply(as.list(x), FUN)
-    if (length(ret) < 1L) integer() else unlist(ret)
 }
+
+.exact_match <-
+    .make_matchfun_from_equalityfun(identical)
+
+### .list_order/sort/unique
+
+.list_order <-
+function(x, decreasing = FALSE, ...) {
+    .as.character <-
+        function(x) if(is.factor(x)) as.character(x) else x
+    ch <- as.character(lapply(.as.list(x), .as.character))
+
+    if (capabilities("iconv")) {
+        loc <- Sys.getlocale("LC_COLLATE")
+        warn <- options()$warn
+        on.exit({Sys.setlocale("LC_COLLATE", loc); options(warn = warn)})
+        options(warn = -1)
+        Sys.setlocale("LC_COLLATE", "C")
+        ch <- iconv(ch, to = "UTF-8")
+    }
+
+    order(sapply(x, length),
+          sapply(x, typeof),
+          ch,
+          decreasing = decreasing, ...)
+}
+
+.list_sort <-
+function(x, decreasing = FALSE, ...)
+    .as.list(x)[.list_order(x, decreasing = decreasing, ...)]
+
+.list_unique <-
+function(x)
+    .as.list(x)[!duplicated(x)]
+

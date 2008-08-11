@@ -149,7 +149,7 @@ function(x, i, value)
 
 rep.tuple <-
 function(x, ...)
-    .make_tuple_from_list(rep(as.list(x), ...))
+    .make_tuple_from_list(rep(.as.list(x), ...))
 
 Ops.tuple <-
 function(e1, e2)

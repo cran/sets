@@ -1,16 +1,20 @@
 set_intersection <-
 function(...)
+    .set_intersection(list(...))
+
+.set_intersection <-
+function(l, matchfun = .exact_match)
 {
-    len <- length(l <- list(...))
+    len <- length(l)
     if(len < 1L)
         set()
     else if(len < 2L)
         l[[1L]]
     else if(len < 3L)
-        .make_set_from_list(as.list(l[[2L]])[unique(na.omit(.exact_match(l[[1L]],
-                                                                         l[[2L]])))])
+        .make_set_from_list(.as.list(l[[2L]])[unique(na.omit(matchfun(l[[1L]],
+                                                                      l[[2L]])))])
     else
-        do.call(Recall, c(l[1L], list(do.call(Recall, l[-1L]))))
+        Recall(c(l[1L], list(Recall(l[-1L]))))
 }
 
 gset_intersection <-
@@ -29,3 +33,29 @@ function(...)
     .make_gset_from_list_of_gsets_and_support_and_connector(l, support, .T.)
 }
 
+cset_intersection <-
+function(...)
+{
+    l <- list(...)
+
+    ## check matchfun and orderfun
+    matchfun <- .check_matchfun(l)
+    orderfun <- .check_orderfun(l)
+
+    ## compute target support using correct matchfuns
+    support <- cset(.set_intersection(.as.list(l), matchfun),
+                    orderfun, matchfun)
+
+    ## handle the "ordinary set" case
+    if (all(sapply(l, gset_is_set)))
+        return(support)
+
+    ## create gset by applying conorm, and then make cset
+    .make_cset_from_gset_and_orderfun_and_matchfun(
+         .make_gset_from_list_of_gsets_and_support_and_connector(l,
+                                                                 support,
+                                                                 .T.,
+                                                                 matchfun),
+         orderfun,
+         matchfun)
+}

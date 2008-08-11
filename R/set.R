@@ -105,38 +105,27 @@ function(x, i)
     NextMethod("[[")
 }
 
-### internal stuff
-
-.list_order <-
-function(x, decreasing = FALSE, ...) {
-    ch <- as.character(x)
-
-    if (capabilities("iconv")) {
-        loc <- Sys.getlocale("LC_COLLATE")
-        warn <- options()$warn
-        on.exit({Sys.setlocale("LC_COLLATE", loc); options(warn = warn)})
-        options(warn = -1)
-        Sys.setlocale("LC_COLLATE", "en_US.UTF-8")
-        ch <- iconv(ch, to = "UTF-8")
-    }
-
-    order(sapply(x, length),
-          sapply(x, typeof),
-          ch,
-          decreasing = decreasing, ...)
+`[<-.set` <-
+function(x, i, value)
+{
+    if(!is.character(i))
+        stop("Subassignment of sets is only defined using labels.")
+    .make_set_from_list(NextMethod("[<-"))
 }
 
-.list_sort <-
-function(x, decreasing = FALSE, ...)
-    as.list(x)[.list_order(x, decreasing = decreasing, ...)]
+`[[<-.set` <-
+function(x, i, value)
+{
+    if(!is.character(i))
+        stop("Subassignment of sets is only defined using labels.")
+    NextMethod("[[<-")
+}
 
-.list_unique <-
-function(x)
-    as.list(x)[!duplicated(x)]
+### internal stuff
 
 .make_set_from_list <-
 function(x)
-    structure(x, class = c("set", "gset"))
+    structure(x, class = c("set", "gset", "cset"))
 
 .format_set_or_tuple <-
 function(x, left, right, ...)
@@ -152,5 +141,29 @@ function(x, left, right, ...)
                     sep = "", collapse = ", "),
           right,
           sep = "")
-  }
+}
+
+.set_subset<-
+ function(x, i)
+    as.set(as.list(x)[i])
+
+`.set_replace`<-
+ function(x, i, value)
+{
+    ret <- as.list(x)
+    ret[i] <- value
+    as.set(ret)
+}
+
+.set_subset2<-
+ function(x, i)
+    as.list(x)[[i]]
+
+`.set_replace2`<-
+ function(x, i, value)
+{
+    ret <- as.list(x)
+    ret[[i]] <- value
+    as.set(ret)
+}
 

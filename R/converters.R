@@ -23,14 +23,21 @@ function(x)
 
 make_set_with_order.gset <-
 function(x)
-    .make_set_with_order(.make_set_from_list(.get_support(x)))
+{
+    attr(x, "memberships") <- NULL
+    .make_set_with_order(.make_set_from_list(as.list(.get_support(x))))
+}
+
+make_set_with_order.cset <-
+function(x)
+    make_set_with_order(as.gset(x))
 
 make_set_with_order.numeric <-
 make_set_with_order.factor <-
 make_set_with_order.character <-
 make_set_with_order.integer <-
-make_set_with_order.ordered <-
 make_set_with_order.logical <-
+make_set_with_order.ordered <-
 make_set_with_order.tuple <-
 make_set_with_order.list <-
 function(x)
@@ -88,7 +95,7 @@ function(x, ...) {
 
 as.list.set <-
 function(x, ...)
-    unclass(x)
+    .as.list(x)
 
 ### gset converters
 
@@ -101,6 +108,18 @@ function(x)
 as.gset.default <-
 function(x)
     gset(x)
+
+as.gset.cset <-
+function(x)
+{
+    attr(x, "orderfun") <- NULL
+    attr(x, "matchfun") <- NULL
+    class(x) <- if (!is.null(attr(x, "memberships")))
+        c("gset")
+    else
+        c("set", "gset")
+    x
+}
 
 as.gset.gset <- identity
 
@@ -118,13 +137,13 @@ function(x)
 }
 
 as.gset.factor <-
+as.gset.ordered <-
 as.gset.character <-
 as.gset.integer <-
-as.gset.ordered <-
 as.gset.logical <-
 function(x)
     .make_gset_from_support_and_memberships(.list_sort(.list_unique(x)),
-                                            as.vector(table(x)))
+                                            as.vector(table(as.character(x))))
 
 as.gset.list <-
 function(x)
@@ -140,7 +159,7 @@ function(x)
 
 as.list.gset <-
 function(x, ...)
-    unclass(x)
+    .as.list(x)
 
 ### tuple converters
 
@@ -164,6 +183,8 @@ function(x)
     .make_tuple_from_list(as.list(x))
 
 as.tuple.set <-
+as.tuple.gset <-
+as.tuple.cset <-
 as.tuple.list <-
 function(x)
     do.call(tuple, x)
@@ -181,7 +202,86 @@ as.list.tuple <-
 function(x, ...)
     unclass(x)
 
+### cset converters
+
+as.cset <-
+function(x)
+    UseMethod("as.cset")
+
+as.cset.default <-
+function(x)
+    cset(gset(x))
+
+as.cset.cset <-
+    identity
+
+as.cset.data.frame <-
+as.cset.tuple <-
+as.cset.numeric <-
+as.cset.factor <-
+as.cset.character <-
+as.cset.integer <-
+as.cset.logical <-
+as.cset.list <-
+function(x)
+    as.gset(x)
+
+as.cset.ordered <-
+function(x)
+{
+    s <- as.character(x)
+    o <- order(s)
+    dup <- duplicated(sort(s))
+    cset(as.gset(x), orderfun <- order(x)[o][!dup])
+}
+
+as.list.cset <-
+function(x, ...)
+{
+    FUN <- cset_orderfun(x)
+    L <- .as.list(x)
+    ms <- .get_memberships(L)
+    if(is.function(FUN) || is.character(FUN)) {
+        order <- do.call(FUN, list(L))
+        L <- L[order]
+        ms <- ms[order]
+    } else if(is.integer(FUN) && (length(L) == FUN)) {
+        L <- L[FUN]
+        ms <- ms[FUN]
+    }
+    structure(L, memberships = ms)
+}
+
+as.character.cset <-
+function(x, ...)
+    as.character(as.list(x, ...))
+
+### make sure that as.list always works
+
 as.list.function <-
 function(x, ...)
     list(x)
 
+### .as.list
+### In the current implementation, for (g)gets, it's just unclass ...
+
+.as.list <-
+function(x, ...)
+    UseMethod(".as.list")
+
+.as.list.default <-
+function(x, ...)
+    as.list(x, ...)
+
+.as.list.set <-
+.as.list.gset <-
+    unclass
+
+.as.list.cset <-
+function(x, ...)
+{
+    attr(x, "class") <- NULL
+    attr(x, "orderfun") <- NULL
+    attr(x, "matchfun") <- NULL
+    x
+}

@@ -4,7 +4,7 @@ e <-
 function(x, memberships = 1L)
 {
     if (is_element(x)) return(x)
-    if (length(as.list(memberships)) > 1)
+    if (length(.as.list(memberships)) > 1)
         memberships <- as.gset(memberships)
     else if (memberships >= 1)
         memberships <- as.integer(memberships)
