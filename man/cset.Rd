@@ -202,5 +202,9 @@ as.character(Z)
 o <- ordered(c("a", "b", "a"), levels = c("b", "a"))
 as.set(o)
 as.cset(o)
+
+## converter for other data types keep order if the elements are unique:
+as.cset(c("A", "quick", "brown", "fox"))
+as.cset(c("A", "quick", "brown", "fox", "quick"))
 }
 \keyword{math}

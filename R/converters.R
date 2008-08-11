@@ -216,23 +216,34 @@ as.cset.cset <-
     identity
 
 as.cset.data.frame <-
+as.cset.logical <-
+function(x)
+    as.gset(x)
+
 as.cset.tuple <-
 as.cset.numeric <-
 as.cset.factor <-
 as.cset.character <-
 as.cset.integer <-
-as.cset.logical <-
 as.cset.list <-
 function(x)
-    as.gset(x)
+{
+    sup <- as.gset(x)
+    if(!any(duplicated(x))) {
+        o <- .list_order(x)
+        i <- seq_along(x)
+        i[o] <- i
+        cset(sup, orderfun = i)
+    } else sup
+}
 
 as.cset.ordered <-
 function(x)
 {
     s <- as.character(x)
-    o <- order(s)
-    dup <- duplicated(sort(s))
-    cset(as.gset(x), orderfun <- order(x)[o][!dup])
+    o <- .list_order(s)
+    dup <- duplicated(s[o])
+    cset(as.gset(x), orderfun = order(x)[o][!dup])
 }
 
 as.list.cset <-
@@ -245,7 +256,7 @@ function(x, ...)
         order <- do.call(FUN, list(L))
         L <- L[order]
         ms <- ms[order]
-    } else if(is.integer(FUN) && (length(L) == FUN)) {
+    } else if(is.integer(FUN) && (length(L) == length(FUN))) {
         L <- L[FUN]
         ms <- ms[FUN]
     }

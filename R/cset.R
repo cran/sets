@@ -140,7 +140,7 @@ function(x, ...) {
         .make_list_of_elements_from_cset(x)
     if (is.function(FUN))
         x <- x[FUN(x)]
-    else if(is.integer(FUN) && (length(x) == FUN))
+    else if(is.integer(FUN) && (length(x) == length(FUN)))
         x <- x[FUN]
     .format_set_or_tuple(x, "{", "}", ...)
 }
