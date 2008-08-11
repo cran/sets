@@ -1,11 +1,14 @@
 \name{outer}
 \alias{set_outer}
 \alias{gset_outer}
+\alias{cset_outer}
 \alias{tuple_outer}
 \title{Outer Product of Sets (Tuples)}
 \description{Outer \dQuote{product} of (g)sets (tuples).}
 \usage{
 set_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
+gset_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
+cset_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
 tuple_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
 }
 \arguments{

@@ -9,13 +9,14 @@ function(x, operation, ...)
 reduction.set <-
 function(x, operation = c("union", "intersection"), ...)
 {
+    operation <- match.arg(operation)
     if (length(x) < 2L) return(x)
-    if (!all(sapply(x, is.gset)))
-        stop("reduction only defined on set of (g)sets.")
+    if (!all(sapply(x, is.cset)))
+        stop("reduction only defined on set of (c,g)sets.")
 
     if (all(sapply(x, is.set))) {
 
-        dom <- as.list(do.call(set_union, x))
+        dom <- .as.list(do.call(set_union, x))
         x <- lapply(x, .make_list_elements)
 
         members <-
@@ -27,20 +28,16 @@ function(x, operation = c("union", "intersection"), ...)
                                              )
                                        )
                             )
-    } else {
-        mem <- gset_memberships(x)
-        sup <- gset_support(x)
-        if (length(sup) < 3L) return(x)
-        operation <- match.arg(operation)
+    } else if (all(sapply(x, is.gset))) {
         clo <- closure(x, operation)
-        FUN <- function(e) !gset_is_equal(closure(gset_difference(x, e),
+        FUN <- function(e) !gset_is_equal(closure(gset_difference(x, set(e)),
                                                   operation), clo)
-        index <- sapply(Map(gset,
-                            lapply(x, set),
-                            if (gset_is_fuzzy_multiset(x)) lapply(mem, list) else mem),
-                        FUN)
-        gset(as.list(sup)[index], mem[index])
-
+        as.set(Filter(FUN, .as.list(x)))
+    } else {
+        clo <- closure(x, operation)
+        FUN <- function(e) !cset_is_equal(closure(cset_difference(x, set(e)),
+                                                  operation), clo)
+        as.set(Filter(FUN, .as.list(x)))
     }
 }
 

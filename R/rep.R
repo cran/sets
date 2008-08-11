@@ -22,3 +22,6 @@ function(x, ...)
                                            .canonicalize_memberships(memberships))
 }
 
+rep.cset <-
+function(x, ...)
+    rep.gset(x, ...)

@@ -11,3 +11,10 @@ function(object, ...)
     str(unclass(object), ...)
     writeLines(" - attr(*, \"class\")= chr \"gset\"")
 }
+
+str.cset <-
+function(object, ...)
+{
+    str(unclass(object), ...)
+    writeLines(" - attr(*, \"class\")= chr \"cset\"")
+}

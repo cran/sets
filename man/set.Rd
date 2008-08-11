@@ -13,6 +13,7 @@
 \alias{set_symdiff}
 \alias{set_complement}
 \alias{set_cardinality}
+\alias{set_similarity}
 \alias{set_power}
 \alias{set_cartesian}
 \alias{set_combn}
@@ -38,6 +39,8 @@ set_cardinality(x)
 set_power(x)
 set_cartesian(\dots)
 set_combn(x, m)
+
+set_similarity(x, y, method = "Jaccard")
 }
 \arguments{
   \item{x}{For \code{as.set()} and \code{is.set()}:
@@ -45,6 +48,7 @@ set_combn(x, m)
   \item{y}{A set object.}
   \item{e}{An \R object.}
   \item{m}{Number of elements to choose.}
+  \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{\dots}{For \code{set()}: \R objects, and set objects otherwise.}
 }
 \details{

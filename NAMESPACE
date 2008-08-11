@@ -19,6 +19,7 @@ export("%e%",
        "set_complement",
        "set_intersection",
        "set_power",
+       "set_similarity",
        "set_symdiff",
        "set_union",
        "set_options",
@@ -28,8 +29,11 @@ export("%e%",
 
 S3method("[", "set")
 S3method("[[", "set")
+S3method("[<-", "set")
+S3method("[[<-", "set")
 S3method("Ops","set")
 S3method("Summary","set")
+S3method("all.equal","set")
 S3method("as.list", "set")
 S3method("as.list", "function")
 S3method("make_set_with_order", "character")
@@ -43,6 +47,7 @@ S3method("make_set_with_order", "numeric")
 S3method("make_set_with_order", "ordered")
 S3method("make_set_with_order", "set")
 S3method("make_set_with_order", "gset")
+S3method("make_set_with_order", "cset")
 S3method("make_set_with_order", "tuple")
 S3method("c","set")
 S3method("format", "set")
@@ -100,11 +105,15 @@ S3method("Ops","gset")
 S3method("Summary","gset")
 S3method("[", "gset")
 S3method("[[", "gset")
+S3method("[<-", "gset")
+S3method("[[<-", "gset")
+S3method("all.equal","gset")
 S3method("as.gset", "character")
 S3method("as.gset", "data.frame")
 S3method("as.gset", "default")
 S3method("as.gset", "factor")
 S3method("as.gset", "gset")
+S3method("as.gset", "cset")
 S3method("as.gset", "integer")
 S3method("as.gset", "list")
 S3method("as.gset", "logical")
@@ -120,10 +129,82 @@ S3method("mean", "gset")
 S3method("median", "gset")
 S3method("plot", "gset")
 S3method("print","gset")
+S3method("print","gset_charfun")
 S3method("print","summary.gset")
 S3method("rep","gset")
 S3method("str","gset")
 S3method("summary","gset")
+
+## Customizable set stuff
+export("as.cset",
+       "cset",
+       "cset_cardinality",
+       "cset_cartesian",
+       "cset_charfun",
+       "cset_combn",
+       "cset_complement",
+       "cset_difference",
+       "cset_intersection",
+       "cset_contains_element",
+       "cset_is_empty",
+       "cset_is_equal",
+       "cset_is_proper_subset",
+       "cset_is_subset",
+       "cset_is_set",
+       "cset_is_multiset",
+       "cset_is_fuzzy_set",
+       "cset_is_set_or_fuzzy_set",
+       "cset_is_set_or_multiset",
+       "cset_is_fuzzy_multiset",
+       "cset_is_crisp",
+       "cset_matchfun",
+       "cset_matchfun<-",
+       "cset_memberships",
+       "cset_orderfun",
+       "cset_orderfun<-",
+       "cset_outer",
+       "cset_power",
+       "cset_similarity",
+       "cset_sum",
+       "cset_support",
+       "cset_symdiff",
+       "cset_union",
+       "is.cset",
+       "make_matchfun")
+
+S3method("Ops","cset")
+S3method("Summary","cset")
+S3method("[", "cset")
+S3method("[[", "cset")
+S3method("[<-", "cset")
+S3method("[[<-", "cset")
+S3method("all.equal","cset")
+S3method("as.cset", "character")
+S3method("as.cset", "data.frame")
+S3method("as.cset", "default")
+S3method("as.cset", "factor")
+S3method("as.cset", "cset")
+S3method("as.cset", "integer")
+S3method("as.cset", "list")
+S3method("as.cset", "logical")
+S3method("as.cset", "numeric")
+S3method("as.cset", "ordered")
+S3method("as.cset", "tuple")
+S3method("as.list", "cset")
+S3method("as.character", "cset")
+S3method("c","cset")
+S3method("cut","cset")
+S3method("format", "cset")
+S3method("length", "cset")
+S3method("mean", "cset")
+S3method("median", "cset")
+S3method("plot", "cset")
+S3method("print","cset")
+S3method("print","cset_charfun")
+S3method("print","summary.cset")
+S3method("rep","cset")
+S3method("str","cset")
+S3method("summary","cset")
 
 ## Closure and reduction
 export("binary_closure")
@@ -168,6 +249,8 @@ S3method("as.tuple", "ordered")
 S3method("as.tuple", "tuple")
 S3method("as.tuple", "data.frame")
 S3method("as.tuple", "set")
+S3method("as.tuple", "cset")
+S3method("as.tuple", "gset")
 S3method("as.list", "tuple")
 S3method("c", "tuple")
 S3method("mean", "tuple")
@@ -187,6 +270,7 @@ S3method("LABEL", "matrix")
 S3method("LABEL", "numeric")
 S3method("LABEL", "set")
 S3method("LABEL", "gset")
+S3method("LABEL", "cset")
 S3method("LABEL", "tuple")
 S3method("LABEL", "list")
 
@@ -197,3 +281,8 @@ export(".N.",
        ".S.",
        ".I.",
        "fuzzy_logic")
+
+### internal dispatch
+S3method(".as.list", "default")
+S3method(".as.list", "set")
+S3method(".as.list", "gset")

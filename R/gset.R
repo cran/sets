@@ -74,7 +74,7 @@ function(object, ...)
         gettext("A generalized set with 1 element.")
     else
         gettextf("A generalized set with cardinality %g.", len)
-    structure(out, class = "summary.set")
+    structure(out, class = "summary.gset")
 }
 
 print.summary.gset <-
@@ -87,17 +87,11 @@ function(x, ...)
 format.gset <-
 function(x, ...) {
     x <- if (gset_is_set(x))
-        as.list(x)
+        .as.list(x)
     else
-        .make_list_of_elements_from_gset(x)
+        .make_list_of_elements_from_cset(x)
     .format_set_or_tuple(x, "{", "}", ...)
 }
-
-.make_list_of_elements_from_gset <-
-function(x)
-    Map(.make_element_from_support_and_memberships,
-        as.list(x),
-        as.list(.get_memberships(x)))
 
 ### operators
 
@@ -111,7 +105,7 @@ function(x)
 function(x, i)
 {
     if(!is.character(i))
-        stop("Numeric subscripting of generalied sets is only defined by labels.")
+        stop("Subscripting of generalied sets is only defined by labels.")
     .make_gset_from_list(NextMethod("["))
 }
 
@@ -119,8 +113,24 @@ function(x, i)
 function(x, i)
 {
     if(!is.character(i))
-        stop("Numeric subscripting of generalized sets is only defined by labels.")
+        stop("Subscripting of generalized sets is only defined by labels.")
     NextMethod("[[")
+}
+
+`[<-.gset` <-
+function(x, i, value)
+{
+    if(!is.character(i))
+        stop("Subassignment of generalied sets is only defined by labels.")
+    .make_gset_from_list(NextMethod("[<-"))
+}
+
+`[[<-.gset` <-
+function(x, i, value)
+{
+    if(!is.character(i))
+        stop("Subassignment of generalized sets is only defined by labels.")
+    NextMethod("[[<-")
 }
 
 Ops.gset <-
@@ -184,7 +194,7 @@ function(support, memberships)
         memberships <- .canonicalize_memberships(memberships)
 
         ## check length
-        if (length(as.list(memberships)) != length(as.list(support)))
+        if (length(.as.list(memberships)) != length(.as.list(support)))
             stop("Length of support must match length of memberships.")
 
         ## for fuzzy multisets, remove elements in membership with
@@ -197,7 +207,7 @@ function(support, memberships)
             # filter 0 elements
             memberships <-
                 Map(.make_gset_by_support_and_memberships,
-                    Map("[", lapply(memberships, as.list), z),
+                    Map("[", lapply(memberships, .as.list), z),
                     Map("[", lapply(memberships, gset_memberships), z))
         }
 
@@ -211,7 +221,7 @@ function(support, memberships)
         if (all(z)) return(set())
 
         ## remove entries with zero membership.
-        support <- as.list(support)[!z]
+        support <- .as.list(support)[!z]
         memberships <- memberships[!z]
     }
 
@@ -221,7 +231,7 @@ function(support, memberships)
 
     ## if gset has fuzzy multiset representation, but
     ## is really only multi or fuzzy, simplify memberships.
-    tmp <- lapply(memberships, as.list)
+    tmp <- lapply(memberships, .as.list)
     if (all(sapply(tmp, length) == 1L)) {
         if (all(unlist(memberships) == 1L))
             memberships <- as.integer(sapply(memberships, .get_memberships))
@@ -244,7 +254,7 @@ function(support, memberships)
 function(support, memberships)
     structure(support,
               memberships = memberships,
-              class = "gset")
+              class = c("gset", "cset"))
 
 .stop_if_memberships_are_invalid <-
 function(memberships, errmsg = NULL)
@@ -269,10 +279,10 @@ function(memberships, errmsg = NULL)
 }
 
 .make_gset_from_list_of_gsets_and_support_and_connector <-
-function(l, support, connector)
+function(l, support, connector, matchfun = .exact_match)
 {
     ## extract memberships according to support
-    m <- lapply(l, .memberships_for_support, support)
+    m <- lapply(l, .memberships_for_support, support, matchfun)
 
     ## apply connector to memberships
     memberships <-
@@ -299,4 +309,10 @@ function(l, support, connector)
     ## create resulting gset
     .make_gset_from_support_and_memberships(support, memberships)
 }
+
+.make_list_of_elements_from_cset <-
+function(x)
+    Map(.make_element_from_support_and_memberships,
+        .as.list(x),
+        .as.list(.get_memberships(x)))
 

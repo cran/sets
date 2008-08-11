@@ -33,3 +33,61 @@ function(...)
 
 }
 
+cset_sum <-
+function(...)
+{
+    l <- list(...)
+
+    ## check matchfun and orderfun
+    matchfun <- .check_matchfun(l)
+    orderfun <- .check_orderfun(l)
+
+    ## determine connector
+    CON <- if (all(sapply(l, gset_is_crisp)))
+        `+`
+    else
+        function(x, y) pmin(1, x + y)
+
+    ## compute target support
+    support <- cset(do.call(set_union, l),
+                    matchfun = matchfun,
+                    orderfun = orderfun)
+
+    ## apply connector
+    .make_cset_from_gset_and_orderfun_and_matchfun(
+        .make_gset_from_list_of_gsets_and_support_and_connector(l,
+                                                                support,
+                                                                CON,
+                                                                matchfun),
+        orderfun,
+        matchfun)
+
+}
+
+cset_difference <-
+function(...)
+{
+    l <- list(...)
+
+    ## check matchfun and orderfun
+    matchfun <- .check_matchfun(l)
+    orderfun <- .check_orderfun(l)
+
+    ## connector
+    CON <- function(x, y) pmax(0, x - y)
+
+    ## compute target support
+    support <- cset(do.call(set_union, l),
+                    matchfun = matchfun,
+                    orderfun = orderfun)
+
+    ## apply connector
+    .make_cset_from_gset_and_orderfun_and_matchfun(
+        .make_gset_from_list_of_gsets_and_support_and_connector(l,
+                                                                support,
+                                                                CON,
+                                                                matchfun),
+        orderfun,
+        matchfun)
+}
+

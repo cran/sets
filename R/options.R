@@ -1,9 +1,9 @@
 set_options <-
 local({
-    options <- list(quote = FALSE)
-    function(option = NULL, value = NULL) {
-        if (is.null(option)) return(options)
-        if (is.null(value))
+    options <- list(quote = TRUE)
+    function(option, value) {
+        if (missing(option)) return(options)
+        if (missing(value))
             options[[option]]
         else
             options[[option]] <<- value

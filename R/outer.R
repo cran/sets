@@ -14,9 +14,15 @@ function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
 
     FUN <- match.fun(FUN)
 
+    ## convert to lists
+    xlabs <- LABELS(X)
+    ylabs <- LABELS(Y)
+    X <- as.list(X)
+    Y <- as.list(Y)
+
     ## loop
-    xrep <- rep(as.list(X), times = (ylen <- length(Y)))
-    yrep <- rep(as.list(Y), each = (xlen <- length(X)))
+    xrep <- rep(X, times = (ylen <- length(Y)))
+    yrep <- rep(Y, each = (xlen <- length(X)))
     ret <- mapply(FUN, xrep, yrep, MoreArgs = list(...), SIMPLIFY = FALSE)
 
     ## simplify if sensible
@@ -25,10 +31,11 @@ function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
 
     ## make matrix
     dim(ret) <- c(xlen, ylen)
-    dimnames(ret) <- list(LABELS(X), LABELS(Y))
+    dimnames(ret) <- list(xlabs, ylabs)
     ret
 }
 
+cset_outer <-
 gset_outer <-
-    function(...) set_outer(...)
-
+function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
+    set_outer(X = X, Y = Y, FUN = FUN, ..., SIMPLIFY = SIMPLIFY)

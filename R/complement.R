@@ -1,15 +1,23 @@
 set_complement <-
 function(x, y)
+    .set_complement_using_matchfun(x, y)
+
+.set_complement_using_matchfun <-
+function(x, y, matchfun = .exact_match)
 {
     if (missing(y))
         return(set())
-    y <- as.list(y)
-    ind <- unique(na.omit(.exact_match(x, y)))
+    y <- .as.list(y)
+    ind <- unique(na.omit(matchfun(x, y)))
     .make_set_from_list(if(length(ind)) y[-ind] else y)
 }
 
 gset_complement <-
 function(x, y = NULL)
+    .gset_complement_using_support_and_matchfun(x, y)
+
+.gset_complement_using_support_and_matchfun <-
+function(x, y = NULL, support = set_union(x, y), matchfun = .exact_match)
 {
     ## auto-complement
     if (is.null(y)) {
@@ -30,14 +38,11 @@ function(x, y = NULL)
 
     ## For "ordinary sets", call set function
     if (gset_is_set(x) && gset_is_set(y))
-        return(set_complement(x, y))
-
-    ## compute target support
-    support <- set_union(x, y)
+        return(.set_complement_using_matchfun(x, y, matchfun))
 
     ## extract memberships, normalized for target support
-    m_x <- .memberships_for_support(x, support)
-    m_y <- .memberships_for_support(y, support)
+    m_x <- .memberships_for_support(x, support, matchfun)
+    m_y <- .memberships_for_support(y, support, matchfun)
 
     memberships <-
     if (gset_is_fuzzy_set(x) && gset_is_fuzzy_set(y)) {
@@ -61,5 +66,22 @@ function(x, y = NULL)
     ## return resulting gset
     .make_gset_from_support_and_memberships(support,
                                             .canonicalize_memberships(memberships))
+}
+
+cset_complement <-
+function(x, y = NULL)
+{
+    if (!is.null(y)) {
+        matchfun <- .check_matchfun(list(x, y))
+        orderfun <- .check_orderfun(list(x, y))
+    } else {
+        matchfun <- .matchfun(x)
+        orderfun <- .orderfun(x)
+    }
+    support <- cset(set_union(x, y), matchfun = matchfun)
+    .make_cset_from_gset_and_orderfun_and_matchfun(
+        .gset_complement_using_support_and_matchfun(x, y, support, matchfun),
+        orderfun,
+        matchfun)
 }
 

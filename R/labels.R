@@ -100,6 +100,7 @@ function(x, limit = NULL, ...) {
 
 LABEL.set <-
 LABEL.gset <-
+LABEL.cset <-
 LABEL.tuple <-
 function(x, limit = NULL, ...) {
     if (is.null(limit))
@@ -110,7 +111,7 @@ function(x, limit = NULL, ...) {
 .format_or_class <-
 function(x, limit, ...)
 {
-    l <- length(as.list(x))
+    l <- length(.as.list(x))
     if (l < limit) {
         if (is.integer(x))
             format(paste(x, "L", sep = ""), ...)

@@ -6,7 +6,7 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
     if (is.null(x))
         x <- 0
     if (!is.atomic(x))
-        x <- as.list(x)
+        x <- .as.list(x)
     M <- .get_memberships(x)
 
     ## create vector from gset
@@ -42,9 +42,9 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
 }
 
 .memberships_for_support <-
-function(x, support)
+function(x, support, matchfun = .exact_match)
 {
-    tmp <- .get_memberships(x)[.exact_match(support, .get_support(x))]
+    tmp <- .get_memberships(x)[matchfun(support, .get_support(x))]
     tmp[is.na(tmp)] <- 0
     tmp
 }

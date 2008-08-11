@@ -4,7 +4,7 @@ function(x, level = 1, ...)
     if (gset_is_crisp(x))
         return(x)
 
-    support <- as.list(.get_support(x))
+    support <- .as.list(.get_support(x))
     memberships <- .get_memberships(x)
 
     if (gset_is_fuzzy_set(x)) {
@@ -25,3 +25,6 @@ function(x, level = 1, ...)
     }
 }
 
+cut.cset <-
+function(x, level = 1, ...)
+    cut.gset(x, level = level, ...)
