@@ -24,7 +24,7 @@ singleton <-
 function(...)
 {
     if(length(list(...)) != 1L)
-        stop("Need one component.")
+        stop("Exactly one argument expected.")
     tuple(...)
 }
 
@@ -32,7 +32,7 @@ pair <-
 function(...)
 {
     if(length(list(...)) != 2L)
-        stop("Need two components.")
+        stop("Exactly two arguments expected.")
     tuple(...)
 }
 
@@ -40,7 +40,7 @@ triple <-
 function(...)
 {
     if(length(list(...)) != 3L)
-        stop("Need three components.")
+        stop("Exactly three arguments expected.")
     tuple(...)
 }
 

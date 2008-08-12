@@ -26,7 +26,8 @@ LABEL(x, limit = NULL, \dots)
     result.}
   \item{limit}{Maximum length of vectors or sets to be represented as
     is. Longer elements will be replaced by a label.}
-  \item{quote}{Should character strings be quoted, or not? (default: TRUE)}
+  \item{quote}{Should character strings be quoted, or not?
+    (default: \code{TRUE})}
   \item{\dots}{Optional arguments passed to the \code{LABEL} methods.}
 }
 \value{

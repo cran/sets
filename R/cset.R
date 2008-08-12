@@ -158,11 +158,11 @@ function(object, ...)
     else
         gettextf("A customizable set with cardinality %g.", len)
     if(!is.null(attr(object, "matchfun")) && !is.null(attr(object, "orderfun")))
-        out <- paste(out, "The match and order functions are non-standard.")
+        out <- paste(out, "The match and order functions are user-defined.")
     else if(!is.null(attr(object, "matchfun")))
-        out <- paste(out, "The match function is non-standard.")
+        out <- paste(out, "The match function is user-defined.")
     else if(!is.null(attr(object, "orderfun")))
-        out <- paste(out, "The order function is non-standard.")
+        out <- paste(out, "The order function is user-defined.")
 
     structure(out, class = "summary.cset")
 }

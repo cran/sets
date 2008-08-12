@@ -1,6 +1,6 @@
-/*====== BODY of R_qsort_V() and R_qsort_int_V() functions =============
+/*====== BODY of R_qsort_int_V() function ==============================
  *
- * is included with and without ``qsort_Index'' defined
+ * is included with NUMERIC defined
  *======================================================================
 */
 {
@@ -12,7 +12,7 @@
  * which is a modified Hoare quicksort.
  * This version incorporates the modification in the remark by Peto.
 */
-// retained for future custimizing
+// retained for future customizing
 #define qsort_Index
     if (TYPEOF(I) != VECSXP)
 	error("'I' not of type list");
