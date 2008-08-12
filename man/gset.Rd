@@ -83,10 +83,10 @@ is_element(e)
   \item{x}{For \code{e()}, \code{as.gset()} and \code{is.gset()}:
     an \R object. A (g)set object otherwise.}
   \item{y}{A (g)set object.}
-  \item{e}{An object of class element.}
+  \item{e}{An object of class \code{element}.}
   \item{m}{Number of elements to choose.}
   \item{support}{A set of elements giving the support of the gset.}
-  \item{memberships}{For an ordinary set: 1L (or simply missing).
+  \item{memberships}{For an (\dQuote{ordinary}) set: 1L (or simply missing).
     For a fuzzy set: a value between 0 and 1.  For a multiset: a
     positive integer.  For a fuzzy multiset: a list of
     multisets with elements from the unit interval (or a list of vectors
@@ -100,7 +100,7 @@ is_element(e)
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
-  \item{\dots}{For \code{gset_\emph{foo}()}: (g)set objects objects. For
+  \item{\dots}{For \code{gset_\var{foo}()}: (g)set objects objects. For
     the mean and sort methods: additional parameters internally passed to
     \code{\link{mean}} and \code{\link{order}}, respectively. For
     \code{cut}: currently not used.}
@@ -111,7 +111,8 @@ is_element(e)
 
   A generalized set (or gset) is set of pairs \eqn{(e, f)}, where
   \eqn{e} is some set element and \eqn{f} is the characteristic (or
-  membership) function. For ordinary sets \eqn{f} maps to \eqn{\{0, 1\}},
+  membership) function. For (\dQuote{ordinary}) sets
+  \eqn{f} maps to \eqn{\{0, 1\}},
   for fuzzy sets into the unit interval, for multisets into the natural
   numbers, and for fuzzy multisets \eqn{f} maps to the set of multisets
   over the unit interval.

@@ -49,8 +49,8 @@ make_matchfun(FUN)
 
 cset_orderfun(x)
 cset_matchfun(x)
-`cset_orderfun<-`(x, value)
-`cset_matchfun<-`(x, value)
+cset_orderfun(x) <- value
+cset_matchfun(x) <- value
 
 as.cset(x)
 is.cset(x)
@@ -91,7 +91,7 @@ cset_similarity(x, y, method = "Jaccard")
   \item{x}{For \code{as.cset()} and \code{is.cset()}:
     an \R object. A (c)set object otherwise.}
   \item{y}{A (c)set object.}
-  \item{gset}{A generalized set (or some other \R object convertible to it).}
+  \item{gset}{A generalized set (or some other \R object coercible to it).}
   \item{matchfun}{A function for matching similar elements, comparable 
     to \code{\link{match}}, taking two arguments: \code{x} (vector of
     elements to be matched) and \code{table} (vector of elements to be
@@ -103,13 +103,13 @@ cset_similarity(x, y, method = "Jaccard")
     specifying the order in which an iterator processes the set
     elements. Alternatively, the index vector can be specified directly.}
   \item{value}{A new match function (order function).}
-  \item{e}{An object of class element.}
+  \item{e}{An object of class \code{element}.}
   \item{m}{Number of elements to choose.}
   \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
-  \item{\dots}{For \code{cset_\emph{foo}()}: (c)set objects objects. For
+  \item{\dots}{For \code{cset_\var{foo}()}: (c)set objects. For
     the mean and sort methods: additional parameters internally passed to
     \code{\link{mean}} and \code{\link{order}}, respectively. For
     \code{cut}: currently not used.}
@@ -123,22 +123,22 @@ cset_similarity(x, y, method = "Jaccard")
   particular influences the labeling and print methods for
   customizable sets.
 
-  The match function needs to be vectorized in a similar way then
+  The match function needs to be vectorized in a similar way than
   \code{\link{match}}. \code{make_matchfun} can be used to create such a
-  function from a dQuote{simple} predicate testing for equality
+  function from a \dQuote{simple} predicate testing for equality
   (such as, e.g., \code{\link{identical}}). Make sure, however, to
   create the same function only once.
 
   Note that operations on customizable sets require the same match
   function for all sets involved. The order function can differ, but
-  will then be striped from the result.
+  will then be stripped from the result.
 
   \code{set_options} can be used to conveniently switch the default match and/or
   order function if a number of \code{cset} objects need to be created.
 }
 \seealso{
-  \code{\link{set}} for \dQuote{ordinary} sets, 
-  \code{\link{gset}} for \dQuote{generalized} sets, 
+  \code{\link{set}} for (\dQuote{ordinary}) sets, 
+  \code{\link{gset}} for generalized sets, 
   \code{\link{cset_outer}}, and
   \code{\link{tuple}} for tuples (\dQuote{vectors}).
 }
@@ -156,8 +156,8 @@ set_union(x, y)
 set_intersection(x, y)
 set_complement(x, y)
 
-### Now use the more sloppy match()-function. 
-### Note that 1 == "1" == 1L ...
+## Now use the more sloppy match()-function. 
+## Note that 1 == "1" == 1L ...
 X <- cset(x, matchfun = match)
 print(X)
 Y <- cset(y, matchfun = match)

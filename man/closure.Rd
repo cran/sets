@@ -38,7 +38,7 @@ binary_reduction(x, operation = c("union", "intersection"))
   interface efficient C code for computing
   closures and reductions of binary patterns.
   They are used by the
-  high-level methods if \code{x} contains only ordinary sets.
+  high-level methods if \code{x} contains only objects of class \code{sets}.
 }
 \value{
   An object of same type than \code{x}.

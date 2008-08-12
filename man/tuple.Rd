@@ -42,8 +42,9 @@ tuple_is_ntuple(x, n)
 \arguments{
   \item{x}{An \R object.}
   \item{n}{A non-negative integer.}
-  \item{\dots}{Possibly named \R objects (for \code{pair} and
-    \code{triple} exactly two and three, respectively.)}
+  \item{\dots}{Possibly named \R objects (for \code{singleton},
+    \code{pair}, and
+    \code{triple} exactly one, two, and three, respectively.)}
 }
 \details{
   These functions represent basic infrastructure for handling tuples of

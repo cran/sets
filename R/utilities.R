@@ -69,14 +69,13 @@ function(x, decreasing = FALSE, ...) {
         function(x) if(is.factor(x)) as.character(x) else x
     ch <- as.character(lapply(.as.list(x), .as.character))
 
-    if (capabilities("iconv")) {
-        loc <- Sys.getlocale("LC_COLLATE")
-        warn <- options()$warn
-        on.exit({Sys.setlocale("LC_COLLATE", loc); options(warn = warn)})
-        options(warn = -1)
+    loc <- ""
+    suppressWarnings(if (capabilities("iconv")) {
+        loc <<- Sys.getlocale("LC_COLLATE")
+        on.exit(Sys.setlocale("LC_COLLATE", loc))
         Sys.setlocale("LC_COLLATE", "C")
         ch <- iconv(ch, to = "UTF-8")
-    }
+    })
 
     order(sapply(x, length),
           sapply(x, typeof),

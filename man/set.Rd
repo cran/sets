@@ -13,6 +13,7 @@
 \alias{set_symdiff}
 \alias{set_complement}
 \alias{set_cardinality}
+\alias{length.set}
 \alias{set_similarity}
 \alias{set_power}
 \alias{set_cartesian}
@@ -36,6 +37,7 @@ set_intersection(\dots)
 set_symdiff(\dots)
 set_complement(x, y)
 set_cardinality(x)
+\method{length}{set}(x)
 set_power(x)
 set_cartesian(\dots)
 set_combn(x, m)
@@ -80,12 +82,12 @@ set_similarity(x, y, method = "Jaccard")
   Note that converting objects to sets may change the internal order
   of the elements, so that iterating over the original data
   might give different results than iterating over the corresponding
-  set. The permutation can be obtained by using the generic function
+  set. The permutation can be obtained using the generic function
   \code{make_set_with_order}, returning both the set and the ordering.
-  \code{as.set} simply calls the generic function
+  \code{as.set} simply calls
   \code{make_set_with_order} internally and strips the order
   information, so user-defined
-  converter methods have to be provided for the latter and not for
+   methods for coercion have to be provided for the latter and not for
   \code{as.set}.
 
   Note that \code{set_union}, \code{set_intersection}, and
@@ -102,7 +104,9 @@ set_similarity(x, y, method = "Jaccard")
 }
 \value{
   For the predicate functions, a logical. For \code{make_set_with_order},
-  a list with two components \code{"set"} and \code{"order"}. For all
+  a list with two components \code{"set"} and \code{"order"}. For
+  \code{set_similarity}, a numeric value out of the unit interval. For
+  \code{set_cardinality} and the length method, an integer value. For all
   others, a set.
 }
 \seealso{
