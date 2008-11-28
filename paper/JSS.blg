@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.6)
+The top-level auxiliary file: JSS.aux
+The style file: jss.bst
+Database file #1: sets.bib
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Warning--missing publisher in sets:cantor:1895
+Warning--missing publisher in sets:fraenkel:1922
+Warning--missing publisher in sets:zermelo:1908
+You've used 9 entries,
+            3179 wiz_defined-function locations,
+            695 strings with 6290 characters,
+and the built_in function-call counts, 7852 in all, are:
+= -- 649
+> -- 180
+< -- 15
++ -- 73
+- -- 60
+* -- 576
+:= -- 1044
+add.period$ -- 39
+call.type$ -- 9
+change.case$ -- 64
+chr.to.int$ -- 9
+cite$ -- 12
+duplicate$ -- 719
+empty$ -- 744
+format.name$ -- 73
+if$ -- 1646
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 112
+newline$ -- 56
+num.names$ -- 36
+pop$ -- 252
+preamble$ -- 1
+purify$ -- 56
+quote$ -- 0
+skip$ -- 221
+stack$ -- 0
+substring$ -- 658
+swap$ -- 265
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 75
+warning$ -- 3
+while$ -- 64
+width$ -- 0
+write$ -- 131
+(There were 3 warnings)

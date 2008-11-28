@@ -1,3 +1,42 @@
+### Membership transformations
+
+gset_transform_memberships <-
+function(x, FUN, ...)
+{
+    F <- function(x) pmax(0, pmin(1, FUN(x, ...)))
+    m <- if (cset_is_set_or_multiset(x))
+        lapply(.get_memberships(x), function(i) gset(F(1), i))
+    else if (cset_is_fuzzy_set(x))
+        F(.get_memberships(x))
+    else
+        lapply(.get_memberships(x), F)
+    .set_memberships(x, m)
+}
+
+cset_transform_memberships <-
+function(x, FUN, ...)
+    gset_transform_memberships(x, FUN, ...)
+
+cset_concentrate <-
+gset_concentrate <-
+function(x)
+    gset_transform_memberships(x, function(i) i * i)
+
+cset_dilate <-
+gset_dilate <-
+function(x)
+    gset_transform_memberships(x, sqrt)
+
+cset_normalize <-
+gset_normalize <-
+function(x, height = 1)
+{
+    if (height < 0 || height > 1)
+        stop("Height must be in the unit interval.")
+    gset_transform_memberships(x, function(i) height * i /
+                               max(.get_memberships(x)))
+}
+
 ## internal functions to handle memberships
 
 .expand_membership <-

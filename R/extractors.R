@@ -16,6 +16,14 @@ function(x)
     as.set(.get_support(x))
 }
 
+gset_core <-
+function(x)
+    as.set(.get_support(x)[sapply(gset_memberships(x), max) == 1L])
+
+gset_height <-
+function(x)
+    max(unlist(gset_memberships(x)))
+
 gset_charfun <-
 function(x)
 {
@@ -33,6 +41,20 @@ function(x)
         ret
     }
     structure(ret, class = "gset_charfun")
+}
+
+gset_universe <-
+function(x)
+{
+    if (!is.gset(x))
+        stop("Argument 'x' must be a generalized set.")
+    u <- .get_universe(x)
+    if (is.null(u))
+        u <- sets_options("universe")
+    if (!is.null(u))
+        as.set(eval(u))
+    else
+        NULL
 }
 
 print.gset_charfun <-
@@ -60,6 +82,14 @@ function(x)
     as.set(.get_support(x))
 }
 
+cset_core <-
+function(x)
+    as.set(.get_support(x)[sapply(cset_memberships(x), max) == 1L])
+
+cset_height <-
+function(x)
+    max(unlist(cset_memberships(x)))
+
 cset_charfun <-
 function(x)
 {
@@ -79,6 +109,10 @@ function(x)
     }
     structure(ret, class = "cset_charfun")
 }
+
+cset_universe <-
+function(x)
+    gset_universe(x)
 
 print.cset_charfun <-
 function(x, ...)
@@ -123,7 +157,14 @@ function(x, value)
 function(x)
 {
     m <- attr(x, "memberships")
-    if (is.null(m)) rep(1L, length(.as.list(x))) else m
+    if (is.null(m)) rep(1L, length.set(x)) else m
+}
+
+.set_memberships <-
+function(x, value)
+{
+    attr(x, "memberships") <- value
+    x
 }
 
 .get_fuzzy_multi_memberships <-
@@ -134,6 +175,10 @@ function(x)
     else
         .get_memberships(x)
 }
+
+.get_universe <-
+function(x)
+    attr(x, "universe")
 
 .get_support <-
 function(x)

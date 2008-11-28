@@ -1,0 +1,65 @@
+\begin{thebibliography}{9}
+\newcommand{\enquote}[1]{``#1''}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{Cantor(1895)}]{sets:cantor:1895}
+Cantor G (1895).
+\newblock \enquote{Beitr{\"a}ge zur Begr{\"u}ndung der transfiniten
+  Mengenlehre.}
+\newblock In \enquote{Mathematische Annalen,} volume~46, pp. 481--512.
+
+\bibitem[{Fraenkel(1922)}]{sets:fraenkel:1922}
+Fraenkel AA (1922).
+\newblock \enquote{{\"U}ber die Grundlagen der Cantor-Zermeloschen
+  Mengenlehre.}
+\newblock In \enquote{Mathematische Annalen,} volume~86, pp. 230--237.
+
+\bibitem[{Knuth(1973)}]{sets:knuth:1973}
+Knuth DE (1973).
+\newblock \emph{The Art of Computer Programming}, volume~3.
+\newblock Addison-Wesley, Reading.
+
+\bibitem[{Matth{\'e} \emph{et~al.}(2006)Matth{\'e}, Caluwe, de~Tr{\'e}, Hallez,
+  Verstraete, Leman, Cornelis, Moelants, and
+  Gansemans}]{sets:matthe+caluwe+tre:2006}
+Matth{\'e} T, Caluwe RD, de~Tr{\'e} G, Hallez A, Verstraete J, Leman M,
+  Cornelis O, Moelants D, Gansemans J (2006).
+\newblock \enquote{Similarity Between Multi-valued Thesaurus Attributes: Theory
+  and Application in Multimedia Systems.}
+\newblock In \enquote{Flexible Query Answering systems,} Lecture Notes in
+  Computer Science, pp. 331--342. Springer.
+
+\bibitem[{Singh \emph{et~al.}(2007)Singh, Ibrahim, Yohanna, and
+  Singh}]{sets:singh+ibrahim+yohanna:2007}
+Singh D, Ibrahim A, Yohanna T, Singh J (2007).
+\newblock \enquote{An overview of the applications of multisets.}
+\newblock \emph{Novi Sad Journal of Mathematics}, \textbf{37}(3), 73--92.
+
+\bibitem[{Wirth(1983)}]{sets:wirth:1983}
+Wirth N (1983).
+\newblock \emph{Algorithmen und Datenstrukturen}.
+\newblock Teubner, Stuttgart.
+
+\bibitem[{Yager(1986)}]{sets:yager:1986}
+Yager RR (1986).
+\newblock \enquote{On the theory of bags.}
+\newblock \emph{International Journal of General Systems}, \textbf{13}, 23--37.
+
+\bibitem[{Zadeh(1965)}]{sets:zadeh:1965}
+Zadeh LA (1965).
+\newblock \enquote{Fuzzy sets.}
+\newblock \emph{Information and Control}, \textbf{8}(3), 338--353.
+
+\bibitem[{Zermelo(1908)}]{sets:zermelo:1908}
+Zermelo E (1908).
+\newblock \enquote{Untersuchungen {\"u}ber die Grundlagen der Mengenlehre.}
+\newblock In \enquote{Mathematische Annalen,} volume~65, pp. 261--281.
+
+\end{thebibliography}

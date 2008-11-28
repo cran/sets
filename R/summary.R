@@ -7,7 +7,7 @@ function(..., na.rm = FALSE)
         return(Reduce(function(i, j) sum(i, as.numeric(j)), l, 0))
     else if (.Generic == "prod")
         return(Reduce(function(i, j) prod(i, as.numeric(j)), l, 1))
-    do.call(.Generic, c(do.call(set_union, l), na.rm = na.rm))
+    do.call(.Generic, c(na.rm = na.rm, do.call(set_union, l)))
 }
 
 mean.set <-

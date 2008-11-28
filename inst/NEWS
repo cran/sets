@@ -1,3 +1,15 @@
+Changes to 0.4:
+
+  o fuzzy function generators added
+
+  o extended plotting for fuzzy sets added
+
+  o several functions for memberships transformation added
+
+  o performance of matching operator improved
+
+  o optional universes for gsets added
+
 Changes to 0.3:
 
   o support for customizable sets (cset) added

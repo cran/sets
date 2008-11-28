@@ -83,7 +83,7 @@ function(x, limit = NULL, ...) {
 }
 
 LABEL.character <-
-function(x, limit = NULL, quote = set_options("quote"), ...) {
+function(x, limit = NULL, quote = sets_options("quote"), ...) {
     if (is.null(limit))
         limit <- 2L
     if (quote)
@@ -111,7 +111,7 @@ function(x, limit = NULL, ...) {
 .format_or_class <-
 function(x, limit, ...)
 {
-    l <- length(.as.list(x))
+    l <- length.set(x)
     if (l < limit) {
         if (is.integer(x))
             format(paste(x, "L", sep = ""), ...)

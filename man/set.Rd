@@ -75,8 +75,11 @@ set_similarity(x, y, method = "Jaccard")
   methods try to convert the object to a numeric vector before calling
   the default methods.
 
-  Because set elements are unordered, it is not sensible to use indexing
-  (except using labels). However, it is possible to iterate over
+  Because set elements are unordered, it is not allowed to use
+  \emph{positional} indexing. However, it is possible to
+  do indexing using element labels or
+  simply the elements themselves (useful, e.g., for subassignment).
+  In addition, it is possible to iterate over
   \emph{all} elements using \code{for} and \code{lapply}/\code{sapply}.
 
   Note that converting objects to sets may change the internal order
@@ -105,7 +108,7 @@ set_similarity(x, y, method = "Jaccard")
 \value{
   For the predicate functions, a logical. For \code{make_set_with_order},
   a list with two components \code{"set"} and \code{"order"}. For
-  \code{set_similarity}, a numeric value out of the unit interval. For
+  \code{set_similarity}, a numeric value from the unit interval. For
   \code{set_cardinality} and the length method, an integer value. For all
   others, a set.
 }
@@ -116,15 +119,19 @@ set_similarity(x, y, method = "Jaccard")
 }
 \examples{
 ## constructor
-s <- set(1,2,3)
+s <- set(1L, 2L, 3L)
 s
 
 ## named elements
 snamed <- set(one = 1, 2, three = 3)
 snamed
 
-## named elements can directly be accessed
+## indexing by label
 snamed[["one"]]
+
+## subassignment
+snamed[c(2,3)] <- c("a","b")
+snamed
 
 ## a more complex set
 set(c, "test", list(1, 2, 3))

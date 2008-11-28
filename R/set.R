@@ -4,8 +4,13 @@
 
 ### Basic stuff (constructors, print/summary methods)
 set <-
-function(...)
-    .make_set_from_list(.list_sort(.list_unique(list(...))))
+function(...) {
+    ret <- .make_set_from_list(.list_sort(.list_unique(list(...))))
+    n <- names(ret)
+    if (!is.null(n) && any(duplicated(n[n != ""])))
+        stop("Labels must be unique.")
+    ret
+}
 
 print.set <-
 function(x, ...)
@@ -76,7 +81,8 @@ function(e1, e2)
                if(is.set(e2))
                    set_power(e2)
                else
-                   do.call(set_cartesian, rep(list(e1), e2))}
+                   do.call(set_cartesian, rep(list(e1), e2))
+           }
            )
 
 }
@@ -90,42 +96,38 @@ function(e1, e2)
 ## as.list() method.
 
 `[.set` <-
-function(x, i)
+function(x, i = x)
 {
-    if(!is.character(i))
-        stop("Subscripting of sets is only defined using labels.")
-    .make_set_from_list(NextMethod("["))
+    .make_set_from_list(.list_sort(.as.list(x)[.lookup_elements(x, i)]))
 }
 
 `[[.set` <-
 function(x, i)
 {
-    if(!is.character(i))
-        stop("Subscripting of sets is only defined using labels.")
-    NextMethod("[[")
+    if (!is.character(i) || length(i) > 1L || nchar(i) < 1L) i <- list(i)
+    .as.list(x)[[.lookup_elements(x, i)]]
 }
 
 `[<-.set` <-
-function(x, i, value)
+function(x, i = x, value)
 {
-    if(!is.character(i))
-        stop("Subassignment of sets is only defined using labels.")
-    .make_set_from_list(NextMethod("[<-"))
+    .make_set_from_list(.list_sort(.list_unique(`[<-`(.as.list(x),
+                        .lookup_elements(x, i), value))))
 }
 
 `[[<-.set` <-
 function(x, i, value)
 {
-    if(!is.character(i))
-        stop("Subassignment of sets is only defined using labels.")
-    NextMethod("[[<-")
+    if (!is.character(i) || length(i) > 1L) i <- list(i)
+    .make_set_from_list(.list_sort(.list_unique(`[[<-`(.as.list(x),
+                        .lookup_elements(x, i), value))))
 }
 
 ### internal stuff
 
 .make_set_from_list <-
 function(x)
-    structure(x, class = c("set", "gset", "cset"))
+   structure(x, class = c("set", "gset", "cset"))
 
 .format_set_or_tuple <-
 function(x, left, right, ...)
@@ -134,7 +136,7 @@ function(x, left, right, ...)
     names(x) <- NULL
     SEP <- rep.int("", length(x))
     if (!is.null(nms))
-      SEP[nms != ""] <- " = "
+        SEP[nms != ""] <- " = "
     paste(left,
           if (length(x) > 0)
               paste(nms, SEP, LABELS(as.list(x), ...),
@@ -144,11 +146,11 @@ function(x, left, right, ...)
 }
 
 .set_subset<-
- function(x, i)
+function(x, i)
     as.set(as.list(x)[i])
 
 `.set_replace`<-
- function(x, i, value)
+function(x, i, value)
 {
     ret <- as.list(x)
     ret[i] <- value
@@ -156,14 +158,27 @@ function(x, left, right, ...)
 }
 
 .set_subset2<-
- function(x, i)
+function(x, i)
     as.list(x)[[i]]
 
 `.set_replace2`<-
- function(x, i, value)
+function(x, i, value)
 {
     ret <- as.list(x)
     ret[[i]] <- value
     as.set(ret)
+}
+
+.lookup_elements <-
+function(x, values, matchfun = .exact_match)
+{
+    n <- names(x)
+    ind <- if (!is.null(n) && is.character(values))
+        matchfun(values, n)
+    else {
+        values <- .as.list(values)
+        matchfun(values, x)
+    }
+    ind[!is.na(ind)]
 }
 

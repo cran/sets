@@ -16,17 +16,23 @@
 ## * gset generator
 
 gset <-
-function(support = NULL, memberships = NULL, charfun = NULL, elements = NULL)
+function(support = NULL, memberships = NULL, charfun = NULL,
+         elements = NULL, universe = NULL)
 {
+    Universe <- universe
+    if(is.null(universe))
+        universe <- sets_options("universe")
+
     ### some checks
     if (!is.null(elements) &&
         !(is.null(support) && is.null(memberships) && is.null(charfun)))
         stop("'elements' needs to be specified alone.")
-    if (is.null(support) &&
-        (!is.null(memberships) || !is.null(charfun)))
-        stop("Need 'support' with 'membership' or 'charfun'.")
+    if (is.null(support) && !is.null(memberships))
+        stop("'membership' requires 'support'.")
+    if (is.null(universe) && !is.null(charfun))
+        stop("'charfun' requires 'universe'.")
     if (!is.null(memberships) && !is.null(charfun))
-        stop("Need either 'memberships' or 'charfun' with 'support'.")
+        stop("Need either 'memberships' and 'support', or 'charfun' and 'universe'.")
 
     ### element specification:
     ## split support and memberships, and proceed
@@ -35,26 +41,37 @@ function(support = NULL, memberships = NULL, charfun = NULL, elements = NULL)
         memberships <- lapply(elements, .get_memberships)
     }
 
-    ## handle empty set
-    if (is.null(support))
-        return(set())
-
-    ### support & charfun specification:
+    ### universe & charfun specification:
     ## create memberships from charfun, and proceed
+    if (!is.null(universe))
+        universe <- as.set(eval(universe))
     if (!is.null(charfun)) {
-        support <- as.set(support)
-        memberships <- sapply(support, charfun, simplify = FALSE)
+        if (is.charfun_generator(charfun))
+            charfun <- charfun()
+        memberships <- if (.domain_is_numeric(universe))
+            charfun(unlist(universe))
+        else
+            lapply(universe, charfun)
+        support <- universe
         .stop_if_memberships_are_invalid(memberships,
                                          "Membership function invalid.\n  ")
     }
+
+    ## handle empty set
+    if (is.null(support))
+        return(set())
 
     ### support & membership specification:
     ## just check memberships
     if (!is.null(memberships))
         .stop_if_memberships_are_invalid(memberships)
 
+    ## check support against universe
+    if (!is.null(universe) && !set_is_subset(as.set(support), as.set(universe)))
+        stop("Support must be a subset of the universe.")
+
     ### canonicalize memberships & create gset
-    .make_gset_from_support_and_memberships(support, memberships)
+    .make_gset_from_support_and_memberships(support, memberships, Universe)
 }
 
 print.gset <-
@@ -102,35 +119,31 @@ function(x, ...) {
 ## as.list() method.
 
 `[.gset` <-
-function(x, i)
+function(x, i = x)
 {
-    if(!is.character(i))
-        stop("Subscripting of generalied sets is only defined by labels.")
-    .make_gset_from_list(NextMethod("["))
+    ind <- .lookup_elements(x, i)
+    gset(.as.list(x)[ind], gset_memberships(x)[ind])
 }
 
 `[[.gset` <-
 function(x, i)
 {
-    if(!is.character(i))
-        stop("Subscripting of generalized sets is only defined by labels.")
-    NextMethod("[[")
+    as.set(x)[[i]]
 }
 
 `[<-.gset` <-
-function(x, i, value)
+function(x, i = x, value)
 {
-    if(!is.character(i))
-        stop("Subassignment of generalied sets is only defined by labels.")
-    .make_gset_from_list(NextMethod("[<-"))
+    gset(`[<-`(.as.list(x), .lookup_elements(x, i), value),
+         memberships = gset_memberships(x))
 }
 
 `[[<-.gset` <-
 function(x, i, value)
 {
-    if(!is.character(i))
-        stop("Subassignment of generalized sets is only defined by labels.")
-    NextMethod("[[<-")
+    if (!is.character(i) || length(i) > 1L) i <- list(i)
+    gset(`[[<-`(.as.list(x), .lookup_elements(x, i), value),
+         memberships = gset_memberships(x))
 }
 
 Ops.gset <-
@@ -185,7 +198,7 @@ function(list)
     structure(list, class = "gset")
 
 .make_gset_from_support_and_memberships <-
-function(support, memberships)
+function(support, memberships, universe = NULL)
 {
     ## simplify memberships:
     if (!is.null(memberships)) {
@@ -194,7 +207,7 @@ function(support, memberships)
         memberships <- .canonicalize_memberships(memberships)
 
         ## check length
-        if (length(.as.list(memberships)) != length(.as.list(support)))
+        if (length.set(memberships) != length.set(support))
             stop("Length of support must match length of memberships.")
 
         ## for fuzzy multisets, remove elements in membership with
@@ -247,14 +260,22 @@ function(support, memberships)
 
     ## return gset.
     .make_gset_by_support_and_memberships(support = S$set,
-                                          memberships = S$mapping)
+                                          memberships = S$mapping,
+                                          universe = universe)
 }
 
 .make_gset_by_support_and_memberships <-
-function(support, memberships)
-    structure(support,
-              memberships = memberships,
-              class = c("gset", "cset"))
+function(support, memberships, universe = NULL)
+{
+    if (is.null(memberships) ||
+        is.atomic(memberships) && all(memberships == 1))
+        .make_set_from_list(support)
+    else
+        structure(support,
+                  memberships = memberships,
+                  universe = universe,
+                  class = c("gset", "cset"))
+}
 
 .stop_if_memberships_are_invalid <-
 function(memberships, errmsg = NULL)
@@ -279,15 +300,17 @@ function(memberships, errmsg = NULL)
 }
 
 .make_gset_from_list_of_gsets_and_support_and_connector <-
-function(l, support, connector, matchfun = .exact_match)
+    function(l, support, connector, matchfun = .exact_match,
+             enforce_general_case = FALSE)
 {
     ## extract memberships according to support
     m <- lapply(l, .memberships_for_support, support, matchfun)
 
     ## apply connector to memberships
     memberships <-
-        if (all(sapply(l, gset_is_crisp)) ||
-            all(sapply(l, gset_is_set_or_fuzzy_set)))
+        if (!enforce_general_case &&
+            (all(sapply(l, gset_is_crisp)) ||
+             all(sapply(l, gset_is_set_or_fuzzy_set))))
         {
             ## - for multisets and fuzzy sets, just use normalized memberships
             Reduce(connector, m)
@@ -306,6 +329,7 @@ function(l, support, connector, matchfun = .exact_match)
                        lapply(m, function(j) .expand_membership(j[[i]], len = mlen)))
             })
         }
+
     ## create resulting gset
     .make_gset_from_support_and_memberships(support, memberships)
 }

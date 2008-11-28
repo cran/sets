@@ -1,5 +1,5 @@
 set_outer <-
-function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
+function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
 {
     ## convenience
     nx <- deparse(substitute(X))
@@ -15,8 +15,8 @@ function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
     FUN <- match.fun(FUN)
 
     ## convert to lists
-    xlabs <- LABELS(X)
-    ylabs <- LABELS(Y)
+    xlabs <- LABELS(X, quote = quote)
+    ylabs <- LABELS(Y, quote = quote)
     X <- as.list(X)
     Y <- as.list(Y)
 
@@ -37,5 +37,5 @@ function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
 
 cset_outer <-
 gset_outer <-
-function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
-    set_outer(X = X, Y = Y, FUN = FUN, ..., SIMPLIFY = SIMPLIFY)
+function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
+    set_outer(X = X, Y = Y, FUN = FUN, ..., SIMPLIFY = SIMPLIFY, quote = quote)

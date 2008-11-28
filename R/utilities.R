@@ -35,10 +35,26 @@ function(x)
 function(i)
     if (!is.cset(i)) list(i) else i
 
-### Local variables: ***
-### mode: outline-minor ***
-### outline-regexp: "### [*]+" ***
-### End: ***
+### as.character replacing empty strings by "_", as needed by environments
+.as.character <-
+function(x)
+{
+    x <- as.character(x)
+    x[nchar(x) == 0L] <- "_"
+    substr(x, start = 1, stop = 256)
+}
+
+## hash creator and accessors
+.create_hash <-
+function(s)
+{
+    if(length.set(s) < 1L) return(NULL)
+    s <- .as.character(s)
+    h <- new.env()
+    for (i in seq.int(from = length(s), to = 1))
+        h[[ s[[i]] ]] <- i
+    h
+}
 
 ### exact_match
 
@@ -49,9 +65,18 @@ function(equalityfun)
     function(x, table)
     {
         table <- .as.list(table)
+        hash <- if (sets_options("hash")) .create_hash(table) else NULL
+        l <- length(table)
         FUN <- function(i) {
-            ind <- unlist(lapply(table, equalityfun, i))
-            if (any(ind)) seq_along(ind)[ind][1] else NA
+            from <- if (is.null(hash))
+                1
+            else
+                hash[[ .as.character(list(i)) ]]
+            if (is.null(from) || l < 1L) return(NA)
+            for (ind in seq.int(from = from, to = l))
+                if (equalityfun(table[[ind]], i)) break
+            if (ind < l || equalityfun(table[[ind]], i))
+                ind else NA
         }
         ret <- lapply(.as.list(x), FUN)
         if (length(ret) < 1L) integer() else unlist(ret)
@@ -65,10 +90,19 @@ function(equalityfun)
 
 .list_order <-
 function(x, decreasing = FALSE, ...) {
-    .as.character <-
-        function(x) if(is.factor(x)) as.character(x) else x
-    ch <- as.character(lapply(.as.list(x), .as.character))
+    len <- length(x)
+    if (len < 1L)
+        return(integer(0L))
 
+    l <- unlist(lapply(x, length))
+    cl <- paste(lapply(x, class))
+
+    num <- (cl == "integer" | cl == "numeric") & (l == 1L)
+    numind <- numeric(len)
+    numind[num] <- unlist(x[num])
+
+    ch <- character(len)
+    ch[!num] <- as.character(x[!num])
     loc <- ""
     suppressWarnings(if (capabilities("iconv")) {
         loc <<- Sys.getlocale("LC_COLLATE")
@@ -77,9 +111,10 @@ function(x, decreasing = FALSE, ...) {
         ch <- iconv(ch, to = "UTF-8")
     })
 
-    order(sapply(x, length),
-          sapply(x, typeof),
-          ch,
+    order(l, ## length
+          cl, ## class
+          numind, ## for numeric mode: numeric value
+          ch, ## default: character representation
           decreasing = decreasing, ...)
 }
 
@@ -91,3 +126,7 @@ function(x, decreasing = FALSE, ...)
 function(x)
     .as.list(x)[!duplicated(x)]
 
+.domain_is_numeric <-
+function(x)
+    all(unlist(lapply(x, is.numeric)) &
+        (unlist(lapply(x, length)) == 1L))

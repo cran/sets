@@ -1,4 +1,4 @@
-## Support for fuzzy relations needs the specification of negation,
+## Support for fuzzy sets needs the specification of negation,
 ## conjunction and disjunction via the functions N, T (t-norm) and S
 ## (t-conorm), respectively.
 ##
@@ -34,7 +34,7 @@
 ##   .N. <- function(...) fuzzy_logic_db$N(...)
 ## would be somewhat faster than
 ##   .N. <- function(...) fuzzy_logic()$N(...)
-## but we could not find conclusive evidence for performance gains 
+## but we could not find conclusive evidence for performance gains
 ## either way.
 
 fuzzy_logic <-
@@ -79,14 +79,14 @@ function()
 fuzzy_logic_family_product <-
 function()
     fuzzy_logic_family(name = "product",
-                       N = function(x) 1 - x,                        
+                       N = function(x) 1 - x,
                        T = function(x, y) x * y,
                        S = function(x, y) x + y - x * y,
                        I = function(x, y) pmin(y / x, 1))
 
 fuzzy_logic_family_Lukasiewicz <-
 function()
-    fuzzy_logic_family(name = "Lukasiewicz", 
+    fuzzy_logic_family(name = "Lukasiewicz",
                        N = function(x) 1 - x,
                        T = function(x, y) pmax(x + y - 1, 0),
                        S = function(x, y) pmin(x + y, 1),
@@ -148,7 +148,8 @@ function(alpha = NULL, beta = 0, gamma = 0)
                        (x + y + (beta - 1) * x * y) /
                         (1 + beta * x * y),
                        params =
-                       list(alpha = alpha, beta = beta, gamma = gamma))
+                       list(alpha = alpha, beta = beta, gamma = gamma)
+                       )
 }
 
 ## The following "families" are really families of t-norms, which we
@@ -168,10 +169,11 @@ function(p)
         else
             function(x, y) pmax(0, (x^p + y^p - 1) ^ (1/p))
         fuzzy_logic_family(name = "Schweizer-Sklar",
-                       N = function(x) 1 - x,
-                       T = T,
-                       S = function(x, y) 1 - T(1 - x, 1 - y)
-                       )
+                           N = function(x) 1 - x,
+                           T = T,
+                           S = function(x, y) 1 - T(1 - x, 1 - y),
+                           params = list(p = p)
+                           )
     }
 }
 
@@ -189,7 +191,8 @@ function(p)
                            T = function(x, y)
                            pmax(0, 1 - ((1 - x)^p + (1 - y)^p)^(1/p)),
                            S = function(x, y)
-                           pmin(1, (x^p + y^p) ^ (1/p))
+                           pmin(1, (x^p + y^p) ^ (1/p)),
+                           params = list(p = p)
                            )
     }
 }
@@ -210,11 +213,12 @@ function(p)
         fuzzy_logic_family(name = "Dombi",
                            N = function(x) 1 - x,
                            T = T,
-                           S = function(x, y) 1 - T(1 - x, 1 - y)
+                           S = function(x, y) 1 - T(1 - x, 1 - y),
+                           params = list(p = p)
                            )
     }
 }
-    
+
 ## Aczel-Alsina t-norm.
 fuzzy_logic_family_Aczel_Alsina <-
 function(p)
@@ -228,7 +232,8 @@ function(p)
         fuzzy_logic_family(name = "Aczel-Alsina",
                            N = function(x) 1 - x,
                            T = T,
-                           S = function(x, y) 1 - T(1 - x, 1 - y)
+                           S = function(x, y) 1 - T(1 - x, 1 - y),
+                           params = list(p = p)
                            )
     }
 }
@@ -247,22 +252,67 @@ function(p)
                            T = function(x, y)
                            pmax(0, (x + y - 1 + p * x * y) / (1 + p)),
                            S = function(x, y)
-                           pmin(1, x + y - p * x * y / (1 + p))
+                           pmin(1, x + y - p * x * y / (1 + p)),
+                           params = list(p = p)
                            )
 }
 
+## Dubois-Prade t-norm and t-conorm.
+
+fuzzy_logic_family_Dubois_Prade <-
+function(p)
+{
+    if((p < 0) || (p > 1))
+        stop("Invalid parameter.")
+    if(p == 0) fuzzy_logic_family_Zadeh()
+    else if(p == 1) fuzzy_logic_family_product()
+    else {
+        T <- function(x, y) x * y / pmax(x, y, p)
+        fuzzy_logic_family(name = "Dubois-Prade",
+                           N = function(x) 1 - x,
+                           T = T,
+                           S = function(x, y) 1 - T(1 - x, 1 - y),
+                           params = list(p = p)
+                           )
+    }
+}
+
+## Yu t-norm and t-conorm.
+
+fuzzy_logic_family_Yu <-
+function(p)
+{
+    if(p < -1)
+        stop("Invalid parameter.")
+    if(p == -1) fuzzy_logic_family_product()
+    else if(p == Inf) fuzzy_logic_family_drastic()
+    else {
+        fuzzy_logic_family(name = "Yu",
+                           N = function(x) 1 - x,
+                           T = function(x, y)
+                           pmax(0, (1 + p) * (x + y - 1) - p * x * y),
+                           S = function(x, y)
+                           pmin(1, x + y + p * x * y),
+                           params = list(p = p)
+                           )
+    }
+}
+    
+
 
 fuzzy_logic_families <-
-    list(Zadeh = fuzzy_logic_family_Zadeh,
-         drastic = fuzzy_logic_family_drastic,
-         product = fuzzy_logic_family_product,
-         Lukasiewicz = fuzzy_logic_family_Lukasiewicz,
-         Fodor = fuzzy_logic_family_Fodor,
-         Frank = fuzzy_logic_family_Frank,
-         Hamacher = fuzzy_logic_family_Hamacher,
+    list("Zadeh" = fuzzy_logic_family_Zadeh,
+         "drastic" = fuzzy_logic_family_drastic,
+         "product" = fuzzy_logic_family_product,
+         "Lukasiewicz" = fuzzy_logic_family_Lukasiewicz,
+         "Fodor" = fuzzy_logic_family_Fodor,
+         "Frank" = fuzzy_logic_family_Frank,
+         "Hamacher" = fuzzy_logic_family_Hamacher,
          "Schweizer-Sklar" = fuzzy_logic_family_Schweizer_Sklar,
-         Yager = fuzzy_logic_family_Yager,
-         Dombi = fuzzy_logic_family_Dombi,
+         "Yager" = fuzzy_logic_family_Yager,
+         "Dombi" = fuzzy_logic_family_Dombi,
          "Aczel-Alsina" = fuzzy_logic_family_Aczel_Alsina,
-         "Sugeno-Weber" = fuzzy_logic_family_Sugeno_Weber
+         "Sugeno-Weber" = fuzzy_logic_family_Sugeno_Weber,
+         "Dubois-Prade" = fuzzy_logic_family_Dubois_Prade,
+         "Yu" = fuzzy_logic_family_Yu
          )

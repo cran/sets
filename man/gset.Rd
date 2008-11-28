@@ -9,6 +9,8 @@
 \alias{gset_contains_element}
 \alias{gset_union}
 \alias{gset_sum}
+\alias{gset_product}
+\alias{gset_mean}
 \alias{gset_difference}
 \alias{gset_intersection}
 \alias{gset_symdiff}
@@ -16,6 +18,12 @@
 \alias{gset_power}
 \alias{gset_cartesian}
 \alias{gset_combn}
+\alias{gset_core}
+\alias{gset_height}
+\alias{gset_transform_memberships}
+\alias{gset_concentrate}
+\alias{gset_dilate}
+\alias{gset_normalize}
 \alias{\%D\%}
 \alias{\%e\%}
 \alias{e}
@@ -24,6 +32,7 @@
 \alias{gset_charfun}
 \alias{gset_memberships}
 \alias{gset_support}
+\alias{gset_universe}
 \alias{gset_similarity}
 \alias{gset_is_crisp}
 \alias{gset_is_fuzzy_set}
@@ -40,9 +49,19 @@
 \title{Generalized sets}
 \description{Creation and manipulation of generalized sets.}
 \usage{
-gset(support, memberships, charfun, elements)
+gset(support, memberships, charfun, elements, universe)
 as.gset(x)
 is.gset(x)
+gset_support(x)
+gset_core(x)
+gset_height(x)
+gset_universe(x)
+
+gset_memberships(x)
+gset_transform_memberships(x, FUN, \dots)
+gset_concentrate(x)
+gset_dilate(x)
+gset_normalize(x, height = 1)
 
 gset_is_empty(x)
 gset_is_subset(x, y)
@@ -58,10 +77,12 @@ gset_is_set_or_fuzzy_set(x)
 gset_is_fuzzy_multiset(x)
 gset_is_crisp(x)
 
-gset_cardinality(x)
+gset_cardinality(x, type = c("absolute", "relative"))
 gset_union(\dots)
 gset_sum(\dots)
 gset_difference(\dots)
+gset_product(\dots)
+gset_mean(x, y, type = c("arithmetic", "geometric", "harmonic"))
 gset_intersection(\dots)
 gset_symdiff(\dots)
 gset_complement(x, y)
@@ -85,7 +106,9 @@ is_element(e)
   \item{y}{A (g)set object.}
   \item{e}{An object of class \code{element}.}
   \item{m}{Number of elements to choose.}
-  \item{support}{A set of elements giving the support of the gset.}
+  \item{support}{A set of elements giving the support of the gset
+    (elements with non-zero memberships). Must be a subset of the
+    universe, if specified.}
   \item{memberships}{For an (\dQuote{ordinary}) set: 1L (or simply missing).
     For a fuzzy set: a value between 0 and 1.  For a multiset: a
     positive integer.  For a fuzzy multiset: a list of
@@ -96,14 +119,25 @@ is_element(e)
     object/memberships-pairs.}
   \item{charfun}{A function taking an object and returning the
     membership.}
+  \item{FUN}{A function, to be applied to a membership vector.}
+  \item{type}{For \code{gset_cardinality()}:
+    cardinality type (either \code{"absolute"} or
+    \code{"relative"}). For \code{gset_mean()}: mean type
+    (\code{"arithmetic"}, \code{"geometric"}, or \code{"harmonic"}).}
+  \item{height}{Double from the unit interval for scaling memberships.}
+  \item{universe}{An optional set of elements. If \code{NULL}, d
+    efaults to the value of \code{sets_options("universe")}.
+    If the latter is also \code{NULL}, the support
+    will be used in computations.}
   \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
-  \item{\dots}{For \code{gset_\var{foo}()}: (g)set objects objects. For
+  \item{\dots}{For \code{gset_\var{foo}()}: (g)set objects.  For
     the mean and sort methods: additional parameters internally passed to
     \code{\link{mean}} and \code{\link{order}}, respectively. For
-    \code{cut}: currently not used.}
+    \code{gset_transform_memberships}: further arguments passed to
+    \code{FUN}. For \code{cut}: currently not used.}
 }
 \details{
   These functions represent basic infrastructure for handling
@@ -129,15 +163,34 @@ is_element(e)
   \code{<} and \code{<=} for
   the (proper) subset predicate, \code{>} and \code{>=} for
   the (proper) superset predicate, and \code{==} and \code{!=} for
-  (in)equality. The \code{length} method for gsets gives the
-  cardinality. \code{set_combn} returns the gset of all
-  subsets of specfied length. The \code{Summary} methods do also work if
-  defined for the set elements.
-
+  (in)equality.
+  The \code{Summary} methods do also work if
+  defined for the set elements. 
   The \code{\link{mean}} and \code{\link[stats]{median}}
   methods try to convert the object to a numeric vector before calling
-  the default methods. The \code{\link{sort}} method internally rearranges the
-  elements to produce a sorted output. The \code{cut} method
+  the default methods. \code{set_combn} returns the gset of all
+  subsets of specfied length. 
+
+  \code{gset_support} and \code{gset_core}
+  return the set of elements with memberships greater than one and equal
+  to one, respectively. \code{gset_memberships} returns the membership
+  vector. \code{gset_height} returns only the largest membership degree.
+  \code{gset_cardinality} computes either the absolute or the
+  relative cardinality, i.e. the memberships sum, or the absolute
+  cardinality divided by the number of elements, respectively.
+  The \code{length} method for gsets gives the (absolute) cardinality.
+  \code{gset_transform_memberships} applies function \code{FOO} to 
+  the membership vector of the supplied gset and returns the transformed
+  gset. The transformed memberships are guaranteed to be in the unit
+  interval.
+  \code{gset_concentrate} and \code{gset_dilate} are convenience
+  functions, using the square and the square root,
+  respectively. \code{gset_normalize} divides the memberships by their
+  maximum and scales with \code{height}.
+  \code{gset_product} (\code{gset_mean}) of some gsets
+  compute the gset with the corresponding memberships multiplied (averaged).
+  
+  The \code{cut} method
   \dQuote{filters} all elements with membership not less then
   \code{level} --- the result, thus, is a crisp
   (multi)set. \code{gset_similarity} computes the simple Jaccard
@@ -145,13 +198,12 @@ is_element(e)
   i.e., the cardinality of the
   intersection divided by the cardinality of the union of \eqn{A} and \eqn{B}.
 
-  Because set elements are unordered, it is not allowed to use indexing
-  (except using labels). However, it is possible to iterate over
+  Because set elements are unordered, it is not allowed to use
+  \emph{positional} indexing. However, it is possible to
+  do indexing using element labels or
+  simply the elements themselves (useful, e.g., for subassignment).
+  In addition, it is possible to iterate over
   \emph{all} elements using \code{for} and \code{lapply}/\code{sapply}.
-
-  Note that \code{gset_union}, \code{gset_intersection},
-  \code{gset_sum} and
-  \code{gset_symdiff} accept any number of arguments.
 
   \code{gset_contains_element} is vectorized in \code{e}, that is, if \code{e}
   is an atomic vector or list, the is-element operation is performed
@@ -184,6 +236,8 @@ gset_difference(A, B)
 (B <- gset(c("a", "c", "e", "f"), memberships = c(0.7, 1, 0.4, 0.9)))
 cut(B, 0.5)
 A * B
+A <- gset(3L, memberships = 0.5, universe = 1:5)
+!A
 
 ## fuzzy multisets
 (A <- gset(c("a", "b", "d"),
