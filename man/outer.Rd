@@ -6,10 +6,10 @@
 \title{Outer Product of Sets (Tuples)}
 \description{Outer \dQuote{product} of (g)sets (tuples).}
 \usage{
-set_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
-gset_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
-cset_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
-tuple_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
+set_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
+gset_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
+cset_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
+tuple_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
 }
 \arguments{
   \item{X, Y}{Set (tuple) objects or vectors. If \code{Y} is omitted, \code{X}
@@ -18,7 +18,11 @@ tuple_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE)
   \item{FUN}{A function or function name (character string).}
   \item{SIMPLIFY}{Logical. If \code{TRUE} and all return values of
     \code{FUN} are atomic and of length 1, the result will be an atomic
-    matrix; otherwise, a recursive one (a list with \code{dim} attribute).}
+    matrix; otherwise, a recursive one (a list with \code{dim}
+    attribute).}
+  \item{quote}{logical indicating whether the character strings used for
+    the row and column names of the returned matrix shoulda
+    be quoted.}
   \item{\dots}{Additional arguments passed to the \code{FUN}.}
 }
 \details{

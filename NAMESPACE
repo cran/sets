@@ -5,26 +5,26 @@ importFrom("stats", "median")
 export("%e%",
        "%D%",
        "as.set",
-       "make_set_with_order",
+       "canonicalize_set_and_mapping",
        "is.set",
+       "make_set_with_order",
        "set",
-       "set_contains_element",
-       "set_is_empty",
-       "set_is_equal",
-       "set_is_proper_subset",
-       "set_is_subset",
        "set_cardinality",
        "set_cartesian",
        "set_combn",
        "set_complement",
+       "set_contains_element",
        "set_intersection",
+       "set_is_empty",
+       "set_is_equal",
+       "set_is_proper_subset",
+       "set_is_subset",
+       "set_outer",
        "set_power",
        "set_similarity",
        "set_symdiff",
        "set_union",
-       "set_options",
-       "set_outer",
-       "canonicalize_set_and_mapping"
+       "sets_options"
        )
 
 S3method("[", "set")
@@ -43,6 +43,7 @@ S3method("make_set_with_order", "factor")
 S3method("make_set_with_order", "integer")
 S3method("make_set_with_order", "list")
 S3method("make_set_with_order", "logical")
+S3method("make_set_with_order", "NULL")
 S3method("make_set_with_order", "numeric")
 S3method("make_set_with_order", "ordered")
 S3method("make_set_with_order", "set")
@@ -54,6 +55,8 @@ S3method("format", "set")
 S3method("length", "set")
 S3method("mean", "set")
 S3method("median", "set")
+S3method("plot","set")
+S3method("lines","set")
 S3method("print","set")
 S3method("print","summary.set")
 S3method("rep","set")
@@ -70,35 +73,44 @@ S3method("print","element")
 export("%e%",
        "%D%",
        "as.gset",
-       "is.gset",
        "gset",
-       "gset_contains_element",
-       "gset_is_empty",
-       "gset_is_equal",
-       "gset_is_proper_subset",
-       "gset_is_subset",
-       "gset_is_set",
-       "gset_is_multiset",
-       "gset_is_fuzzy_set",
-       "gset_is_set_or_fuzzy_set",
-       "gset_is_set_or_multiset",
-       "gset_is_fuzzy_multiset",
-       "gset_is_crisp",
        "gset_cardinality",
        "gset_cartesian",
+       "gset_charfun",
        "gset_combn",
        "gset_complement",
-       "gset_intersection",
-       "gset_memberships",
-       "gset_sum",
+       "gset_core",
+       "gset_concentrate",
+       "gset_contains_element",
        "gset_difference",
-       "gset_support",
-       "gset_charfun",
+       "gset_dilate",
+       "gset_height",
+       "gset_intersection",
+       "gset_is_crisp",
+       "gset_is_empty",
+       "gset_is_equal",
+       "gset_is_fuzzy_multiset",
+       "gset_is_fuzzy_set",
+       "gset_is_multiset",
+       "gset_is_proper_subset",
+       "gset_is_set",
+       "gset_is_set_or_fuzzy_set",
+       "gset_is_set_or_multiset",
+       "gset_is_subset",
+       "gset_memberships",
+       "gset_transform_memberships",
+       "gset_normalize",
+       "gset_outer",
        "gset_power",
+       "gset_product",
+       "gset_mean",
+       "gset_similarity",
+       "gset_sum",
+       "gset_support",
        "gset_symdiff",
        "gset_union",
-       "gset_outer",
-       "gset_similarity"
+       "gset_universe",
+       "is.gset"
        )
 
 S3method("Ops","gset")
@@ -128,6 +140,9 @@ S3method("length", "gset")
 S3method("mean", "gset")
 S3method("median", "gset")
 S3method("plot", "gset")
+S3method("lines", "gset")
+S3method("plot", "charfun_generator")
+S3method("lines", "charfun_generator")
 S3method("print","gset")
 S3method("print","gset_charfun")
 S3method("print","summary.gset")
@@ -143,34 +158,44 @@ export("as.cset",
        "cset_charfun",
        "cset_combn",
        "cset_complement",
-       "cset_difference",
-       "cset_intersection",
+       "cset_concentrate",
        "cset_contains_element",
+       "cset_core",
+       "cset_difference",
+       "cset_dilate",
+       "cset_height",
+       "cset_intersection",
+       "cset_is_crisp",
        "cset_is_empty",
        "cset_is_equal",
-       "cset_is_proper_subset",
-       "cset_is_subset",
-       "cset_is_set",
-       "cset_is_multiset",
+       "cset_is_fuzzy_multiset",
        "cset_is_fuzzy_set",
+       "cset_is_multiset",
+       "cset_is_proper_subset",
+       "cset_is_set",
        "cset_is_set_or_fuzzy_set",
        "cset_is_set_or_multiset",
-       "cset_is_fuzzy_multiset",
-       "cset_is_crisp",
+       "cset_is_subset",
        "cset_matchfun",
        "cset_matchfun<-",
        "cset_memberships",
+       "cset_transform_memberships",
+       "cset_normalize",
        "cset_orderfun",
        "cset_orderfun<-",
        "cset_outer",
        "cset_power",
+       "cset_product",
+       "cset_mean",
        "cset_similarity",
        "cset_sum",
        "cset_support",
        "cset_symdiff",
        "cset_union",
+       "cset_universe",
        "is.cset",
-       "make_matchfun")
+       "make_matchfun"
+       )
 
 S3method("Ops","cset")
 S3method("Summary","cset")
@@ -199,6 +224,7 @@ S3method("length", "cset")
 S3method("mean", "cset")
 S3method("median", "cset")
 S3method("plot", "cset")
+S3method("lines", "cset")
 S3method("print","cset")
 S3method("print","cset_charfun")
 S3method("print","summary.cset")
@@ -220,14 +246,14 @@ S3method("reduction","default")
 ## Tuple stuff.
 export("%e%",
        "as.tuple",
-       "tuple",
-       "singleton",
-       "pair",
-       "triple",
        "is.tuple",
+       "pair",
+       "singleton",
+       "triple",
+       "tuple",
        "tuple_is_ntuple",
-       "tuple_is_singleton",
        "tuple_is_pair",
+       "tuple_is_singleton",
        "tuple_is_triple",
        "tuple_outer"
        )
@@ -252,6 +278,8 @@ S3method("as.tuple", "set")
 S3method("as.tuple", "cset")
 S3method("as.tuple", "gset")
 S3method("as.list", "tuple")
+S3method("plot","tuple")
+S3method("lines","tuple")
 S3method("c", "tuple")
 S3method("mean", "tuple")
 S3method("median", "tuple")
@@ -280,7 +308,25 @@ export(".N.",
        ".T.",
        ".S.",
        ".I.",
-       "fuzzy_logic")
+       "is.charfun_generator",
+       "fuzzy_logic",
+       "make_charfun_generator",
+       "fuzzy_normal",
+       "fuzzy_bell",
+       "fuzzy_two_normals",
+       "fuzzy_sigmoid",
+       "fuzzy_trapezoid",
+       "fuzzy_triangular",
+       "fuzzy_cone",
+       "fuzzy_normal_gset",
+       "fuzzy_two_normals_gset",
+       "fuzzy_bell_gset",
+       "fuzzy_sigmoid_gset",
+       "fuzzy_trapezoid_gset",
+       "fuzzy_triangular_gset",
+       "fuzzy_cone_gset",
+       "make_fuzzy_tuple"
+       )
 
 ### internal dispatch
 S3method(".as.list", "default")

@@ -7,9 +7,14 @@
 \alias{cset_is_proper_subset}
 \alias{cset_is_equal}
 \alias{cset_contains_element}
+\alias{cset_core}
+\alias{cset_universe}
+\alias{cset_height}
 \alias{cset_union}
 \alias{cset_sum}
 \alias{cset_difference}
+\alias{cset_product}
+\alias{cset_mean}
 \alias{cset_intersection}
 \alias{cset_symdiff}
 \alias{cset_complement}
@@ -19,6 +24,10 @@
 \alias{cset_cardinality}
 \alias{cset_charfun}
 \alias{cset_memberships}
+\alias{cset_transform_memberships}
+\alias{cset_concentrate}
+\alias{cset_dilate}
+\alias{cset_normalize}
 \alias{cset_support}
 \alias{cset_similarity}
 \alias{cset_is_crisp}
@@ -42,8 +51,18 @@
 \description{Creation and manipulation of customizable sets.}
 \usage{
 cset(gset,
-     orderfun = set_options("orderfun"),
-     matchfun = set_options("matchfun"))
+     orderfun = sets_options("orderfun"),
+     matchfun = sets_options("matchfun"))
+cset_support(x)
+cset_core(x)
+cset_height(x)
+cset_memberships(x)
+cset_universe(x)
+
+cset_transform_memberships(x, FUN, \dots)
+cset_concentrate(x)
+cset_dilate(x)
+cset_normalize(x, height = 1)
 
 make_matchfun(FUN)
 
@@ -69,9 +88,10 @@ cset_is_set_or_fuzzy_set(x)
 cset_is_fuzzy_multiset(x)
 cset_is_crisp(x)
 
-cset_cardinality(x)
+cset_cardinality(x, type = c("absolute", "relative"))
 cset_union(\dots)
-cset_sum(\dots)
+cset_mean(x, y, type = c("arithmetic", "geometric", "harmonic"))
+cset_product(\dots)
 cset_difference(\dots)
 cset_intersection(\dots)
 cset_symdiff(\dots)
@@ -103,6 +123,11 @@ cset_similarity(x, y, method = "Jaccard")
     specifying the order in which an iterator processes the set
     elements. Alternatively, the index vector can be specified directly.}
   \item{value}{A new match function (order function).}
+  \item{type}{For \code{gset_cardinality()}:
+    cardinality type (either \code{"absolute"} or
+    \code{"relative"}). For \code{gset_mean()}: mean type
+    (\code{"arithmetic"}, \code{"geometric"}, or \code{"harmonic"}).}
+  \item{height}{Double from the unit interval for scaling memberships.}
   \item{e}{An object of class \code{element}.}
   \item{m}{Number of elements to choose.}
   \item{method}{Currently, only \code{"Jaccard"} is implemented.}
@@ -112,7 +137,8 @@ cset_similarity(x, y, method = "Jaccard")
   \item{\dots}{For \code{cset_\var{foo}()}: (c)set objects. For
     the mean and sort methods: additional parameters internally passed to
     \code{\link{mean}} and \code{\link{order}}, respectively. For
-    \code{cut}: currently not used.}
+    \code{gset_transform_memberships}: further arguments passed to
+    \code{FUN}. For \code{cut}: currently not used.}
 }
 \details{
   Customizable sets extend generalized sets in two ways: First, users
@@ -133,7 +159,8 @@ cset_similarity(x, y, method = "Jaccard")
   function for all sets involved. The order function can differ, but
   will then be stripped from the result.
 
-  \code{set_options} can be used to conveniently switch the default match and/or
+  \code{sets_options} can be used to
+  conveniently switch the default match and/or
   order function if a number of \code{cset} objects need to be created.
 }
 \seealso{
@@ -183,14 +210,14 @@ cset_intersection(X, Y)
 cset_complement(X, Y)
 
 ### change default functions via set_option
-set_options("matchfun", match)
+sets_options("matchfun", match)
 cset(x)
 cset(y)
 
 cset(1:3) <= cset(c(1,2,3))
 
 ### restore package defaults
-set_options("matchfun", NULL)
+sets_options("matchfun", NULL)
 
 ### customized order function
 FUN <- function(x) order(as.character(x), decreasing = TRUE)

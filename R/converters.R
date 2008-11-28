@@ -17,6 +17,10 @@ make_set_with_order.default <-
 function(x)
     stop("Not implemented.")
 
+make_set_with_order.NULL <-
+function(x)
+    make_set_with_order(list())
+
 make_set_with_order.set <-
 function(x)
     .make_set_with_order(x)
@@ -33,9 +37,16 @@ function(x)
     make_set_with_order(as.gset(x))
 
 make_set_with_order.numeric <-
+make_set_with_order.integer <-
+function(x)
+{
+    x <- unique(x)
+    O <- order(x)
+    .make_set_with_order(.make_set_from_list(as.list(x[O])), O)
+}
+
 make_set_with_order.factor <-
 make_set_with_order.character <-
-make_set_with_order.integer <-
 make_set_with_order.logical <-
 make_set_with_order.ordered <-
 make_set_with_order.tuple <-
@@ -148,8 +159,8 @@ function(x)
 as.gset.list <-
 function(x)
 {
-    uni <- unique(x)
-    count <- colSums(set_outer(x, uni, identical))
+    uni <- .list_sort(.list_unique(x))
+    count <- table(.exact_match(x, uni))
     .make_gset_from_support_and_memberships(uni, count)
 }
 
@@ -265,7 +276,12 @@ function(x, ...)
 
 as.character.cset <-
 function(x, ...)
-    as.character(as.list(x, ...))
+{
+    x <- .as.list(x)
+    rec <- unlist(lapply(x, is.recursive))
+    x[rec] <- lapply(x[rec], serialize, NULL)
+    unlist(lapply(x, paste, collapse = ""))
+}
 
 ### make sure that as.list always works
 

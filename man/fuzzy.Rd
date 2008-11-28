@@ -106,10 +106,19 @@ fuzzy_logic(new, \dots)
       \eqn{T_p(x, y) = \exp(-(|\log(x)|^p + |\log(y)|^p)^{1/p})}.}
     \item{\code{"Sugeno-Weber"}}{the family of t-norms \eqn{T_p},
       \eqn{-1 \le p \le \infty}{-1 <= p <= Inf}, introduced by Weber
-      with dual t-conorms introduce by Sugeno, which gives the
+      with dual t-conorms introduced by Sugeno, which gives the
       drastic and product t-norms for \eqn{p = -1} and
       \eqn{\infty}{Inf}, respectively, and otherwise is given by
       \eqn{T_p(x, y) = \max(0, (x + y - 1 + pxy) / (1 + p))}.}
+    \item{\code{"Dubois-Prade"}}{the family of t-norms \eqn{T_p},
+      \eqn{0 \le p \le 1}, introduced by Dubois and Prade, which gives
+      the minimum and product t-norms for \eqn{p = 0} and \eqn{1},
+      respectively, and otherwise is given by
+      \eqn{T_p(x, y) = xy / \max(x, y, p)}.}
+    \item{\code{"Yu"}}{the family of t-norms \eqn{T_p}, \eqn{p \ge -1},
+      introduce by Yu, which gives the product and drastic t-norms for
+      \eqn{p = -1} and \eqn{\infty}{Inf}, respectively, and otherwise is
+      given by \eqn{T(x, y) = \max(0, (1 + p) (x + y - 1) - p x y)}.}
   }
 
   By default, the Zadeh logic is used.

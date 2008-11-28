@@ -6,8 +6,8 @@
 
 cset <-
 function(gset,
-         orderfun = set_options("orderfun"),
-         matchfun = set_options("matchfun"))
+         orderfun = sets_options("orderfun"),
+         matchfun = sets_options("matchfun"))
 {
     gset <- as.gset(gset)
 
@@ -37,11 +37,10 @@ function(FUN)
 ## as.list() method.
 
 `[.cset` <-
-function(x, i)
+function(x, i = x)
 {
-    if(!is.character(i))
-        stop("Subscripting of customizable sets is only defined by labels.")
-    cset(.make_gset_from_list(NextMethod("[")),
+    ind <- .lookup_elements(x, i, .matchfun(x))
+    cset(gset(.as.list(x)[ind], cset_memberships(x)[ind]),
          .orderfun(x),
          .matchfun(x))
 }
@@ -49,17 +48,14 @@ function(x, i)
 `[[.cset` <-
 function(x, i)
 {
-    if(!is.character(i))
-        stop("Subscripting of customizable sets is only defined by labels.")
-    NextMethod("[[")
+    as.set(x)[[i]]
 }
 
 `[<-.cset` <-
-function(x, i, value)
+function(x, i = x, value)
 {
-    if(!is.character(i))
-        stop("Subassignment of customizable sets is only defined by labels.")
-    cset(.make_gset_from_list(NextMethod("[<-")),
+    cset(gset(`[<-`(.as.list(x), .lookup_elements(x, i, .matchfun(x)), value),
+                memberships = cset_memberships(x)),
          .orderfun(x),
          .matchfun(x))
 }
@@ -67,10 +63,13 @@ function(x, i, value)
 `[[<-.cset` <-
 function(x, i, value)
 {
-    if(!is.character(i))
-        stop("Subassignment of customizable sets is only defined by labels.")
-    NextMethod("[[<-")
+    if (!is.character(i) || length(i) > 1L) i <- list(i)
+    cset(gset(`[[<-`(.as.list(x), .lookup_elements(x, i, .matchfun(x)), value),
+         memberships = cset_memberships(x)),
+         .orderfun(x),
+         .matchfun(x))
 }
+
 
 ### Ops-method
 

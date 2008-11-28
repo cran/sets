@@ -20,16 +20,18 @@ function(x, y = NULL)
 function(x, y = NULL, support = set_union(x, y), matchfun = .exact_match)
 {
     ## auto-complement
+    if (is.null(y))
+        y <- gset_universe(x)
     if (is.null(y)) {
         if (gset_is_crisp(x))
             return(gset())
         else if (gset_is_fuzzy_set(x))
-            return(.make_gset_from_support_and_memberships(.get_support(x),
-                                                          .N.(.get_memberships(x))))
-        else {
+                return(.make_gset_from_support_and_memberships(.get_support(x),
+                                                               .N.(.get_memberships(x))))
+        else if (is.na(y)) {
             memberships <- lapply(.get_memberships(x), function(i) {
                 .make_gset_from_support_and_memberships(lapply(.get_support(i), .N.),
-                                                       .get_memberships(i))
+                                                        .get_memberships(i))
             })
             return(.make_gset_from_support_and_memberships(.get_support(x),
                                                            memberships))

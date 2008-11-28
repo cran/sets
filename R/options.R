@@ -1,6 +1,6 @@
-set_options <-
+sets_options <-
 local({
-    options <- list(quote = TRUE)
+    options <- list(quote = TRUE, hash = TRUE)
     function(option, value) {
         if (missing(option)) return(options)
         if (missing(value))
