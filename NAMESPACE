@@ -194,7 +194,7 @@ export("as.cset",
        "cset_union",
        "cset_universe",
        "is.cset",
-       "make_matchfun"
+       "matchfun"
        )
 
 S3method("Ops","cset")
@@ -310,7 +310,7 @@ export(".N.",
        ".I.",
        "is.charfun_generator",
        "fuzzy_logic",
-       "make_charfun_generator",
+       "charfun_generator",
        "fuzzy_normal",
        "fuzzy_bell",
        "fuzzy_two_normals",
@@ -325,7 +325,7 @@ export(".N.",
        "fuzzy_trapezoid_gset",
        "fuzzy_triangular_gset",
        "fuzzy_cone_gset",
-       "make_fuzzy_tuple"
+       "fuzzy_tuple"
        )
 
 ### internal dispatch

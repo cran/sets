@@ -1,7 +1,7 @@
 \name{fuzzyfuns}
-\alias{make_charfun_generator}
+\alias{charfun_generator}
 \alias{is.charfun_generator}
-\alias{make_fuzzy_tuple}
+\alias{fuzzy_tuple}
 \alias{fuzzy_normal}
 \alias{fuzzy_two_normals}
 \alias{fuzzy_bell}
@@ -19,8 +19,9 @@
 \title{Fuzzy membership functions}
 \description{Fuzzy membership and set creator functions.}
 \usage{
-make_charfun_generator(FUN, height = 1)
-make_fuzzy_tuple(FUN = fuzzy_normal, n = 5, \dots, universe = NULL)
+charfun_generator(FUN, height = 1)
+fuzzy_tuple(FUN = fuzzy_normal, n = 5, \dots,
+                 universe = NULL, names = NULL)
 is.charfun_generator(x)
 
 fuzzy_normal(mean = NULL, sd = 1, log = FALSE, height = 1, chop = 0)
@@ -78,6 +79,7 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
     the corner elements would be removed from the set.}
   \item{universe}{Universal set used for computing the memberships
     grades.}
+  \item{names}{optional character vector of component labels for the return value.}
   \item{\dots}{Further arguments passed to \code{FUN}.}
   }
 \details{
@@ -122,7 +124,7 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
       \eqn{(\code{center} + \code{radius}, 0)}.}
   }
 
-  \code{make_charfun_generator} takes a vectorized function as argument,
+  \code{charfun_generator} takes a vectorized function as argument,
   returning a function normalized by \code{height}.
 
   The \code{fuzzy_\var{foo}_gset} functions directly generate
@@ -130,7 +132,7 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
   \code{universe}, \code{sets_options("universe")}, or \code{seq(0, 20, by
     = 0.1)} (in that order, whichever is not \code{NULL}).
 
-  \code{make_fuzzy_tuple} generates a sequence of \code{n}
+  \code{fuzzy_tuple} generates a sequence of \code{n}
   sets based on any of the generating functions (except
   \code{fuzzy_trapezoid} and \code{fuzzy_triangular}).  The chosen
   generating function \code{FUN} is called with \code{n} different
@@ -138,12 +140,12 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
   first argument, thus varing the position or the resulting graph.
 }
 \value{
-  For \code{make_charfun_generator}, a \emph{generating function}
+  For \code{charfun_generator}, a \emph{generating function}
   taking an argument list of parameters, and returning a membership
   function, mapping elements to membership values (from of the unit
   interval).
   
-  For \code{make_fuzzy_tuple}, a tuple of \code{n} fuzzy sets.
+  For \code{fuzzy_tuple}, a tuple of \code{n} fuzzy sets.
   
   For \code{is.charfun_generator}, a logical.
 
@@ -168,10 +170,10 @@ gset(charfun = N, universe = -3:3)
 fuzzy_normal_gset(universe = -3:3)
 
 ## creating a user-defined fuzzy function
-fuzzy_poisson <- make_charfun_generator(dpois)
+fuzzy_poisson <- charfun_generator(dpois)
 gset(charfun = fuzzy_poisson(10), universe = seq(0, 20, 2))
 
 ## creating a series of fuzzy normal sets
-make_fuzzy_tuple(fuzzy_normal, 5)
+fuzzy_tuple(fuzzy_normal, 5)
 }
 \keyword{math}

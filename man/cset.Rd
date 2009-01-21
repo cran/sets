@@ -38,7 +38,7 @@
 \alias{cset_is_fuzzy_multiset}
 \alias{cset_is_set}
 \alias{length.cset}
-\alias{make_matchfun}
+\alias{matchfun}
 \alias{mean.cset}
 \alias{median.cset}
 \alias{cut.cset}
@@ -64,7 +64,7 @@ cset_concentrate(x)
 cset_dilate(x)
 cset_normalize(x, height = 1)
 
-make_matchfun(FUN)
+matchfun(FUN)
 
 cset_orderfun(x)
 cset_matchfun(x)
@@ -150,7 +150,7 @@ cset_similarity(x, y, method = "Jaccard")
   customizable sets.
 
   The match function needs to be vectorized in a similar way than
-  \code{\link{match}}. \code{make_matchfun} can be used to create such a
+  \code{\link{match}}. \code{matchfun} can be used to create such a
   function from a \dQuote{simple} predicate testing for equality
   (such as, e.g., \code{\link{identical}}). Make sure, however, to
   create the same function only once.
@@ -196,9 +196,9 @@ cset_intersection(X, Y)
 cset_complement(X, Y)
 
 ## Same using all.equal().
-## This is a non-vectorized predicate, so use make_matchfun
+## This is a non-vectorized predicate, so use matchfun
 ## to generate a vectorized version:
-FUN <- make_matchfun(function(x, y) isTRUE(all.equal(x, y)))
+FUN <- matchfun(function(x, y) isTRUE(all.equal(x, y)))
 X <- cset(x, matchfun = FUN)
 print(X)
 Y <- cset(y, matchfun = FUN)

@@ -29,7 +29,7 @@ and matching functions.
 \Plainkeywords{R, sets, fuzzy logic, fuzzy set, multiset}
 
 %\VignetteIndexEntry{Generalized and Customizable Sets in R}
-%\VignetteDepends{sets}
+%\VignetteDepends{sets,proxy}
 %\VignetteKeywords{R, sets, fuzzy logic, fuzzy set, multiset}
 %\VignettePackage{sets}
 
@@ -92,6 +92,9 @@ library(sets)
 \def\codedash{-\discretionary{}{}{}}
 \def\Rd@code#1{\texttt{\nohyphenation#1}\egroup}
 
+%% FIXME
+\newcommand{\samp}[1]{\normalfont\texttt{#1}}
+
 \newcommand{\eqn}[1]{$#1$}
 \newcommand{\codefun}[1]{\code{#1()}}
 \newcommand{\codefunind}[1]{\codefun{#1}\index{\texttt{#1}}}
@@ -112,20 +115,20 @@ Only few will deny the importance of sets and set theory, building the
 fundamentals of modern mathematics. For theory-building typically
 axiomatic approaches \citep[e.g.,][]{sets:zermelo:1908, sets:fraenkel:1922}
 are used. However, even
-the primal, ``naive'' concept of sets representing ``collections''
-of distinct objects \citep{sets:cantor:1895} discarding order
+the primal, ``naive'' concept of sets representing ``collections
+of distinct objects'' \citep{sets:cantor:1895} discarding order
 and count information seems both natural and practical.
 The main operation being ``is-element-of'', sets alone are of limited
 \emph{practical} use---they most of the times serve as basic building blocks for
 more complex structures such as relations and generalized sets. A
-common way is to consider pairs $(X, m)$ with set $X$ (``Universe'')
+common way is to consider pairs $(X, m)$ with set $X$ (``universe'')
 and membership function
 $m : X \rightarrow D$ mapping each member to its ``grade''. The subset
 of $X$ of elements with non-zero membership is called ``support''.
 In \emph{multisets}, elements may appear more than once, i.e., $D =
 \mathbb{N}_0$ ($m$ is also called the multiplicity function). There are many
 applications in computer science and other disciplines
-\citep[For a survey, see, e.g.,][]{sets:singh+ibrahim+yohanna:2007}.
+\citep[for a survey, see, e.g.,][]{sets:singh+ibrahim+yohanna:2007}.
 In statistics, multisets appear as frequency tables. \emph{Fuzzy sets}
 have become quite popular since their introduction by
 \cite{sets:zadeh:1965}. Here, the membership function maps into the
@@ -133,8 +136,8 @@ unit interval. An interesting characteristic of fuzzy sets is that
 the actual behavior of set operations depends on the underlying
 fuzzy logic employed, which can be chosen according to domain-specific
 needs. Fuzzy sets are actively used in fields such as machine
-learning, engineering and artificial intelligence.
-\comment{Survey-Refs? Wie viele, welche Gebiete?}
+learning, engineering, medical science, and artificial intelligence
+\citep{sets:dubois+prade+yager:1996}.
 \emph{Fuzzy multisets} \citep{sets:yager:1986}
 combine both approaches by allowing
 each element to map to more than one fuzzy membership grade, i.e., $D$ is
@@ -151,12 +154,12 @@ Surprisingly enough, sets are not standard in many
 mathematical programming environments such as \proglang{Matlab} and
 \proglang{Mathematica}, and also \R. Although the two latter offer
 set operations such as union and intersection, these are applied to
-ordered structures (lists and vectors, respectively),
+linearly indexable structures (lists and vectors, respectively),
 \emph{interpreting} them as sets. When it comes to \R,
 this emulation is far from complete, and occasionally leads to inconsistent
 behavior. First of all, the existing infrastructure has no clear concept
-of how to compare elements, leading to possibly confusing and
-inconsistent behavior when different data types are involved in the
+of how to compare elements, leading to possibly confusing
+results when different data types are involved in
 computations:
 <<>>=
 s <- list(1, "1")
@@ -165,33 +168,72 @@ intersect(s, s)
 @
 The reason is that most of the existing operations rely on
 \codefun{match} which automatically performs type conversions
-perturbing in this context.
+disturbing in this context.
 Also, quite a few other basic operations such as
 the Cartesian product, the power set, the subset predicate, etc., are
 missing, let alone more specialized operations such as
-the closure under union.
+the closure under union or intersection.
 Then, the current facilities do not make use of a class
 system, making extensions hard (if not impossible).  Another consequence
 is that no distinction can be made between sequences (ordered
 collections of objects) and sets (unordered collections of objects),
-which is key for the definition of relations, where both concepts are
-combined.  Also, there is no support for extensions such as fuzzy sets
+which is key for the definition of complex structures
+where both concepts are combined such as relations.
+Also, there is no support in base \R{} for extensions such as fuzzy sets
 or multisets.
 
-We therefore implemented the \pkg{sets} package \citep{sets:meyer+hornik:2008}
-presented here. The main goal was to provide a
-flexible and customizable basic infrastructure for finite sets and the
-generalizations mentioned above. As a side effect, the package
-also provides basic operations for fuzzy logic. The remainder of the
-paper is structured as follows. In Section \ref{sec:design}, we
-discuss the design rationale of data structures and core algorithms.
-Section \ref{sec:sets} introduces the most important set operations. Section
-\ref{sec:gsets} starts with constructors and specific methods for
-generalized sets, followed by a more focused presentation of the fuzzy
-logic infrastructure. Section
-\ref{sec:csets} shows how these can further be customized by specifying
-user-definable matching functions and iterators. Section
-\ref{sec:conclusion} concludes.
+A few extension packages available from CRAN deal
+with fuzzy concepts: Package \pkg{fuzzyFDR}
+\citep{sets:lewin:2007}
+calculates fuzzy decision rules for multiple testing, but does not
+provide any explicit data structures for fuzzy sets.
+The main functions in \pkg{fso}
+\citep{sets:roberts:2007} for fuzzy set ordination compute and
+return, among other information, membership values represented by
+numeric matrices for some variables of the the input data.
+\pkg{fuzzyRankTests} \citep{sets:geyer:2007} provides statistical tests
+based on
+fuzzy $p$ values and fuzzy confidence intervals, the latter being
+returned as two separate numeric vectors for values and memberships. The
+\pkg{gcl} package \citep{sets:vinterbo:2007}
+infers fuzzy rules from the input data,
+encapsulated in a classifying function returned by the training
+function. The rules are composed of triangular fuzzy sets, represented
+by triples describing the triangles' corner points for which the
+memberships become $(0,1,0)$, respectively. Similarly, the \pkg{FKBL}
+package for fuzzy knowledge base learning \citep{sets:alvarez:2007}
+uses sequences of triangular fuzzy sets, defined by a vector of corner
+points. Finally, \pkg{fuzzyOP} \citep{sets:semagul+emine+rabiye:2008}
+provides support for fuzzy
+numbers: A set of $n$ numbers is represented by a $k \times 2n$
+numeric matrix, where two consecutive columns represent (at most $k$)
+supporting points and memberships,
+respectively, of the corresponding piecewise linear
+membership function. If some numbers have fewer supporting points than
+others, the remaining cells are filled with missing values (\code{NA}s).
+
+The \pkg{sets} package
+\citep{sets:meyer+hornik:2008} presented here
+provides a flexible and customizable basic infrastructure for
+\emph{finite} sets and the generalizations mentioned above, including
+basic operations for fuzzy logic. Apart from complementing the data
+structures implemented in
+base \R, extension packages like the ones mentioned above
+could gain in flexibility from building on a common infrastructure,
+facilitating data exchange and leveraging synergies.
+
+The remainder of the paper is
+structured as follows. In Section~\ref{sec:design}, we discuss the
+design rationale of data structures and core algorithms.
+Section~\ref{sec:sets} introduces the most important set
+operations. Section~\ref{sec:gsets} starts with constructors and
+specific methods for generalized sets, followed by a more focused
+presentation of the fuzzy logic infrastructure, and of functionality for
+handling and visualizing membership information. Section~\ref{sec:csets}
+shows how generalized sets can further be customized by specifying
+user-definable matching functions and
+iterators.  Section~\ref{sec:examples} presents three examples before
+Section~\ref{sec:conclusion} concludes.
 
 \section{Design issues}
 \label{sec:design}
@@ -216,63 +258,80 @@ element-based definitions: Union by
 inserting all elements of the smaller set into the
 larger one; intersection by creating a new set with
 all elements of the smaller set also contained in the larger one;
-etc. Clearly, set comparison must be permutation invariant.
-Some care is needed for nested structures (e.g., sets of sets of
-\dots). Assume, e.g., the comparison of
+etc.
+
+Clearly, set comparison must be permutation invariant.
+Some care is needed for nested sets. Assume, e.g., the comparison of
 $A = \{1, \{2, 3\}\}$ and $B = \{1, \{3, 2\}\}$ which clearly are identical.
-A matching operator would need to check if, e.g., all elements of $A$ are
-contained in $B$. If elements were internally stored in their order during
+To implement set equality, a matching operator would be used to
+check if all elements of $A$ are
+contained in $B$. If elements were internally stored in this order during
 creation, the objects representing
 $\{2, 3\}$ and $\{3, 2\}$ would be different. Comparing two set elements
 for equality would thus require to recursively compare all elements
-down the nested structures, which can quickly become unfeasible computationally.
-This can be simplified by using a
-canonical ordering during set creation,
+down the nested structures, which can quickly become infeasible
+computationally.
+We avoid this by using a canonical ordering during set creation,
 guaranteeing that identical sets have identical
 physical representation as well. We chose to sort
-elements using their Unicode character representation, and to simply
-store them in a list.
-\comment{Mehr erkl{\"a}ren?}
-For the sets package, further limitations are imposed by the
-extensions presented in Sections \ref{sec:gsets} and
+elements using the natural order for numeric values, the
+Unicode character representation for strings, and the serialization
+byte sequence (as strings) for other objects.
+Eventually, the ordered elements are stored in a list.
+
+For the \pkg{sets} package, further limitations are imposed by the
+extensions presented in Sections~\ref{sec:gsets} and
 \ref{sec:csets}: Generalized sets require, for each element,
 the membership information, and we also support user-defined, high-level
 matching functions for comparing elements. Since operations defined
 for generalized sets basically operate on the memberships,
-it seems appropriate to store these as (generic) vectors.
+it seems appropriate to store these as (generic) vectors in the same
+order than the corresponding elements.
 Thus, memberships of
-different sets can simply be combined element-wise.
+separate sets can simply be combined element-wise.
 
-A core operation is to match elements of two sets.
-This is conceptionally
-done by inserting the elements of the larger one into a hash
-table (we use environments), and to look up the elements of the
-smaller set in this table \citep[p.~391]{sets:knuth:1973}.
-As hash key, we use the elements' character
-representation. Since different objects can have the same
-representation, we actually store the \emph{indices} of the elements in the
-list, and match the actual objects using a simple linear search (Note that
-since the element list is sorted, elements with same representation
-are grouped, so the search will typically be fast).
-Objects for sets, generalized sets and customizable sets have
-\code{S3} classes \class{set}, \class{gset} and \class{cset},
-respectively, with \class{set} inheriting from \class{gset} in turn
-inheriting from \class{cset}. Accordingly, all operations have
-\code{set\_} / \code{gset\_} / \code{cset\_} prefixes to give the user
+Many operations (e.g., testing for equality, subsetting, intersection,
+etc.) are based on matching elements of the sets involved.  This is
+implemented by inserting the elements of the larger one into a hash
+table (we use hashed environments), and to look up the elements of the
+smaller set in this table \citep[p.~391]{sets:knuth:1973}.  As hash key,
+we use the elements' character representation. Since different objects
+might map to the same hash key, we actually store the \emph{indexes} of
+the list elements, and match the actual objects using a simple linear
+search. (Note that since the element list is sorted, elements with same
+representation are grouped, so the search will typically be fast.)
+
+Objects for sets, generalized sets and customizable sets have \code{S3}
+classes \class{set}, \class{gset} and \class{cset}, respectively, with
+\class{set} inheriting from \class{gset} in turn inheriting from
+\class{cset}. Accordingly, all operations have \samp{set\_},
+\samp{gset\_} or \samp{cset\_} prefixes, respectively, to give the user
 the choice of up- or downcasts when objects of different class levels
-are involved in one computation.
-\comment{Kein {\"u}berzeugendes Argument: warum nicht generische
-  Operatoren und casting via \code{as.\{c,g\}set}?}
+are involved in one computation. For example, consider the union of the
+set $\{1\}$ and the fuzzy set $\{2/0.5\}$: If the result should be a
+generalized (fuzzy) set, \codefun{gset\_union} should be used.  To make
+the result a set (stripping membership information), one employs
+\codefun{set\_union} instead.
 
 \section{Sets}
 \label{sec:sets}
 
 The basic constructor for creating sets is the \codefunind{set}
-function accepting an arbitrary number of \R{}~objects as arguments.
+function accepting any number of \R{}~objects as arguments.
 <<sets1,keep.source=TRUE>>=
 s <- set(1L, 2L, 3L)
 print(s)
+@
+For elements that are not sets or atomic vectors of length 1, the
+print method for sets will use labels indicating the class (and
+length for vectors):
+<<>>=
 set("test", c, set("a", 2.5), list(1, 2))
+@
+Mainly for cosmetic reasons, there is also a tuple class that can be
+used for vectors:
+<<>>=
+set(1, pair(1,2), tuple(1,2,3))
 @
 In addition, there is a generic \codefunind{as.set}
 function coercing suitable objects to sets.
@@ -280,71 +339,65 @@ function coercing suitable objects to sets.
 s2 <- as.set(2:4)
 print(s2)
 @
-Elements can be named, allowing direct access and replacement
-not possible otherwise.
-<<>>=
-snamed <- set(one = 1, 2, three = 3)
-print(snamed)
-
-snamed[["one"]]
-@
 There are some basic predicate functions (and corresponding operators)
-defined for the (in)equality, (proper) sub-(super-)set, and element-of
-operations.
-Note that all the \codefun{set\_is\_\var{foo}} functions are vectorized:
+defined for the (in)equality (\code{!=}, \code{==}),
+(proper) subset (\code{<}, \code{<=}), (proper) superset (\code{>},
+\code{>=}), and element-of (\code{\%e\%}) operations:
+
 <<setpredicates>>=
 set_is_empty(set())
 
 set_is_subset(set(1), set(1,2))
 set(1) <= set(1,2)
-
-set_contains_element(set(1,2,3), 1)
-1:4 %e% set(1,2,3)
 @
-Other than these predicate functions and operators, one can use:
-\codefun{length} for the cardinality,
-\codefun{c}, \code{|} and \code{+} for the union, \code{-} for the
-difference (or complement), \code{\&} for the intersection,
-\code{\%D\%} for the
-symmetric difference, \code{*} and \code{\^{ }$n$} for the ($n$-fold)
-Cartesian product (yielding a set of $n$-tuples), and \code{2\^} for the
-power set.  \codefunind{set\_union}, \codefunind{set\_intersection}, and
+Note that all predicate functions are vectorized:
+<<>>=
+set_contains_element(set(1,2,3), 1)
+1:4 %e% set(1L, 2L, 3L)
+@
+The sequence \code{1:4} as \emph{one} element would be looked up by
+using \code{list(1:4)} on the left-hand side.
+Other than these functions and operators, one can use
+\codefun{length} for the cardinality:
+<<>>=
+length(s)
+@
+\codefun{c} and \code{|} for the union, \code{\&} for the intersection,
+\code{\%D\%} for the symmetric difference:
+<<>>=
+s | set("a")
+s & s2
+s %D% s2
+@
+\code{*} and \code{\^{ }$n$} for the ($n$-fold)
+Cartesian product (yielding a set of $n$-tuples):
+<<>>=
+s * s2
+s ^ 2L
+@
+and \code{2\^} for the power set:
+<<>>=
+2 ^ s
+@
+\codefunind{set\_union}, \codefunind{set\_intersection}, and
 \codefunind{set\_symdiff} accept more than two arguments.\footnote{The
   $n$-ary symmetric difference of a collection of sets consists of all
   elements contained in an odd number of the sets in the collection.}
-\comment{Evtl. \code{+} und \code{-} nicht erw{\"a}hnen? Ist eigentlich
-  direkte Summe und Differenz und macht f{\"u}r gsets was anderes.}
-<<setops,keep.source=TRUE>>=
-## cardinality
-length(s)
-
-## complement, union, intersection, symmetric difference:
-s - 1L
-s | set("a") + "b"
-s & s2
-s %D% s2
-
-## Cartesian product
-s * s2
-s ^ 2L
-
-## power set
-2L ^ s
-@
 \codefunind{set\_combn} returns the set of all subsets of specified
-length. \codefun{closure} and \codefun{reduction} compute the closure
-and reduction under union and intersection for set \emph{families}
-(i.e., set of sets).
+length:
 <<<>>=
 ## subsets
 set_combn(s, 2L)
-
-## closure and reduction (under union):
-cl <- closure(set(set(1), set(2), set(3)))
-print(cl)
-reduction(cl)
 @
-The \codefun{Summary} methods will also work if defined for the
+\codefun{closure} and \codefun{reduction} compute the closure
+and reduction under union or intersection for a set \emph{family}
+(i.e., a set of sets):
+<<>>=
+cl <- closure(set(set(1), set(2), set(3)), "union")
+print(cl)
+reduction(cl, "union")
+@
+The \codefun{Summary} group methods will also work if defined for the
 elements:
 <<setsummary>>=
 sum(s)
@@ -352,16 +405,37 @@ range(s)
 @
 
 Because set elements are unordered, it is not allowed to use positional
-subscripting.  However, it is possible to iterate over \emph{all}
-elements using \codefun{for} and \codefun{lapply}/\codefun{sapply}:
+subscripting. However, sets can be subset and
+elements be replaced by using the elements as index themselves:
+<<>>=
+s2 <- set(1,2, c, list(1,2))
+print(s2)
+s2[[c]] <- "foo"
+s2[[list(1, 2)]] <- "bar"
+print(s2)
+s2[list("foo", 1)]
+@
+Further, iterations over \emph{all}
+elements can be carried out
+using \codefun{for} and \codefun{lapply}/\codefun{sapply}:
 <<iterators>>=
 sapply(s, sqrt)
 for (i in s) print(i)
 @
+Note that \codefun{for} only
+works because the underlying \proglang{C} code ignores
+the class information, and directly
+processes the low-level list representation instead. This will be
+replaced by a more intelligent \dQuote{foreach} mechanism as soon as
+it exists in base \R. \codefun{sapply} and \codefun{lapply} call the generic
+\codefun{as.list} function before iterating over the elements. Since a
+corresponding method exists for sets objects, this is
+\dQuote{safer} than using \codefun{for}.
+
 Using \codefunind{set\_outer},
 it is possible to apply a function on all factorial combinations of the
 elements of two sets.  If only one set is specified, the function is
-applied to all pairs of this set.
+applied on all pairs of this set.
 <<setouter>>=
 set_outer(set(1,2), set(1,2,3), "/")
 @
@@ -383,27 +457,38 @@ can be done in four ways:
 \item Specify the support only (this yields a \dQuote{classical} set).
 \item Specify support and memberships.
 \item Specify support and membership function.
-\item Specify a set of elements along with their individual membership grades.
+\item Specify a set of elements along with their individual membership
+  grades, using the element function (\codefun{e}).
 \end{enumerate}
 
-\noindent Note that for efficiency reasons, \codefun{gset} will not
-store elements with zero memberships grades, i.e. really expects the
-support and not a domain (or universe in the fuzzy world sense).
+\noindent Note that by default, for efficiency reasons, \codefun{gset} will not
+store elements with zero memberships grades. The specification of an
+universe is thus only mandatory with membership functions. A default
+universe can be set using \codefun{sets\_options}.
+
+\noindent Without membership information, \codefun{gset} creates a set (the support is converted to a set internally):
 <<keep.source=TRUE>>=
 X <- c("A", "B", "C")
-
-## set (X is converted to a set internally).
 gset(support = X)
-
-## multiset
+@
+A multiset requires an integer membership vector:
+<<>>=
 multi <- 1:3
 gset(support = X, memberships = multi)
-
-## fuzzy set
+@
+For fuzzy sets, the memberships need to be out of the unit interval:
+<<>>=
 ms <- c(0.1, 0.3, 1)
 gset(support = X, memberships = ms)
-
-## fuzzy set using a membership function
+@
+Alternatively to separate support / membership specification, each
+elements can be paired with its membership value using \codefun{e}:
+<<>>=
+gset(elements = list(e("A", 0.1), e("B", 0.2), e("C", 0.3)))
+@
+Fuzzy sets can, additionally, be created using a membership function,
+applied to a specified (or the default) universe:
+<<>>=
 f <- function(x) switch(x, A = 0.1, B = 0.2, C = 1, 0)
 gset(universe = X, charfun = f)
 @
@@ -415,23 +500,75 @@ ms2 <- list(c(0.1, 0.3, 0.4), c(1, 1),
             gset(support = ms, memberships = multi))
 gset(support = X, memberships = ms2)
 @
+\codefun{gset\_cardinality} returns the (relative) cardinality of a
+generalized set, computed as the sum (mean) of all memberships.
+\codefun{gset\_support}, \codefun{gset\_memberships}, \codefun{gset\_height}
+and \codefun{gset\_core} can be used to retrieve support,
+memberships, height (maximum membership degree),
+and the core (elements with membership 1), respectively, of a
+generalized set. \codefun{gset\_charfun} returns a (point-wise defined)
+characteristic function for a given gset.
+Note that in general, this will be different
+from the characteristic function possibly used for the creation.
+
 As for sets, the usual operations
-such as union, intersection, and complement are available.
+such as union and intersection are available:
+<<>>=
+X <- gset(c("A", "B", "C"), 4:6)
+Y <- gset(c("B", "C", "D"), 1:3)
+
+gset_union(X, Y)
+gset_intersection(X, Y)
+@
 Additionally, the sum and the difference of sets are defined,
 which add and subtract multiplicities (or memberships for fuzzy sets):
-<<keep.source=TRUE>>=
-X <- gset(c("A", "B", "C"), 4:6)
-print(X)
-Y <- gset(c("B", "C", "D"), 1:3)
-print(Y)
-
-## union vs. sum
-gset_union(X, Y)
+<<>>=
 gset_sum(X, Y)
-
-## intersection vs. difference
-gset_intersection(X, Y)
 gset_difference(X, Y)
+@
+For fuzzy (multi-)sets, not only the relative, but also the
+absolute complement is defined:
+<<>>=
+gset_complement(gset(1, 0.3))
+!gset(1, 0.3)
+@
+(Note the use of the \code{!} operator).
+
+\codefun{gset\_mean} creates a new set by averaging corresponding
+memberships using the arithmetic, geometric or harmonic mean.
+Note that missing elements have 0 membership degree:
+<<>>=
+x <- gset(1:3, 1:3/3)
+y <- gset(1:2, 1:2/2)
+gset_mean(x, y)
+gset_mean(x, y, "harmonic")
+
+gset_mean(set(1), set(1, 2))
+@
+
+The membership vector of a generalized set can be transformed via
+\codefun{gset\_transform\_memberships}, applying any
+\emph{vectorized} function the memberships:
+<<>>=
+x <- gset(1:10, 1:10/10)
+gset_transform_memberships(x, pmax, 0.5)
+@
+Note the effect of applying transformations to (multi)sets:
+<<>>=
+x <- gset(1, 2)
+gset_transform_memberships(x, `*`, 0.5)
+
+## compare this to:
+rep(x, 0.5)
+@
+In addition, three convenience functions exist: \codefun{gset\_concentrate} and
+\codefun{gset\_dilate} apply the square and the square root function,
+and \codefun{gset\_normalize} normalizes the memberships to a specified
+maximum:
+<<>>=
+gset_dilate(y)
+gset_concentrate(y)
+gset_normalize(y, 0.5)
 @
 
 \subsection{Fuzzy logic and fuzzy sets}
@@ -441,18 +578,18 @@ operations using the \codefun{fuzzy\_logic} function.  Fuzzy logics are
 represented as named lists with four components \code{N}, \code{T},
 \code{S}, and \code{I} containing the corresponding functions for
 negation, conjunction (``t-norm''), disjunction (``t-conorm''), and
-implication.  The fuzzy logic is selected by calling
-\codefun{fuzzy\_logic} with a character string specifying the fuzzy
-logic ``family'', and optional parameters. The exported functions
-\codefun{.N.}, \codefun{.T.}, \codefun{.S.}, and \codefun{.I.} reflect
-the currently selected bindings. Available families include:
-\code{"Zadeh"} (default), \code{"drastic"}, \code{"product"},
-\code{"Lukasiewicz"}, \code{"Fodor"}, \code{"Frank"}, \code{"Hamacher"},
+(residual) implication \citep{sets:klement+mesiar+pap:2000}.  The fuzzy
+logic is selected by calling \codefun{fuzzy\_logic} with a character
+string specifying the fuzzy logic ``family'', and optional
+parameters. The exported functions \codefun{.N.}, \codefun{.T.},
+\codefun{.S.}, and \codefun{.I.} reflect the currently selected
+bindings. Available families include:  \code{"Zadeh"} (default),
+\code{"drastic"}, \code{"product"}, \code{"Lukasiewicz"},
+\code{"Fodor"}, \code{"Frank"}, \code{"Hamacher"},
 \code{"Schweizer-Sklar"}, \code{"Yager"}, \code{"Dombi"},
-\code{"Aczel-Alsina"}, \code{"Sugeno-Weber"}, \code{"Dubois-Prade"},
-and \code{"Yu"} (see Appendix).  A call to
-\codefun{fuzzy\_logic} without arguments returns the set fuzzy
-logic currently set.
+\code{"Aczel-Alsina"}, \code{"Sugeno-Weber"}, \code{"Dubois-Prade"}, and
+\code{"Yu"} (see Appendix \ref{sec:fuzzyfamilies}).  A call to
+\codefun{fuzzy\_logic} without arguments returns the current logic.
 
 <<fuzzy>>=
 x <- 1:10 / 10
@@ -461,27 +598,26 @@ y <- rev(x)
 fuzzy_logic("Fodor")
 .S.(x, y)
 @
-Fuzzy sets automatically use the fuzzy logic setting in
-performing set operations:
+Fuzzy set operations automatically use the active fuzzy logic setting:
 <<keep.source=TRUE>>=
 X <- gset(c("A", "B", "C"), c(0.3, 0.5, 0.8))
 print(X)
 Y <- gset(c("B", "C", "D"), c(0.1, 0.3, 0.9))
 print(Y)
-
-## Zadeh-logic (default)
+@
+First, we try the Zadeh logic (default):
+<<>>=
 fuzzy_logic("Zadeh")
 gset_intersection(X, Y)
 gset_union(X, Y)
 gset_complement(X, Y)
-!X
-
-## switch logic to Fodor
+@
+The results are different by switching to the Fodor logic:
+<<>>=
 fuzzy_logic("Fodor")
 gset_intersection(X, Y)
 gset_union(X, Y)
 gset_complement(X, Y)
-!X
 @
 <<fuzzyoff,echo=FALSE,results=hide>>=
 fuzzy_logic("Zadeh")
@@ -492,19 +628,107 @@ not less then a specified level---the result, thus, is a crisp (multi)set:
 <<>>=
 cut(X, 0.5)
 @
-Additionally, there is a \codefun{plot} method for fuzzy (multi-)sets
-that produces a barplot for the membership vector (see Figure \ref{fig:plot}):
-<<fuzzyplot,fig=FALSE>>=
+
+\subsection{Characteristic functions and their visualization}
+\label{sec:plots}
+
+The \pkg{sets} package provides several generators of
+characteristic functions to be used as templates for the creation of
+fuzzy sets, including the following shapes:
+gaussian curve (\codefun{fuzzy\_normal}),
+double gaussian curve (\codefun{fuzzy\_two\_normals}),
+bell curve (\codefun{fuzzy\_bell}),
+sigmoid curve (\codefun{fuzzy\_sigmoid}),
+trapezoid (\codefun{fuzzy\_trapezoid}),
+and triangle (\codefun{fuzzy\_triangular}, \codefun{fuzzy\_cone}). For
+example, a fuzzy normal function and a corresponding fuzzy set
+are created using:
+<<>>=
+N <- fuzzy_normal(mean = 0, sd = 1)
+N(-3:3)
+
+gset(charfun = N, universe = -3:3)
+@
+For convenience, we
+also provide wrappers that directly generate corresponding sets,
+given a specified (default) universe:
+<<>>=
+fuzzy_normal_gset(universe = -3:3)
+@
+It is also possible to create function generators for characteristic
+functions from other functions (such as distribution functions):
+<<>>=
+fuzzy_poisson <- charfun_generator(dpois)
+gset(charfun = fuzzy_poisson(10), universe = seq(0, 20, 2))
+@
+\codefun{fuzzy\_tuple} generates a sequence (tuple) of
+sets based on any of the generating functions (except
+\codefun{fuzzy\_trapezoid} and \codefun{fuzzy\_triangular}). The chosen
+generating function is called with different
+values (chosen along the universe) passed to the
+first argument, thus varying the position or the resulting graph:
+<<>>=
+## creating a series of fuzzy normal sets
+fuzzy_tuple(fuzzy_normal, 5)
+@
+(\verb|<<gset(201)>>| denotes an object of class \class{gset} with
+201 elements---the size of the default universe).
+The \pkg{sets} package provides support for visualizing the
+membership functions of generalized
+sets, and in particular fuzzy sets.
+For (fuzzy) multisets, the plot method
+produces a (grouped) barplot for
+the membership vector (see Figure \ref{fig:plots}, top left):
+<<plot1,fig=FALSE>>=
+## a fuzzy multiset
+X <- gset(c("A", "B"), list(1:2/2, 0.5))
 plot(X)
 @
+Characteristic function generators can directly be plotted using a
+default universe (see Figure \ref{fig:plots}, top right):
+<<plot2,fig=FALSE>>=
+plot(fuzzy_bell)
+@
+There is a plot method for tuples for visualizing a sequence
+of sets (see Figure \ref{fig:plots}, bottom left):
+<<plot3,fig=FALSE>>=
+## creating a sequence of sets
+plot(fuzzy_tuple(fuzzy_cone, 10), col = gray.colors(10))
+@
+Plots of several sets can be superposed using the line method (see
+Figure \ref{fig:plots}, bottom right):
+<<plot4,fig=FALSE>>=
+x <- fuzzy_normal_gset()
+y <- fuzzy_trapezoid_gset(corners = c(5,10,15,17), height = c(0.7, 1))
+plot(tuple(x, y), lty = 3)
+lines(x | y, col = 2)
+lines(gset_mean(x, y), col = 3, lty = 2)
+@
 
+\setkeys{Gin}{width=0.45\textwidth}
 \begin{figure}[h]
 \begin{center}
-<<fig=TRUE,echo=FALSE>>=
-<<fuzzyplot>>
+<<plot1fig,fig=TRUE,echo=FALSE>>=
+<<plot1>>
 @
-\caption{Membership plot for a fuzzy set.}
-\label{fig:plot}
+\hfill
+<<plot2fig,fig=TRUE,echo=FALSE>>=
+<<plot2>>
+@
+\hfill
+<<plot3fig,fig=TRUE,echo=FALSE>>=
+<<plot3>>
+@
+\hfill
+<<plot4fig,fig=TRUE,echo=FALSE>>=
+<<plot4>>
+@
+\caption{Membership plots for fuzzy sets. Top left: grouped barplot
+  for a fuzzy multiset. Top right: graph of a bell curve. Bottom left:
+sequence of triangular functions. Bottom right: two combinations of a
+normal and a trapezoid function (dotted lines: basic shapes;
+solid (red) line: union; dashed (green) line: arithmetic mean).}
+\label{fig:plots}
 \end{center}
 \end{figure}
 
@@ -519,9 +743,10 @@ classes of elements. Second, arbitrary iteration orders can be specified.
 \subsection{Matching functions}
 
 By default, sets and generalized sets use
-\codefun{identical} to match elements which is maximal
+\codefun{identical} to match elements which is maximally
 restrictive. Note that this differs from the behavior of
-\code{"=="} or \codefun{match} which perform implicit type conversions
+\R's equality operator or
+\codefun{match} which perform implicit type conversions
 and thus confound, e.g., \code{1}, \code{1L} and \code{"1"}. In the
 following example, note that on most computer systems, $3.3-2.2$ will not be
 identical to $1.1$ due to numerical issues.
@@ -545,12 +770,16 @@ print(Y)
 1L %e% Y
 X | Y
 @
-The specified \code{foo(x, table)} function needs to be vectorized in
-the \code{table} argument. In order to make use of non-vectorized
+Matching functions take two
+vector arguments, say, \code{x} and \code{table},
+with \code{table} being a vector where the elements of \code{x} are looked up.
+The function should be vectorized in the \code{x}, i.e. return the
+first matching position for each element of \code{x}.
+In order to make use of non-vectorized
 predicates such as \codefun{all.equal}, the \pkg{sets} package
-provides \codefun{make\_matchfun} to generate one:
+provides \codefun{matchfun} to generate one:
 <<>>=
-FUN <- make_matchfun(function(x, y) isTRUE(all.equal(x, y)))
+FUN <- matchfun(function(x, y) isTRUE(all.equal(x, y)))
 X <- cset(x, matchfun = FUN)
 print(X)
 Y <- cset(y, matchfun = FUN)
@@ -559,7 +788,7 @@ print(Y)
 
 X | Y
 @
-\noindent \codefunind{set\_options} can be used to conveniently switch the
+\codefunind{sets\_options} can be used to conveniently switch the
 default match and/or order function if a number of \class{cset} objects need
 to be created:
 <<keep.source=TRUE>>=
@@ -567,7 +796,7 @@ sets_options("matchfun", match)
 cset(x)
 cset(y)
 
-cset(1:3) <= cset(c(1,2,3))
+cset(1:3) <= cset(c("1", "2", "3"))
 @
 <<echo=FALSE>>=
 ### restore package defaults
@@ -578,14 +807,14 @@ sets_options("matchfun", NULL)
 
 In addition to specifying matching functions, it is possible to
 change the order in which
-iterators such as \codefun{as.list}
-\comment{But not for(), argh!}
+iterators such as \codefun{as.list} (but not \codefun{for}---see end
+of Section \ref{sec:sets})
 process the elements. Note that the behavior of \codefun{as.list}
 influences the labeling and print methods for
-customizable sets. Sets and generalized sets by default
+customizable sets. Sets and generalized sets
 use the canonical internal ordering for iterations. With
 customizable sets, a ``natural'' ordering of elements can be kept
-by specifying either a permutation vector or an order function.
+by specifying either a permutation vector or an order function:
 
 <<keep.source=TRUE>>=
 cset(letters[1:5], orderfun = 5:1)
@@ -599,14 +828,152 @@ Note that converters for ordered factors keep the order:
 <<keep.source=TRUE>>=
 o <- ordered(c("a", "b", "a"), levels = c("b", "a"))
 as.set(o)
+as.gset(o)
 as.cset(o)
 @
-Converters for other data types are order-preserving only
-if elements are unique:
+Converters for other data types will use the order information
+only if elements are unique:
 <<keep.source=TRUE>>=
 as.cset(c("A", "quick", "brown", "fox"))
 as.cset(c("A", "quick", "brown", "fox", "quick"))
 @
+
+\section{Examples}
+\label{sec:examples}
+
+In the following, we present two examples for the use of multisets
+and generalized sets.
+
+\subsection{Multisets}
+
+Multisets are frequent in statistics since they can be seen as
+frequency tables of some objects. Using the \pkg{sets} package, a
+\dQuote{generalized} table can easily be constructed from a list of \R{}
+objects using the \codefun{as.gset} coercion function. Assume, e.g., that one
+samples a number of fourfold tables given the margins using \codefun{r2dtable}:
+<<>>=
+set.seed(4711)
+l <- r2dtable(1000, r = 1:2, c = 2:1)
+@
+Since the sum of the first row (and second column) are constrained to
+$1$, the top left cell entry can only be $0$ or $1$. Also, given the marginals,
+there is only one degree of freedom in fourfold tables,
+so the value of this first cell determines the others, and thus
+only two possible tables exist:
+<<>>=
+l[1:2]
+@
+To count them, we can simply use \codefun{as.gset} that will construct a
+multiset from the list:
+<<>>=
+s <- as.gset(l)
+print(s)
+@
+Replace the matrices by the first cells' values:
+<<>>=
+for (i in s) s[[i]] <- i[1]
+print(s)
+@
+The estimated probabilities of having $0$ or $1$ in the first cell can thus
+be obtained by:
+<<>>=
+gset_memberships(s) / 1000
+@
+The probability for $0$
+clearly corresponds to the p value of the corresponding Fisher test:
+<<>>=
+fisher.test(l[[1]])$p.value
+@
+
+\subsection{Fuzzy multisets}
+
+Companies typically evaluate the effectiveness of their promotional
+activities through surveys, where respondents state
+whether and to which extent they associate some attributes to the
+promoted products. Suppose, e.g, that a
+commercial for a new car conveys the idea of \dQuote{sportiness} and
+\dQuote{coolness}---the surveys will help to assess if
+these \dQuote{messages} have really been perceived by
+customers. It is also common to include competing products.
+For each of product, customers will need to pick some attributes from
+a list and specify some rating. The resulting data can be represented
+by fuzzy multisets: one for each product, the support being the set of
+attributes perceived, and the memberships representing the respondents'
+ratings for each of the attributes. In the following, we will use some
+simulated data (see Appendix \ref{sec:productcode} for the code):
+<<echo=FALSE>>=
+create_products <-
+function(attributes = c("comfortable", "sporty", "fast", "spacious",
+         "cool", "economic", "trendy", "stylish"),
+         values = 1:10 / 10,
+         N = 10)
+{
+    sample_FUN <- function(n, values)
+        lapply(sample(length(values), n, replace = TRUE),
+               function(i) sample(values, i))
+
+    attr_list <- sample_FUN(N, attributes)
+    value_list <- lapply(sapply(attr_list, length), sample_FUN, values)
+
+    Map(gset, attr_list, value_list)
+}
+@
+<<>>=
+set.seed(4712)
+cars <- create_products(N = 10)
+cars[1:2]
+@
+The \pkg{sets} package implements the
+Jaccard similarity, defined as
+$|X \cap Y| / |X \cup Y|$ given two generalized sets $X$ and $Y$, $|\cdot|$
+denoting the cardinality for generalized sets.
+Using the \pkg{proxy} package \citep{sets:meyer+buchta:2008},
+one can calculate a similarity matrix between all products for
+user-defined similarity measures:
+<<>>=
+library("proxy")
+sim <- simil(cars, method = gset_similarity)
+@
+After transformation into a dissimilarity object:
+<<>>=
+d <- as.dist(sim)
+@
+this can be used for, e.g., hierarchical clustering to find
+\dQuote{close} products (see the dendrogram in Figure \ref{fig:cluster}):
+<<cluster,plot=FALSE>>=
+plot(hclust(d))
+@
+Cars 1 and 6 as well as 3 and 10 seem to \dQuote{map} to similar attributes:
+<<>>=
+cars[c(3,10)]
+@
+Further, if the customer data base includes consumer preferences, these can be
+matched to the existing products for specific recommendations in the
+context of one-to-one marketing campaigns. We use fuzzy sets to
+represent some customers' preferences:
+<<>>=
+customer1 <- gset(c("sporty", "trendy"), c(0.8, 0.6))
+customer2 <- gset(c("comfortable", "spacious"), c(0.5, 0.9))
+customer_DB <- list(customer1, customer2)
+@
+A simple 1-nearest-neighbor approach can be used to identify the
+best-matching product(s): again using the \pkg{proxy} package, we
+compute the cross-similarities between customers and products
+and seek the indexes with highest similarities:
+<<>>=
+max.col(simil(customer_DB, cars, gset_similarity))
+@
+
+\setkeys{Gin}{width=0.7\textwidth}
+\begin{figure}[h]
+\begin{center}
+<<clusterplot,fig=TRUE,echo=FALSE>>=
+<<cluster>>
+@
+\caption{Dendrogram for cars data.}
+\label{fig:cluster}
+\end{center}
+\end{figure}
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -623,7 +990,7 @@ an important application of sets.
 \begin{appendix}
 
 \section{Available fuzzy logic families}
-\label{sec:appendix}
+\label{sec:fuzzyfamilies}
 
   Let us
   refer to \eqn{N(x) = 1 - x} as the \emph{standard} negation, and,
@@ -631,7 +998,6 @@ an important application of sets.
   \emph{dual} (or complementary) t-conorm.  Available specifications and
   corresponding families are as follows, with the standard negation used
   unless stated otherwise.
-  \comment{Refs?}
 
   \begin{description}
     \item[\code{"Zadeh"}]{Zadeh's logic with \eqn{T = \min} and
@@ -646,7 +1012,7 @@ an important application of sets.
       largest t-conorm, respectively.}
     \item[\code{"product"}]{the family with the product t-norm
       \eqn{T(x, y) = xy} and dual t-conorm \eqn{S(x, y) = x + y - xy}.}
-    \item[\code{"Lukasiewicz"}]{the Lukasiewicz logic with t-norm
+    \item[\code{"Lukasiewicz"}]{the \L{}ukasiewicz logic with t-norm
       \eqn{T(x, y) = \max(0, x + y - 1)} and dual t-conorm
       \eqn{S(x, y) = \min(x + y, 1)}.}
     \item[\code{"Fodor"}]{the family with Fodor's \emph{nilpotent
@@ -654,7 +1020,7 @@ an important application of sets.
       \eqn{x + y > 1}, and 0 otherwise, and the dual t-conorm given by
     \eqn{S(x, y) = \max(x, y)} if \eqn{x + y < 1}, and 1 otherwise.}
     \item[\code{"Frank"}]{the family of Frank t-norms \eqn{T_p},
-      \eqn{p \ge 0}, which gives the Zadeh, product and Lukasiewicz
+      \eqn{p \ge 0}, which gives the Zadeh, product and \L{}ukasiewicz
       t-norms for \eqn{p = 0}, 1, and \eqn{\infty}, respectively,
       and otherwise is given by
       \eqn{T(x, y) = \log_p (1 + (p^x - 1) (p^y - 1) / (p - 1))}.}
@@ -664,8 +1030,8 @@ an important application of sets.
       and t-conorm
       \eqn{S_\beta(x, y) = (x + y + (\beta - 1) xy) / (1 + \beta xy)},
       where \eqn{\alpha \ge 0} and \eqn{\beta, \gamma \ge -1}.  This
-      gives a deMorgan triple iff \eqn{\alpha = (1 + \beta) / (1 +
-	\gamma)}.}
+      gives a deMorgan triple (for which $N(S(x, y)) = T(N(x), N(y))$
+      iff \eqn{\alpha = (1 + \beta) / (1 + \gamma)}.}
   \end{description}
 
   \noindent The following parametric families are obtained by combining the
@@ -706,12 +1072,33 @@ an important application of sets.
       respectively, and otherwise is given by
       \eqn{T_p(x, y) = xy / \max(x, y, p)}.}
   \item[\code{"Yu"}]{the family of t-norms \eqn{T_p}, \eqn{p \ge -1},
-      introduce by Yu, which gives the product and drastic t-norms for
+      introduced by Yu, which gives the product and drastic t-norms for
       \eqn{p = -1} and \eqn{\infty}, respectively, and otherwise is
       given by \eqn{T(x, y) = \max(0, (1 + p) (x + y - 1) - p x y)}.}
   \end{description}
 
 \end{appendix}
+
+\section[Code for generating the cars data]{Code for generating the \texttt{cars} data}
+\label{sec:productcode}
+
+\begin{Sinput}
+create_products <-
+function(attributes = c("comfortable", "sporty", "fast", "spacious",
+         "cool", "economic", "trendy", "stylish"),
+         values = 1:10 / 10,
+         N = 10)
+{
+    sample_FUN <- function(n, values)
+        lapply(sample(length(values), n, replace = TRUE),
+               function(i) sample(values, i))
+
+    attr_list <- sample_FUN(N, attributes)
+    value_list <- lapply(sapply(attr_list, length), sample_FUN, values)
+
+    Map(gset, attr_list, value_list)
+}
+\end{Sinput}
 
 \bibliography{sets}
 

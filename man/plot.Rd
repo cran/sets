@@ -81,6 +81,6 @@ lines(tuple(gset_mean(x, y),
       col = 2:4)
 
 ## creating a sequence of sets
-plot(make_fuzzy_tuple(fuzzy_cone, 10), col = gray.colors(10))
+plot(fuzzy_tuple(fuzzy_cone, 10), col = gray.colors(10))
 }
 \keyword{math}

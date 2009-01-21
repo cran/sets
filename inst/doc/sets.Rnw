@@ -482,7 +482,7 @@ functions from other functions (such as distribution functions):
 <<>>=
 ## creating a user-defined fuzzy function
 ## (note: fuzzy_poisson will only be defined for positive integers)
-fuzzy_poisson <- make_charfun_generator(dpois)
+fuzzy_poisson <- charfun_generator(dpois)
 gset(charfun = fuzzy_poisson(10), universe = seq(0, 20, 2))
 @
 \codefun{make\_fuzzy\_tuple} generates a sequence (tuple) of
@@ -493,7 +493,7 @@ values (chosen along the universe) passed to the
 first argument, thus varying the position or the resulting graph:
 <<>>=
 ## creating a series of fuzzy normal sets
-make_fuzzy_tuple(fuzzy_normal, 5)
+fuzzy_tuple(fuzzy_normal, 5)
 @
 
 The \pkg{sets} package provides support for visualizing the
@@ -516,7 +516,7 @@ There is a plot method for tuples for visualizing a sequence
 of sets (see Figure \ref{fig:plots}, bottom left):
 <<plot3,fig=FALSE>>=
 ## creating a sequence of sets
-plot(make_fuzzy_tuple(fuzzy_cone, 10), col = gray.colors(10))
+plot(fuzzy_tuple(fuzzy_cone, 10), col = gray.colors(10))
 @
 Plots of several sets can be superposed using the line method (see
 Figure \ref{fig:plots}, bottom right):
@@ -597,9 +597,9 @@ cset_intersection(X, Y)
 cset_complement(X, Y)
 
 ## Same using all.equal().
-## This is a non-vectorized predicate, so use make_matchfun
+## This is a non-vectorized predicate, so use matchfun
 ## to generate a vectorized version:
-FUN <- make_matchfun(function(x, y) isTRUE(all.equal(x, y)))
+FUN <- matchfun(function(x, y) isTRUE(all.equal(x, y)))
 X <- cset(x, matchfun = FUN)
 print(X)
 Y <- cset(y, matchfun = FUN)

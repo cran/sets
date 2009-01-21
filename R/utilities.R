@@ -90,6 +90,12 @@ function(equalityfun)
 
 .list_order <-
 function(x, decreasing = FALSE, ...) {
+    .as.character <- function(x, ...) {
+        rec <- unlist(lapply(x, is.recursive))
+        x[rec] <- lapply(x[rec], serialize, NULL)
+        unlist(lapply(x, paste, collapse = ""))
+    }
+
     len <- length(x)
     if (len < 1L)
         return(integer(0L))
@@ -102,14 +108,16 @@ function(x, decreasing = FALSE, ...) {
     numind[num] <- unlist(x[num])
 
     ch <- character(len)
-    ch[!num] <- as.character(x[!num])
-    loc <- ""
-    suppressWarnings(if (capabilities("iconv")) {
-        loc <<- Sys.getlocale("LC_COLLATE")
-        on.exit(Sys.setlocale("LC_COLLATE", loc))
-        Sys.setlocale("LC_COLLATE", "C")
-        ch <- iconv(ch, to = "UTF-8")
-    })
+    if (!all(num)) {
+        ch[!num] <- .as.character(x[!num])
+        loc <- ""
+        suppressWarnings(if (capabilities("iconv")) {
+            loc <<- Sys.getlocale("LC_COLLATE")
+            on.exit(Sys.setlocale("LC_COLLATE", loc))
+            Sys.setlocale("LC_COLLATE", "C")
+            ch <- iconv(ch, to = "UTF-8")
+        })
+    }
 
     order(l, ## length
           cl, ## class
