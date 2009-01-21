@@ -70,11 +70,11 @@ fuzzy_logic(new, \dots)
       and t-conorm
       \eqn{S_\beta(x, y) = (x + y + (\beta - 1) xy) / (1 + \beta xy)},
       where \eqn{\alpha \ge 0} and \eqn{\beta, \gamma \ge -1}.  This
-      gives a deMorgan triple iff \eqn{\alpha = (1 + \beta) / (1 +
-	\gamma)}.  The parameters can be specified as \code{alpha},
-      \code{beta} and \code{gamma}, respectively.  If \eqn{\alpha} is
-      not given, it is taken as \eqn{\alpha = (1 + \beta) / (1 +
-	\gamma)}. 
+      gives a deMorgan triple (for which \eqn{N(S(x, y)) = T(N(x), N(y))}
+      iff \eqn{\alpha = (1 + \beta) / (1 + \gamma)}.  The parameters can
+      be specified as \code{alpha}, \code{beta} and \code{gamma},
+      respectively.  If \eqn{\alpha} is not given, it is taken as
+      \eqn{\alpha = (1 + \beta) / (1 + \gamma)}. 
       The default values for \eqn{\beta} and \eqn{\gamma} are 0, so that
       by default, the product family is obtained.}
   }
@@ -116,7 +116,7 @@ fuzzy_logic(new, \dots)
       respectively, and otherwise is given by
       \eqn{T_p(x, y) = xy / \max(x, y, p)}.}
     \item{\code{"Yu"}}{the family of t-norms \eqn{T_p}, \eqn{p \ge -1},
-      introduce by Yu, which gives the product and drastic t-norms for
+      introduced by Yu, which gives the product and drastic t-norms for
       \eqn{p = -1} and \eqn{\infty}{Inf}, respectively, and otherwise is
       given by \eqn{T(x, y) = \max(0, (1 + p) (x + y - 1) - p x y)}.}
   }

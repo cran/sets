@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2008.4.27)  26 NOV 2008 00:00
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2008.4.27)  21 JAN 2009 14:29
 entering extended mode
  %&-line parsing enabled.
 **JSS.tex
@@ -186,21 +186,21 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 ) (./JSS.aux)
 \openout1 = `JSS.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-Package hyperref Info: Link coloring ON on input line 101.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+Package hyperref Info: Link coloring ON on input line 104.
 
 (/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
 Package: nameref 2006/12/27 v2.28 Cross-referencing by name of section
@@ -210,8 +210,8 @@ Package: refcount 2006/02/20 v3.0 Data extraction from references (HO)
 )
 \c@section@level=\count99
 )
-LaTeX Info: Redefining \ref on input line 101.
-LaTeX Info: Redefining \pageref on input line 101.
+LaTeX Info: Redefining \ref on input line 104.
+LaTeX Info: Redefining \pageref on input line 104.
  (./JSS.out)
 (./JSS.out)
 \@outlinefile=\write4
@@ -220,113 +220,106 @@ LaTeX Info: Redefining \pageref on input line 101.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\<def>-command' on input line 101.
+(hyperref)                removing `\<def>-command' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\f@encoding' on input line 101.
+(hyperref)                removing `\f@encoding' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\<let>-command' on input line 101.
+(hyperref)                removing `\<let>-command' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\<def>-command' on input line 101.
+(hyperref)                removing `\<def>-command' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\f@family' on input line 101.
+(hyperref)                removing `\f@family' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\<def>-command' on input line 101.
+(hyperref)                removing `\<def>-command' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\f@series' on input line 101.
+(hyperref)                removing `\f@series' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\<def>-command' on input line 101.
+(hyperref)                removing `\<def>-command' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\f@shape' on input line 101.
+(hyperref)                removing `\f@shape' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\<def>-command' on input line 101.
+(hyperref)                removing `\<def>-command' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\font@name' on input line 101.
+(hyperref)                removing `\font@name' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\T1/aer/m/n/10.95' on input line 101.
+(hyperref)                removing `\T1/aer/m/n/10.95' on input line 104.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\ignorespaces' on input line 101.
+(hyperref)                removing `\ignorespaces' on input line 104.
 
-<jsslogo.jpg, id=51, 540.0175pt x 393.47pt>
+<jsslogo.jpg, id=71, 540.0175pt x 393.47pt>
 File: jsslogo.jpg Graphic file (type jpg)
  <use jsslogo.jpg>
-LaTeX Font Info:    Try loading font information for T1+pzc on input line 101.
+LaTeX Font Info:    Try loading font information for T1+pzc on input line 104.
 
 (/usr/share/texmf-texlive/tex/latex/psnfss/t1pzc.fd
 File: t1pzc.fd 2001/06/04 font definitions for T1/pzc.
 )
 LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <28> not available
-(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 101.
-LaTeX Font Info:    Try loading font information for T1+aess on input line 101.
+(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 104.
+LaTeX Font Info:    Try loading font information for T1+aess on input line 104.
 
 
 (/usr/share/texmf-texlive/tex/latex/ae/t1aess.fd
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 101.
+LaTeX Font Info:    Try loading font information for U+msa on input line 104.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 101.
+LaTeX Font Info:    Try loading font information for U+msb on input line 104.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
-) [1
+)
+Underfull \vbox (badness 3826) has occurred while \output is active []
+
+ [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/Meyer/lib/texmf/tex/
 latex/jsslogo.jpg>]
-LaTeX Font Info:    Try loading font information for T1+aett on input line 159.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 162.
 
-
-(/usr/share/texmf-texlive/tex/latex/ae/t1aett.fd
+ (/usr/share/texmf-texlive/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
-
-Package natbib Warning: Citation `sets:meyer+hornik:2008' on page 2 undefined o
-n input line 193.
-
-
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 []\T1/aer/m/n/10.95 2 []
  []
 
 [2]
+Underfull \vbox (badness 1286) has occurred while \output is active []
+
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [][] \T1/aer/m/n/10.95 3
  []
 
 [3]
-Overfull \hbox (16.1702pt too wide) in paragraph at lines 327--332
-\T1/aer/m/n/10.95 (in)equality, (proper) sub-(super-)set, and element-of op-er-
-a-tions. Note that all the \T1/aett/m/n/10.95 set_is_\T1/aett/m/it/10.95 foo\T1
-/aett/m/n/10.95 ()
- []
-
-
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 []\T1/aer/m/n/10.95 4 []
  []
@@ -356,11 +349,12 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [][] \T1/aer/m/n/10.95 9
  []
 
-[9] <JSS-020.pdf, id=161, 505.89pt x 433.62pt>
-File: JSS-020.pdf Graphic file (type pdf)
- <use JSS-020.pdf>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+[9]
+Overfull \hbox (33.74254pt too wide) in paragraph at lines 772--776
+[]\T1/aer/m/n/10.95 The mem-ber-ship vec-tor of a gen-er-al-ized set can be tra
+ns-formed via \T1/aett/m/n/10.95 gset_transform_memberships()\T1/aer/m/n/10.95 
+,
+ []
 
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
@@ -368,24 +362,48 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [10]
+Overfull \hbox (7.77199pt too wide) in paragraph at lines 828--845
+\T1/aett/m/n/10.95 "Schweizer-Sklar"\T1/aer/m/n/10.95 , \T1/aett/m/n/10.95 "Yag
+er"\T1/aer/m/n/10.95 , \T1/aett/m/n/10.95 "Dombi"\T1/aer/m/n/10.95 , \T1/aett/m
+/n/10.95 "Aczel-Alsina"\T1/aer/m/n/10.95 , \T1/aett/m/n/10.95 "Sugeno-Weber"\T1
+/aer/m/n/10.95 , \T1/aett/m/n/10.95 "Dubois-Prade"\T1/aer/m/n/10.95 ,
+ []
+
+
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [][] \T1/aer/m/n/10.95 11
  []
 
-[11 <./JSS-020.pdf>]
+[11]
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 []\T1/aer/m/n/10.95 12 []
  []
 
 [12]
+Overfull \hbox (3.26439pt too wide) in paragraph at lines 939--951
+\T1/aer/m/n/10.95 for the cre-ation of fuzzy sets, in-clud-ing the fol-low-ing 
+shapes: gaus-sian curve (\T1/aett/m/n/10.95 fuzzy_normal()\T1/aer/m/n/10.95 ),
+ []
+
+
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [][] \T1/aer/m/n/10.95 13
  []
 
-[13]
+[13] <JSS-plot1fig.pdf, id=232, 505.89pt x 433.62pt>
+File: JSS-plot1fig.pdf Graphic file (type pdf)
+ <use JSS-plot1fig.pdf>
+<JSS-plot2fig.pdf, id=233, 505.89pt x 433.62pt>
+File: JSS-plot2fig.pdf Graphic file (type pdf)
+ <use JSS-plot2fig.pdf>
+<JSS-plot3fig.pdf, id=234, 505.89pt x 433.62pt>
+File: JSS-plot3fig.pdf Graphic file (type pdf)
+ <use JSS-plot3fig.pdf>
+<JSS-plot4fig.pdf, id=235, 505.89pt x 433.62pt>
+File: JSS-plot4fig.pdf Graphic file (type pdf)
+ <use JSS-plot4fig.pdf>
 
-LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
-(Font)              using `T1/aett/m/n' instead on input line 985.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
@@ -393,45 +411,90 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [14]
-Overfull \hbox (6.5955pt too wide) in paragraph at lines 1004--1009
-[]\T1/aer/m/n/10.95 the fam-ily of Frank t-norms $\OML/cmm/m/it/10.95 T[]$\T1/a
-er/m/n/10.95 , $\OML/cmm/m/it/10.95 p \OMS/cmsy/m/n/10.95 ^^U \OT1/cmr/m/n/10.9
-5 0$\T1/aer/m/n/10.95 , which gives the Zadeh, prod-uct and Lukasiewicz
- []
-
-(./JSS.bbl
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [][] \T1/aer/m/n/10.95 15
  []
 
-[15])
+[15 <./JSS-plot1fig.pdf> <./JSS-plot2fig.pdf> <./JSS-plot3fig.pdf> <./JSS-plot4
+fig.pdf>]
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 []\T1/aer/m/n/10.95 16 []
  []
 
 [16]
-
-Package natbib Warning: There were undefined citations.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1066--1066
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1066--1066
-
- []
-
-LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <13> not available
-(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 1066.
-
-
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [][] \T1/aer/m/n/10.95 17
  []
 
-[17
+[17]
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10.95 18 []
+ []
+
+[18]
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10.95 19
+ []
+
+[19] <JSS-clusterplot.pdf, id=288, 505.89pt x 433.62pt>
+File: JSS-clusterplot.pdf Graphic file (type pdf)
+
+<use JSS-clusterplot.pdf>
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10.95 20 []
+ []
+
+[20]
+
+LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
+(Font)              using `T1/aett/m/n' instead on input line 1495.
+
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10.95 21
+ []
+
+[21 <./JSS-clusterplot.pdf>]
+Overfull \hbox (6.13557pt too wide) in paragraph at lines 1514--1519
+[]\T1/aer/m/n/10.95 the fam-ily of Frank t-norms $\OML/cmm/m/it/10.95 T[]$\T1/a
+er/m/n/10.95 , $\OML/cmm/m/it/10.95 p \OMS/cmsy/m/n/10.95 ^^U \OT1/cmr/m/n/10.9
+5 0$\T1/aer/m/n/10.95 , which gives the Zadeh, prod-uct and Šukasiewicz
+ []
+
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10.95 22 []
+ []
+
+[22] (./JSS.bbl
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10.95 23
+ []
+
+[23])
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[]\T1/aer/m/n/10.95 24 []
+ []
+
+[24]
+Underfull \hbox (badness 10000) in paragraph at lines 1597--1597
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1597--1597
+
+ []
+
+LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <13> not available
+(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 1597.
+
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[][] \T1/aer/m/n/10.95 25
+ []
+
+[25
 
 ] (./JSS.aux)
 
@@ -439,32 +502,32 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 3905 strings out of 94101
- 53216 string characters out of 1165810
+ 3982 strings out of 94101
+ 54952 string characters out of 1165810
  111154 words of memory out of 1500000
- 7003 multiletter control sequences out of 10000+50000
+ 7047 multiletter control sequences out of 10000+50000
  62072 words of font info for 119 fonts, out of 1200000 for 2000
  637 hyphenation exceptions out of 8191
- 35i,8n,34p,239b,477s stack positions out of 5000i,500n,6000p,200000b,5000s
+ 35i,8n,34p,441b,479s stack positions out of 5000i,500n,6000p,200000b,5000s
 {/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
 ve/fonts/type1/bluesky/cm/cmb10.pfb></usr/share/texmf-texlive/fonts/type1/blues
 ky/cm/cmbx10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmbx12.pfb></
-usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmitt10.pfb></usr/share/texmf-te
-xlive/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/b
-luesky/cm/cmmi8.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi9.pfb>
-</usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf-te
-xlive/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf-texlive/fonts/type1/blu
-esky/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr9.pfb></us
-r/share/texmf-texlive/fonts/type1/bluesky/cm/cmsl10.pfb></usr/share/texmf-texli
-ve/fonts/type1/bluesky/cm/cmsltt10.pfb></usr/share/texmf-texlive/fonts/type1/bl
-uesky/cm/cmss10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmss17.pfb
-></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf-
-texlive/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf-texlive/fonts/type1
-/bluesky/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/ams/msbm10
-.pfb></usr/share/texmf-texlive/fonts/type1/urw/zapfchan/uzcmi8a.pfb>
-Output written on JSS.pdf (17 pages, 214642 bytes).
+usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf-tex
+live/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf-texlive/fonts/type1/blu
+esky/cm/cmmi9.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr10.pfb></
+usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr6.pfb></usr/share/texmf-texli
+ve/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/bluesk
+y/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsl10.pfb></usr
+/share/texmf-texlive/fonts/type1/bluesky/cm/cmsltt10.pfb></usr/share/texmf-texl
+ive/fonts/type1/bluesky/cm/cmss10.pfb></usr/share/texmf-texlive/fonts/type1/blu
+esky/cm/cmss17.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsy10.pfb>
+</usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmti10.pfb></usr/share/texmf-t
+exlive/fonts/type1/bluesky/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/
+bluesky/cm/cmtt12.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/ams/msbm10.
+pfb></usr/share/texmf-texlive/fonts/type1/urw/zapfchan/uzcmi8a.pfb>
+Output written on JSS.pdf (25 pages, 312397 bytes).
 PDF statistics:
- 287 PDF objects out of 1000 (max. 8388607)
- 55 named destinations out of 1000 (max. 131072)
- 115 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 415 PDF objects out of 1000 (max. 8388607)
+ 84 named destinations out of 1000 (max. 131072)
+ 175 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -27,6 +27,10 @@ function(...)
     ## compute target support
     support <- do.call(set_intersection, l)
 
+    ## handle empty supprt
+    if (gset_is_empty(support))
+        return(set())
+
     ## handle the "ordinary set" case
     if (all(sapply(l, gset_is_set)))
         return(support)
@@ -47,6 +51,10 @@ function(...)
     ## compute target support using correct matchfuns
     support <- cset(.set_intersection(.as.list(l), matchfun),
                     orderfun, matchfun)
+
+    ## handle empty supprt
+    if (cset_is_empty(support))
+        return(set())
 
     ## handle the "ordinary set" case
     if (all(sapply(l, gset_is_set)))

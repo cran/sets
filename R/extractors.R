@@ -183,9 +183,11 @@ function(x)
 .get_support <-
 function(x)
 {
-    ## simplify, if all elements are of same class
+    ## simplify, if all elements are of same class and of length 1:
     cl <- unlist(lapply(x, class))
-    ret <- if (all(cl[1] == cl))
+    len <- lapply(x, length)
+
+    ret <- if (all(cl[1] == cl) && all(len == 1L))
         unlist(x, recursive = FALSE)
     else
         x

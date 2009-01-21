@@ -277,10 +277,19 @@ function(x, ...)
 as.character.cset <-
 function(x, ...)
 {
-    x <- .as.list(x)
-    rec <- unlist(lapply(x, is.recursive))
-    x[rec] <- lapply(x[rec], serialize, NULL)
-    unlist(lapply(x, paste, collapse = ""))
+    x <- as.list(x)
+    fac <- unlist(lapply(x, is.factor))
+    x[fac] <- lapply(x[fac], as.character)
+
+    FUN <-
+        function(x) paste(paste(list(args(x))),
+                          paste(as.character(body(x)),
+                                collapse = "\n"), sep = "\n")
+
+    fun <- unlist(lapply(x, is.function))
+    x[fun] <- lapply(x[fun], FUN)
+
+    paste(x)
 }
 
 ### make sure that as.list always works

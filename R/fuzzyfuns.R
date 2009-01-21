@@ -2,7 +2,7 @@
 
 ### * general constructor
 
-make_charfun_generator <-
+charfun_generator <-
 function(FUN, height = 1)
 {
     ret <- if (is.null(height)) {
@@ -235,8 +235,8 @@ function(center = NULL, radius = 2, height = 1, universe = NULL,
 
 ### * tuple generator
 
-make_fuzzy_tuple <-
-function(FUN = fuzzy_normal, n = 5, ..., universe = NULL)
+fuzzy_tuple <-
+function(FUN = fuzzy_normal, n = 5, ..., universe = NULL, names = NULL)
 {
     universe <- .expand(universe)
     F <- if (is.charfun_generator(FUN))
@@ -244,6 +244,7 @@ function(FUN = fuzzy_normal, n = 5, ..., universe = NULL)
     else
         function(i) FUN(universe[i], universe = universe, ...)
 
-    as.tuple(lapply(seq(1, length(universe), length.out = n), F))
+    ret <- as.tuple(lapply(seq(1, length(universe), length.out = n), F))
+    structure(ret, names = names)
 }
 

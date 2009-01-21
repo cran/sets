@@ -26,7 +26,7 @@ function(gset,
 }
 
 ## convenience function generator for non-vectorized equality predicates
-make_matchfun <-
+matchfun <-
 function(FUN)
     .make_matchfun_from_equalityfun(FUN)
 
