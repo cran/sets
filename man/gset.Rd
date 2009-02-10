@@ -19,11 +19,13 @@
 \alias{gset_cartesian}
 \alias{gset_combn}
 \alias{gset_core}
+\alias{gset_peak}
 \alias{gset_height}
 \alias{gset_transform_memberships}
 \alias{gset_concentrate}
 \alias{gset_dilate}
 \alias{gset_normalize}
+\alias{gset_defuzzify}
 \alias{\%D\%}
 \alias{\%e\%}
 \alias{e}
@@ -54,6 +56,7 @@ as.gset(x)
 is.gset(x)
 gset_support(x)
 gset_core(x)
+gset_peak(x)
 gset_height(x)
 gset_universe(x)
 
@@ -62,6 +65,7 @@ gset_transform_memberships(x, FUN, \dots)
 gset_concentrate(x)
 gset_dilate(x)
 gset_normalize(x, height = 1)
+gset_defuzzify(x, method = c("meanofmax", "smallestofmax", "largestofmax", "centroid"))
 
 gset_is_empty(x)
 gset_is_subset(x, y)
@@ -129,7 +133,14 @@ is_element(e)
     efaults to the value of \code{sets_options("universe")}.
     If the latter is also \code{NULL}, the support
     will be used in computations.}
-  \item{method}{Currently, only \code{"Jaccard"} is implemented.}
+  \item{method}{For \code{gset_similarity()}: Currently, only
+    \code{"Jaccard"} is implemented (cardinality of the intersection,
+    divided by the cardinality of the union). For
+    \code{gset_defuzzify()}: \code{"centroid"} computes the arithmetic
+    mean of the set elements, using the membership values as
+    weights. \code{"smallestofmax"} / \code{"meanofmax"} /
+    \code{"largestofmax"}: returns the minimum/mean/maximum of all
+    set elements with maximal membership degree.}
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
@@ -171,9 +182,10 @@ is_element(e)
   the default methods. \code{set_combn} returns the gset of all
   subsets of specfied length. 
 
-  \code{gset_support} and \code{gset_core}
-  return the set of elements with memberships greater than one and equal
-  to one, respectively. \code{gset_memberships} returns the membership
+  \code{gset_support}, \code{gset_core}, and \code{gset_peak}
+  return the set of elements with memberships greater than zero, equal
+  to one, and equal to the maximum membership, respectively.
+  \code{gset_memberships} returns the membership
   vector. \code{gset_height} returns only the largest membership degree.
   \code{gset_cardinality} computes either the absolute or the
   relative cardinality, i.e. the memberships sum, or the absolute

@@ -175,13 +175,13 @@ class(fuzzy_cone) <- "charfun_generator"
 ## * fuzzy set generators for convenience
 
 .expand <-
-function(universe)
+function(universe = NULL)
 {
     if (is.null(universe))
         universe <- sets_options("universe")
     if (is.null(universe))
         universe <- seq(0,20,0.1)
-    universe
+    as.set(eval(universe))
 }
 
 fuzzy_normal_gset <-
@@ -240,11 +240,13 @@ function(FUN = fuzzy_normal, n = 5, ..., universe = NULL, names = NULL)
 {
     universe <- .expand(universe)
     F <- if (is.charfun_generator(FUN))
-        function(i) gset(charfun = FUN(universe[i], ...), universe = universe)
+        function(i) gset(charfun = FUN(i, ...), universe = universe)
     else
-        function(i) FUN(universe[i], universe = universe, ...)
+        function(i) FUN(i, universe = universe, ...)
 
-    ret <- as.tuple(lapply(seq(1, length(universe), length.out = n), F))
-    structure(ret, names = names)
+    if (length(n) == 1L)
+        n <- .get_support(universe)[seq(from = 1, to = length(universe),
+                                        length.out = n)]
+    structure(as.tuple(lapply(n, F)), names = names)
 }
 
