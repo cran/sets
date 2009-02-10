@@ -18,11 +18,15 @@ function(x)
 
 gset_core <-
 function(x)
-    as.set(.get_support(x)[sapply(gset_memberships(x), max) == 1L])
+    as.set(.get_support(x)[sapply(gset_memberships(x), max) == 1])
 
 gset_height <-
 function(x)
     max(unlist(gset_memberships(x)))
+
+gset_peak <-
+function(x)
+    as.set(.get_support(x)[sapply(gset_memberships(x), max) == gset_height(x)])
 
 gset_charfun <-
 function(x)
@@ -38,7 +42,7 @@ function(x)
             ret[vals] <- .get_memberships(x)[ ret[vals] ]
         if (is.list(ret) && (length(ret) < 2L))
             ret <- ret[[1L]]
-        ret
+        if (is.na(ret)) 0 else ret
     }
     structure(ret, class = "gset_charfun")
 }

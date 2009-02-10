@@ -13,7 +13,7 @@ function(x, type = NULL, ylim = NULL,
             "barplot"
 
     if (!cset_is_fuzzy_multiset(x) && (type != "barplot"))
-        return(plot(tuple(x)))
+        return(plot(tuple(x), ...))
 
     if (is.null(ylim) && !cset_is_multiset(x))
         ylim <- c(0,1)
@@ -71,6 +71,7 @@ function(x, type = "l", ylim = NULL,
         ylim <- c(0, 1)
 
     ## find common domain
+    names(l) <- NULL ## remove labels
     universe <- do.call(set_union,
                         c(lapply(l, cset_support),
                           lapply(lapply(l, cset_universe), as.set))
@@ -129,6 +130,7 @@ function(x, col = 1, universe = NULL, ...)
     }
 
     ## try to deduce universe
+    names(l) <- NULL ## remove labels
     universe <- do.call(set_union,
                         c(lapply(l, cset_support),
                           lapply(lapply(l, cset_universe), as.set))

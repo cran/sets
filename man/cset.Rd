@@ -28,6 +28,7 @@
 \alias{cset_concentrate}
 \alias{cset_dilate}
 \alias{cset_normalize}
+\alias{cset_defuzzify}
 \alias{cset_support}
 \alias{cset_similarity}
 \alias{cset_is_crisp}
@@ -63,6 +64,7 @@ cset_transform_memberships(x, FUN, \dots)
 cset_concentrate(x)
 cset_dilate(x)
 cset_normalize(x, height = 1)
+cset_defuzzify(x, method = c("meanofmax", "smallestofmax", "largestofmax", "centroid"))
 
 matchfun(FUN)
 

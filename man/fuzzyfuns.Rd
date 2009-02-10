@@ -50,7 +50,8 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
 }
 \arguments{
   \item{x}{An \R object.}
-  \item{n}{Positive integer indicating the number of sets to be created.}
+  \item{n}{Positive integer indicating the number of sets to be created,
+    or integer vector of location paramters used to create the sets.}
   \item{FUN}{Function to be used for creating a membership function.
     Needs to be vectorized, i.e., is expected to take a vector of set
     elements and to return a vector of numeric values.}
@@ -175,5 +176,8 @@ gset(charfun = fuzzy_poisson(10), universe = seq(0, 20, 2))
 
 ## creating a series of fuzzy normal sets
 fuzzy_tuple(fuzzy_normal, 5)
+
+## creating a series of fuzzy cones with specific locations
+fuzzy_tuple(fuzzy_cone, c(2,3,7))
 }
 \keyword{math}
