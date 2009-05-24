@@ -17,7 +17,7 @@
 
 gset <-
 function(support = NULL, memberships = NULL, charfun = NULL,
-         elements = NULL, universe = NULL)
+         elements = NULL, universe = NULL, bound = NULL)
 {
     Universe <- universe
     if(is.null(universe))
@@ -30,7 +30,7 @@ function(support = NULL, memberships = NULL, charfun = NULL,
     if (is.null(support) && !is.null(memberships))
         stop("'membership' requires 'support'.")
     if (is.null(universe) && !is.null(charfun))
-        stop("'charfun' requires 'universe'.")
+        stop("'charfun' requires 'universe' (or a default universe).")
     if (!is.null(memberships) && !is.null(charfun))
         stop("Need either 'memberships' and 'support', or 'charfun' and 'universe'.")
 
@@ -67,11 +67,13 @@ function(support = NULL, memberships = NULL, charfun = NULL,
         .stop_if_memberships_are_invalid(memberships)
 
     ## check support against universe
-    if (!is.null(universe) && !set_is_subset(as.set(support), as.set(universe)))
+    if (!is.null(universe) && !set_is_subset(as.set(support),
+                                             as.set(universe)))
         stop("Support must be a subset of the universe.")
 
     ### canonicalize memberships & create gset
-    .make_gset_from_support_and_memberships(support, memberships, Universe)
+    .make_gset_from_support_and_memberships(support, memberships, Universe,
+                                            bound)
 }
 
 print.gset <-
@@ -186,7 +188,7 @@ function(e1, e2)
                if(is.gset(e2))
                    gset_power(e2)
                else
-                   do.call(gset_cartesian, rep(list(e1), e2))}
+                   do.call(gset_cartesian, rep.int(list(e1), e2))}
            )
 
 }
@@ -198,7 +200,7 @@ function(list)
     structure(list, class = "gset")
 
 .make_gset_from_support_and_memberships <-
-function(support, memberships, universe = NULL)
+function(support, memberships, universe = NULL, bound = NULL)
 {
     ## simplify memberships:
     if (!is.null(memberships)) {
@@ -238,22 +240,36 @@ function(support, memberships, universe = NULL)
         memberships <- memberships[!z]
     }
 
-    ## if gset has no or trivial membership, return set.
-    if (is.null(memberships) || is.atomic(memberships) && all(memberships == 1))
-        return(.make_set_from_list(support))
+    ## if gset has no or trivial membership:
+    if (is.null(memberships) || is.atomic(memberships) &&
+        all(memberships == 1)) {
+        support <- .list_sort(.as.list(support))
+        ## if a universe exists, return gset
+        if (!is.null(universe))
+            return(.make_gset_by_support_and_memberships(support = support,
+                                                         memberships = NULL,
+                                                         universe = universe))
+        else
+            return(.make_set_from_list(support))
+    }
 
     ## if gset has fuzzy multiset representation, but
     ## is really only multi or fuzzy, simplify memberships.
     tmp <- lapply(memberships, .as.list)
     if (all(sapply(tmp, length) == 1L)) {
         if (all(unlist(memberships) == 1L))
-            memberships <- as.integer(sapply(memberships, .get_memberships))
+            memberships <- sapply(memberships, .get_memberships)
         else if (all(sapply(memberships, .get_memberships) == 1L)) {
             memberships <- unlist(memberships)
-            if (all(memberships >= 1))
-                memberships <- as.integer(memberships)
         }
     }
+
+    ## check memberships against bound, if any.
+    bd <- bound
+    if (is.null(bd))
+        bd <- sets_options("bound")
+    if (!is.null(bd) && (max(.multiplicities(memberships)) > bd))
+        stop("Memberships must not exceed bound!")
 
     ## convert support to set. Reorder memberships accordingly, if needed.
     S <- canonicalize_set_and_mapping(x = support, mapping = memberships)
@@ -261,19 +277,21 @@ function(support, memberships, universe = NULL)
     ## return gset.
     .make_gset_by_support_and_memberships(support = S$set,
                                           memberships = S$mapping,
-                                          universe = universe)
+                                          universe = universe,
+                                          bound = bound)
 }
 
 .make_gset_by_support_and_memberships <-
-function(support, memberships, universe = NULL)
+function(support, memberships, universe = NULL, bound = NULL)
 {
-    if (is.null(memberships) ||
-        is.atomic(memberships) && all(memberships == 1))
+    if (is.null(universe) && (is.null(memberships) ||
+        is.atomic(memberships) && all(memberships == 1)))
         .make_set_from_list(support)
     else
         structure(support,
                   memberships = memberships,
                   universe = universe,
+                  bound = bound,
                   class = c("gset", "cset"))
 }
 
@@ -299,39 +317,49 @@ function(memberships, errmsg = NULL)
     }
 }
 
-.make_gset_from_list_of_gsets_and_support_and_connector <-
-    function(l, support, connector, matchfun = .exact_match,
-             enforce_general_case = FALSE)
+.apply_connector_to_list_of_gsets_and_support <-
+function(l, support, connector, matchfun = .exact_match,
+         enforce_general_case = FALSE)
 {
     ## extract memberships according to support
     m <- lapply(l, .memberships_for_support, support, matchfun)
 
     ## apply connector to memberships
+    if (!enforce_general_case &&
+        (all(sapply(l, gset_is_crisp)) ||
+         all(sapply(l, gset_is_set_or_fuzzy_set))))
+        ## for multisets and fuzzy sets, just use normalized memberships
+        Reduce(connector, m)
+    else {
+        ## in all other cases, expand memberships first:
+
+        ## determine max. membership cardinality
+        is_list <- sapply(m, is.list)
+        mlen <- max(if (any(is_list)) sapply(m[is_list], sapply, length),
+                    if (any(!is_list)) sapply(m[!is_list], max))
+
+        ## group by support, expand memberships, and apply connector
+        lapply(seq_along(support), function(i) {
+            Reduce(connector,
+                   lapply(m, function(j) .expand_membership(j[[i]],
+                                                            len = mlen)))
+        })
+    }
+}
+
+.make_gset_from_list_of_gsets_and_support_and_connector <-
+function(l, support, connector, matchfun = .exact_match,
+         enforce_general_case = FALSE)
+{
+    ## compute memberships
     memberships <-
-        if (!enforce_general_case &&
-            (all(sapply(l, gset_is_crisp)) ||
-             all(sapply(l, gset_is_set_or_fuzzy_set))))
-        {
-            ## - for multisets and fuzzy sets, just use normalized memberships
-            Reduce(connector, m)
-        } else {
-            ## - in the general case, we first need to group by support
-            ##   and expand the memberships
-
-            ## determine max. membership cardinality
-            is_list <- sapply(m, is.list)
-            mlen <- max(if (any(is_list)) sapply(m[is_list], sapply, length),
-                        if (any(!is_list)) sapply(m[!is_list], max))
-
-            ## group by support, expand memberships, and apply connector
-            lapply(seq_along(support), function(i) {
-                Reduce(connector,
-                       lapply(m, function(j) .expand_membership(j[[i]], len = mlen)))
-            })
-        }
+        .apply_connector_to_list_of_gsets_and_support(l, support, connector,
+                                                      matchfun,
+                                                      enforce_general_case)
 
     ## create resulting gset
     .make_gset_from_support_and_memberships(support, memberships)
+
 }
 
 .make_list_of_elements_from_cset <-

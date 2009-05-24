@@ -69,9 +69,9 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
 
     ## optionally, fill up with 0s
     if (!is.na(len)) {
-        ret <- c(ret, rep(0, len - length(ret)))
+        ret <- c(ret, rep.int(0, len - length(ret)))
         if (!rep)
-            M <- c(M, rep(0, len - length(M)))
+            M <- c(M, rep.int(0, len - length(M)))
     }
 
     if (rep)

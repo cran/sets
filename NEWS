@@ -1,3 +1,20 @@
+Changes to 0.7:
+
+ o L1 and L2 dissimilarities for fuzzy multisets added.
+
+ o fuzzy_pi() - generator added
+
+ o (fuzzy) multisets are now n-bounded (n = maximal multiplicity).
+   This now allows consistent complement-building.
+
+ o nu-cuts added (filters elements according to multiplicity).
+
+Changes to 0.6:
+
+ o fuzzy inference framework added
+
+ o converters for matrices added
+
 Changes to 0.5:
 
   o bug fixes in ordering function and as.character.cset

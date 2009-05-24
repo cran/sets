@@ -7,17 +7,17 @@ function(x)
 set_is_empty <-
 function(x)
 {
-    if(is.set(x))
-        length(x) < 1L
+    if(is.cset(x))
+        set_cardinality(x) < 1L
     else
-        sapply(x, length) < 1L
+        sapply(x, set_cardinality) < 1L
 }
 
 set_is_subset <-
 function(x, y)
 {
     .help <- function(a, b) set_is_empty(set_complement(b, a))
-    if(is.set(x))
+    if(is.cset(x))
         .help(x, y)
     else
         Vectorize(.help)(x, y)
@@ -27,7 +27,7 @@ set_is_proper_subset <-
 function(x, y)
 {
     set_is_subset(x, y) &
-    if(is.set(x))
+    if(is.cset(x))
         length(x) != length(y)
     else
         sapply(x, length) != sapply(y, length)
@@ -39,7 +39,7 @@ function(x, y)
     .help <- function(a, b)
         ((length(a) == length(b))
          && (length(set_intersection(a,b)) == length(a)))
-    if(is.set(x))
+    if(is.cset(x))
         .help(x, y)
     else
         Vectorize(.help)(x, y)
@@ -68,17 +68,21 @@ function(x)
 gset_is_empty <-
 function(x)
 {
-    if(is.gset(x))
-        length(x) == 0
+    if(is.cset(x))
+        gset_cardinality(x) == 0
     else
-        sapply(x, length) == 0
+        sapply(x, gset_cardinality) == 0
 }
 
 gset_is_subset <-
 function(x, y)
 {
-    .help <- function(a, b) gset_is_empty(gset_complement(b, a))
-    if(is.gset(x))
+    .help <-
+        function(a, b) set_is_subset(a, b) &&
+    all(unlist(.apply_connector_to_list_of_gsets_and_support(list(a, b),
+                                                             .get_support(a),
+                                                             `<=`)))
+    if(is.cset(x))
         .help(x, y)
     else
         Vectorize(.help)(x, y)
@@ -88,7 +92,7 @@ gset_is_proper_subset <-
 function(x, y)
 {
     gset_is_subset(x, y) &
-    if(is.gset(x))
+    if(is.cset(x))
         length(x) != length(y)
     else
         sapply(x, length) != sapply(y, length)
@@ -100,7 +104,7 @@ function(x, y)
     .help <- function(a, b)
         ((length(a) == length(b))
          && (length(gset_intersection(a,b)) == length(a)))
-    if(is.gset(x))
+    if(is.cset(x))
         .help(x, y)
     else
         Vectorize(.help)(x, y)
@@ -160,15 +164,19 @@ cset_is_empty <-
 function(x)
 {
     if(is.cset(x))
-        length(x) == 0
+        cset_cardinality(x) == 0
     else
-        sapply(x, length) == 0
+        sapply(x, cset_cardinality) == 0
 }
 
 cset_is_subset <-
 function(x, y)
 {
-    .help <- function(a, b) cset_is_empty(cset_complement(b, a))
+    .help <-
+        function(a, b) set_is_subset(a, b) &&
+    all(unlist(.apply_connector_to_list_of_gsets_and_support(list(a, b),
+                                                             .get_support(a),
+                                                             `<=`)))
     if(is.cset(x))
         .help(x, y)
     else

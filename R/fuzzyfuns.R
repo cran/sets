@@ -172,6 +172,31 @@ function(center = NULL, radius = 2, height = 1, return_base_corners = TRUE)
 }
 class(fuzzy_cone) <- "charfun_generator"
 
+fuzzy_pi <-
+function(mid = NULL, min = NULL, max = NULL, height = 1,
+         return_base_corners = TRUE)
+{
+    if (height > 1 || height < 0)
+        stop("Height must be in the unit interval.")
+    function(x) {
+        if (is.null(mid))
+            mid <- x[trunc((1 + length(x)) / 2)]
+        if (is.null(min)) min <- mid - 2
+        if (is.null(max)) max <- mid + 2
+        ret <- ifelse(x < min | x > max,
+               0,
+               ifelse(x < mid,
+                      height * (1 - (x - mid) ^ 2 / (min - mid) ^ 2),
+                      height * (1 - (x - mid) ^ 2 / (max - mid) ^ 2)
+                      )
+               )
+        if (return_base_corners)
+            ret[match(c(min, max), x)] <- .Machine$double.eps
+        ret
+    }
+}
+class(fuzzy_pi) <- "charfun_generator"
+
 ## * fuzzy set generators for convenience
 
 .expand <-
@@ -204,6 +229,7 @@ function(center = NULL, cross = NULL, slope = 4, height = 1, chop = 0,
     gset(charfun = fuzzy_bell(center = center, cross = cross, slope = slope,
                               height = height, chop = chop),
          universe = .expand(universe))
+
 fuzzy_sigmoid_gset <-
 function(cross = NULL, slope = 0.5, height = 1, chop = 0,
          universe = NULL)
@@ -231,6 +257,13 @@ function(center = NULL, radius = 2, height = 1, universe = NULL,
     gset(charfun = fuzzy_cone(center = center, radius = radius,
                               height = height,
                               return_base_corners = return_base_corners),
+         universe = .expand(universe))
+
+fuzzy_pi_gset <-
+function(mid = NULL, min = NULL, max = NULL, height = 1, universe = NULL,
+         return_base_corners = TRUE)
+    gset(charfun = fuzzy_pi(mid = mid, min = min, max = max, height = height,
+                            return_base_corners = return_base_corners),
          universe = .expand(universe))
 
 ### * tuple generator

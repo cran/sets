@@ -41,7 +41,10 @@ function(x)
 {
     x <- as.character(x)
     x[nchar(x) == 0L] <- "_"
-    substr(x, start = 1, stop = 256)
+    x <- substr(x, start = 1, stop = 256)
+    while(any((n <- nchar(x, "byte")) > 256))
+        x <- substr(x, 1, 256 - ceiling(n / 2))
+    x
 }
 
 ## hash creator and accessors

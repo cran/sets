@@ -8,7 +8,9 @@
 \alias{cset_is_equal}
 \alias{cset_contains_element}
 \alias{cset_core}
+\alias{cset_peak}
 \alias{cset_universe}
+\alias{cset_bound}
 \alias{cset_height}
 \alias{cset_union}
 \alias{cset_sum}
@@ -30,7 +32,6 @@
 \alias{cset_normalize}
 \alias{cset_defuzzify}
 \alias{cset_support}
-\alias{cset_similarity}
 \alias{cset_is_crisp}
 \alias{cset_is_fuzzy_set}
 \alias{cset_is_multiset}
@@ -56,9 +57,11 @@ cset(gset,
      matchfun = sets_options("matchfun"))
 cset_support(x)
 cset_core(x)
+cset_peak(x)
 cset_height(x)
 cset_memberships(x)
 cset_universe(x)
+cset_bound(x)
 
 cset_transform_memberships(x, FUN, \dots)
 cset_concentrate(x)
@@ -102,9 +105,7 @@ cset_power(x)
 cset_cartesian(\dots)
 cset_combn(x, m)
 
-cset_similarity(x, y, method = "Jaccard")
-
-\method{cut}{cset}(x, level = 1, \dots)
+\method{cut}{cset}(x, level = 1, type = c("alpha", "nu"), strict = FALSE, \dots)
 \method{mean}{cset}(x, \dots)
 \method{median}{cset}(x, na.rm = FALSE)
 \method{length}{cset}(x)
@@ -128,7 +129,11 @@ cset_similarity(x, y, method = "Jaccard")
   \item{type}{For \code{gset_cardinality()}:
     cardinality type (either \code{"absolute"} or
     \code{"relative"}). For \code{gset_mean()}: mean type
-    (\code{"arithmetic"}, \code{"geometric"}, or \code{"harmonic"}).}
+    (\code{"arithmetic"}, \code{"geometric"}, or \code{"harmonic"}).
+    For \code{"cut"}: either \code{"alpha"} or \code{"nu"}.}
+  \item{strict}{Logical indicating whether the cut level must be 
+    exceeded strictly (\dQuote{greater than}) or not (\dQuote{greater
+      than or equal}).}
   \item{height}{Double from the unit interval for scaling memberships.}
   \item{e}{An object of class \code{element}.}
   \item{m}{Number of elements to choose.}

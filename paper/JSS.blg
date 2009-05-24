@@ -3,44 +3,44 @@ The top-level auxiliary file: JSS.aux
 The style file: jss.bst
 Database file #1: sets.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-You've used 19 entries,
+You've used 20 entries,
             3179 wiz_defined-function locations,
-            739 strings with 7597 characters,
-and the built_in function-call counts, 14420 in all, are:
-= -- 1188
-> -- 366
+            745 strings with 7874 characters,
+and the built_in function-call counts, 15364 in all, are:
+= -- 1267
+> -- 393
 < -- 22
-+ -- 143
-- -- 120
-* -- 1047
-:= -- 1989
-add.period$ -- 72
-call.type$ -- 19
-change.case$ -- 132
-chr.to.int$ -- 19
-cite$ -- 19
-duplicate$ -- 1326
-empty$ -- 1347
-format.name$ -- 157
-if$ -- 2981
++ -- 153
+- -- 129
+* -- 1130
+:= -- 2116
+add.period$ -- 76
+call.type$ -- 20
+change.case$ -- 139
+chr.to.int$ -- 20
+cite$ -- 20
+duplicate$ -- 1410
+empty$ -- 1433
+format.name$ -- 169
+if$ -- 3172
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 202
-newline$ -- 106
-num.names$ -- 77
-pop$ -- 491
+missing$ -- 215
+newline$ -- 111
+num.names$ -- 81
+pop$ -- 519
 preamble$ -- 1
-purify$ -- 116
+purify$ -- 123
 quote$ -- 0
-skip$ -- 396
+skip$ -- 413
 stack$ -- 0
-substring$ -- 1106
-swap$ -- 438
+substring$ -- 1196
+swap$ -- 466
 text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 159
+type$ -- 168
 warning$ -- 0
-while$ -- 114
+while$ -- 122
 width$ -- 0
-write$ -- 257
+write$ -- 270

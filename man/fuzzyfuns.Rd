@@ -9,6 +9,7 @@
 \alias{fuzzy_sigmoid}
 \alias{fuzzy_trapezoid}
 \alias{fuzzy_triangular}
+\alias{fuzzy_pi}
 \alias{fuzzy_normal_gset}
 \alias{fuzzy_two_normals_gset}
 \alias{fuzzy_bell_gset}
@@ -16,6 +17,7 @@
 \alias{fuzzy_trapezoid_gset}
 \alias{fuzzy_triangular_gset}
 \alias{fuzzy_cone_gset}
+\alias{fuzzy_pi_gset}
 \title{Fuzzy membership functions}
 \description{Fuzzy membership and set creator functions.}
 \usage{
@@ -32,6 +34,7 @@ fuzzy_sigmoid(cross = NULL, slope = 0.5, height = 1, chop = 0)
 fuzzy_trapezoid(corners = NULL, height = c(1,1), return_base_corners = TRUE)
 fuzzy_triangular(corners = NULL, height = 1, return_base_corners = TRUE)
 fuzzy_cone(center = NULL, radius = 2, height = 1, return_base_corners = TRUE)
+fuzzy_pi(mid = NULL, min = NULL, max = NULL, height = 1, return_base_corners = TRUE)
 
 fuzzy_normal_gset(mean = NULL, sd = 1, log = FALSE, height = 1,
                   chop = 0, universe = NULL)
@@ -47,6 +50,8 @@ fuzzy_triangular_gset(corners = NULL, height = 1, universe = NULL,
                       return_base_corners = TRUE)
 fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
                 return_base_corners = TRUE)
+fuzzy_pi_gset(mid = NULL, min = NULL, max = NULL, height = 1,
+              universe = NULL, return_base_corners = TRUE)
 }
 \arguments{
   \item{x}{An \R object.}
@@ -74,9 +79,14 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
   \item{corners}{Double values (vector of length four)
     indicating the abscisses of the four corners of the resulting
     trapezoid.}
+  \item{min, mid, max}{Doubles indicating the abscisses of the three
+    spline knots \eqn{(\code{min}, 0)}, \eqn{(\code{mid},
+      \code{height})} and \eqn{(\code{max}, 0)}
+    the curve passes through.}
   \item{return_base_corners}{Logical indicating whether membership grades
     for the base line corner elements should be returned as small values
-    instead of 0.  Otherwise, if a set is created from the memberships,
+    (\code{.Machine$double.eps}) instead of 0.
+    Otherwise, if a set is created from the memberships,
     the corner elements would be removed from the set.}
   \item{universe}{Universal set used for computing the memberships
     grades.}
@@ -123,6 +133,10 @@ fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
       \eqn{(\code{center} - \code{radius}, 0)},
       \eqn{(\code{center}, \code{height})}, and
       \eqn{(\code{center} + \code{radius}, 0)}.}
+    
+    \item{\code{fuzzi_pi}}{constructs a spline based on two quadratic
+      functions, passing through the knot points \eqn{(\code{min}, 0)},
+      \eqn{(\code{mid}, \code{height})} and \eqn{(\code{max}, 0)}}
   }
 
   \code{charfun_generator} takes a vectorized function as argument,

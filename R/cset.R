@@ -16,7 +16,10 @@ function(gset,
         uni <- !.duplicated_by_matchfun(gset, matchfun)
         gset <-
             .make_gset_by_support_and_memberships(.as.list(.get_support(gset)[uni]),
-                                                  .get_memberships(gset)[uni])
+                                                  .get_memberships(gset)[uni],
+                                                  universe = .get_universe(gset),
+                                                  bound = .get_bound(gset)
+                                                  )
     }
 
     ## create cset-object
@@ -113,7 +116,7 @@ function(e1, e2)
                if(is.cset(e2))
                    cset_power(e2)
                else
-                   do.call(cset_cartesian, rep(list(e1), e2))}
+                   do.call(cset_cartesian, rep.int(list(e1), e2))}
            )
 
 }

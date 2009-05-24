@@ -52,13 +52,15 @@ function(x)
 {
     if (!is.gset(x))
         stop("Argument 'x' must be a generalized set.")
-    u <- .get_universe(x)
-    if (is.null(u))
-        u <- sets_options("universe")
-    if (!is.null(u))
-        as.set(eval(u))
-    else
-        NULL
+    .get_universe(x)
+}
+
+gset_bound <-
+function(x)
+{
+    if (!is.gset(x))
+        stop("Argument 'x' must be a generalized set.")
+    .get_bound(x)
 }
 
 print.gset_charfun <-
@@ -94,6 +96,10 @@ cset_height <-
 function(x)
     max(unlist(cset_memberships(x)))
 
+cset_peak <-
+function(x)
+    as.set(.get_support(x)[sapply(cset_memberships(x), max) == cset_height(x)])
+
 cset_charfun <-
 function(x)
 {
@@ -116,7 +122,19 @@ function(x)
 
 cset_universe <-
 function(x)
-    gset_universe(x)
+{
+    if (!is.cset(x))
+        stop("Argument 'x' must be a customizable set.")
+    .get_universe(x)
+}
+
+cset_bound <-
+function(x)
+{
+    if (!is.cset(x))
+        stop("Argument 'x' must be a customizable set.")
+    .get_bound(x)
+}
 
 print.cset_charfun <-
 function(x, ...)
@@ -161,7 +179,7 @@ function(x, value)
 function(x)
 {
     m <- attr(x, "memberships")
-    if (is.null(m)) rep(1L, length.set(x)) else m
+    if (is.null(m)) rep.int(1L, length.set(x)) else m
 }
 
 .set_memberships <-
@@ -182,7 +200,43 @@ function(x)
 
 .get_universe <-
 function(x)
-    attr(x, "universe")
+{
+    u <- attr(x, "universe")
+    if (is.null(u))
+        u <- sets_options("universe")
+    if (!is.null(u))
+        as.set(eval(u))
+    else
+        as.set(.get_support(x))
+}
+
+.set_universe <-
+function(x, value)
+{
+    attr(x, "universe") <- value
+    x
+}
+
+.get_bound <-
+function(x)
+{
+    b <- attr(x, "bound")
+    if (is.null(b))
+        b <- sets_options("bound")
+    if (!is.null(b))
+        b
+    else if (set_is_empty(x))
+        return(0)
+    else
+        max(.multiplicities(.get_memberships(x)))
+}
+
+.set_bound <-
+function(x, value)
+{
+    attr(x, "bound") <- value
+    x
+}
 
 .get_support <-
 function(x)
@@ -202,6 +256,17 @@ function(x)
         .as.list(x)
     else
         ret
+}
+
+.multiplicities <-
+function(x)
+{
+    if (is.list(x))
+        unlist(lapply(x, function(i) sum(.get_memberships(i))))
+    else if(any(x > 1))
+        x
+    else
+        rep(1L, length(x))
 }
 
 .orderfun <-
