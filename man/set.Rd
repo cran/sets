@@ -14,7 +14,6 @@
 \alias{set_complement}
 \alias{set_cardinality}
 \alias{length.set}
-\alias{set_similarity}
 \alias{set_power}
 \alias{set_cartesian}
 \alias{set_combn}
@@ -41,8 +40,6 @@ set_cardinality(x)
 set_power(x)
 set_cartesian(\dots)
 set_combn(x, m)
-
-set_similarity(x, y, method = "Jaccard")
 }
 \arguments{
   \item{x}{For \code{as.set()} and \code{is.set()}:
@@ -50,7 +47,6 @@ set_similarity(x, y, method = "Jaccard")
   \item{y}{A set object.}
   \item{e}{An \R object.}
   \item{m}{Number of elements to choose.}
-  \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{\dots}{For \code{set()}: \R objects, and set objects otherwise.}
 }
 \details{
@@ -108,7 +104,6 @@ set_similarity(x, y, method = "Jaccard")
 \value{
   For the predicate functions, a logical. For \code{make_set_with_order},
   a list with two components \code{"set"} and \code{"order"}. For
-  \code{set_similarity}, a numeric value from the unit interval. For
   \code{set_cardinality} and the length method, an integer value. For all
   others, a set.
 }
@@ -173,7 +168,7 @@ s2 >= s # same
 s < s
 
 ## complement, union, intersection, symmetric difference:
-s - 1
+s - 1L
 s + set("a") # or use: s | set("a")
 s & s
 s \%D\% s2

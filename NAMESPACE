@@ -22,6 +22,7 @@ export("%e%",
        "set_outer",
        "set_power",
        "set_similarity",
+       "set_dissimilarity",
        "set_symdiff",
        "set_union",
        "sets_options"
@@ -38,6 +39,7 @@ S3method("as.list", "set")
 S3method("as.list", "function")
 S3method("make_set_with_order", "character")
 S3method("make_set_with_order", "data.frame")
+S3method("make_set_with_order", "matrix")
 S3method("make_set_with_order", "default")
 S3method("make_set_with_order", "factor")
 S3method("make_set_with_order", "integer")
@@ -74,6 +76,7 @@ export("%e%",
        "%D%",
        "as.gset",
        "gset",
+       "gset_bound",
        "gset_cardinality",
        "gset_cartesian",
        "gset_charfun",
@@ -107,6 +110,7 @@ export("%e%",
        "gset_product",
        "gset_mean",
        "gset_similarity",
+       "gset_dissimilarity",
        "gset_sum",
        "gset_support",
        "gset_symdiff",
@@ -124,6 +128,7 @@ S3method("[[<-", "gset")
 S3method("all.equal","gset")
 S3method("as.gset", "character")
 S3method("as.gset", "data.frame")
+S3method("as.gset", "matrix")
 S3method("as.gset", "default")
 S3method("as.gset", "factor")
 S3method("as.gset", "gset")
@@ -155,6 +160,7 @@ S3method("summary","gset")
 ## Customizable set stuff
 export("as.cset",
        "cset",
+       "cset_bound",
        "cset_cardinality",
        "cset_cartesian",
        "cset_charfun",
@@ -190,7 +196,9 @@ export("as.cset",
        "cset_power",
        "cset_product",
        "cset_mean",
+       "cset_peak",
        "cset_similarity",
+       "cset_dissimilarity",
        "cset_sum",
        "cset_support",
        "cset_symdiff",
@@ -209,6 +217,7 @@ S3method("[[<-", "cset")
 S3method("all.equal","cset")
 S3method("as.cset", "character")
 S3method("as.cset", "data.frame")
+S3method("as.cset", "matrix")
 S3method("as.cset", "default")
 S3method("as.cset", "factor")
 S3method("as.cset", "cset")
@@ -322,6 +331,8 @@ export(".N.",
        "fuzzy_normal",
        "fuzzy_normal_gset",
        "fuzzy_partition",
+       "fuzzy_pi",
+       "fuzzy_pi_gset",
        "fuzzy_rule",
        "fuzzy_sigmoid",
        "fuzzy_sigmoid_gset",

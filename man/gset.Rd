@@ -30,12 +30,12 @@
 \alias{\%e\%}
 \alias{e}
 \alias{is_element}
+\alias{gset_bound}
 \alias{gset_cardinality}
 \alias{gset_charfun}
 \alias{gset_memberships}
 \alias{gset_support}
 \alias{gset_universe}
-\alias{gset_similarity}
 \alias{gset_is_crisp}
 \alias{gset_is_fuzzy_set}
 \alias{gset_is_multiset}
@@ -51,7 +51,7 @@
 \title{Generalized sets}
 \description{Creation and manipulation of generalized sets.}
 \usage{
-gset(support, memberships, charfun, elements, universe)
+gset(support, memberships, charfun, elements, universe, bound)
 as.gset(x)
 is.gset(x)
 gset_support(x)
@@ -59,6 +59,7 @@ gset_core(x)
 gset_peak(x)
 gset_height(x)
 gset_universe(x)
+gset_bound(x)
 
 gset_memberships(x)
 gset_transform_memberships(x, FUN, \dots)
@@ -94,12 +95,10 @@ gset_power(x)
 gset_cartesian(\dots)
 gset_combn(x, m)
 
-gset_similarity(x, y, method = "Jaccard")
-
 e(x, memberships = 1L)
 is_element(e)
 
-\method{cut}{gset}(x, level = 1, \dots)
+\method{cut}{gset}(x, level = 1, type = c("alpha", "nu"), strict = FALSE, \dots)
 \method{mean}{gset}(x, \dots)
 \method{median}{gset}(x, na.rm = FALSE)
 \method{length}{gset}(x)
@@ -123,23 +122,29 @@ is_element(e)
     object/memberships-pairs.}
   \item{charfun}{A function taking an object and returning the
     membership.}
+  \item{bound}{Integer used to compute the absolute complement for
+    (fuzzy) multisets. If \code{NULL},
+    defaults to the value of \code{sets_options("bound")}.
+    If the latter is also \code{NULL}, the maximum multiplicity
+    will be used in computations.}
   \item{FUN}{A function, to be applied to a membership vector.}
   \item{type}{For \code{gset_cardinality()}:
     cardinality type (either \code{"absolute"} or
     \code{"relative"}). For \code{gset_mean()}: mean type
-    (\code{"arithmetic"}, \code{"geometric"}, or \code{"harmonic"}).}
+    (\code{"arithmetic"}, \code{"geometric"}, or \code{"harmonic"}).
+    For \code{"cut"}: either \code{"alpha"} or \code{"nu"}.}
+  \item{strict}{Logical indicating whether the cut level must be 
+    exceeded strictly (\dQuote{greater than}) or not (\dQuote{greater
+      than or equal}).}
   \item{height}{Double from the unit interval for scaling memberships.}
-  \item{universe}{An optional set of elements. If \code{NULL}, d
-    efaults to the value of \code{sets_options("universe")}.
+  \item{universe}{An optional set of elements. If \code{NULL},
+    defaults to the value of \code{sets_options("universe")}.
     If the latter is also \code{NULL}, the support
     will be used in computations.}
-  \item{method}{For \code{gset_similarity()}: Currently, only
-    \code{"Jaccard"} is implemented (cardinality of the intersection,
-    divided by the cardinality of the union). For
-    \code{gset_defuzzify()}: \code{"centroid"} computes the arithmetic
+  \item{method}{\code{"centroid"} computes the arithmetic
     mean of the set elements, using the membership values as
     weights. \code{"smallestofmax"} / \code{"meanofmax"} /
-    \code{"largestofmax"}: returns the minimum/mean/maximum of all
+    \code{"largestofmax"} returns the minimum/mean/maximum of all
     set elements with maximal membership degree.}
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
@@ -202,14 +207,13 @@ is_element(e)
   \code{gset_product} (\code{gset_mean}) of some gsets
   compute the gset with the corresponding memberships multiplied (averaged).
   
-  The \code{cut} method
-  \dQuote{filters} all elements with membership not less then
-  \code{level} --- the result, thus, is a crisp
-  (multi)set. \code{gset_similarity} computes the simple Jaccard
-  similarity between two generalized sets \eqn{A} and \eqn{B},
-  i.e., the cardinality of the
-  intersection divided by the cardinality of the union of \eqn{A} and \eqn{B}.
-
+  The \code{cut} method provides both \eqn{\alpha}- and \eqn{\nu}-cuts.
+  \eqn{\alpha}-cuts \dQuote{filter} all elements with memberships
+  greater than (or equal to) \code{level}---the result, thus, is a crisp
+  (multi)set. \eqn{\nu}-cuts select those elements with a
+  \emph{multiplicity} exceeding \code{level}
+  (only sensible for (fuzzy) multisets). 
+  
   Because set elements are unordered, it is not allowed to use
   \emph{positional} indexing. However, it is possible to
   do indexing using element labels or

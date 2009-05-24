@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{20}
 \newcommand{\enquote}[1]{``#1''}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
@@ -9,10 +9,16 @@
   \urlstyle{rm}\Url}\fi
 \providecommand{\eprint}[2][]{\url{#2}}
 
+\bibitem[{Aklan \emph{et~al.}(2008)Aklan, Altindas, Macit, Umar, and
+  Unal}]{sets:aklan+altindas+macit:2008}
+Aklan S, Altindas E, Macit R, Umar S, Unal H (2008).
+\newblock \emph{fuzzyOP: Fuzzy numbers and the main mathematical operations}.
+\newblock \proglang{R} package version 1.0.
+
 \bibitem[{Alvarez(2007)}]{sets:alvarez:2007}
 Alvarez AG (2007).
 \newblock \emph{FKBL: fuzzy knowledge base learning}.
-\newblock R package version 0.50-4.
+\newblock \proglang{R} package version 0.50-4.
 
 \bibitem[{Cantor(1895)}]{sets:cantor:1895}
 Cantor G (1895).
@@ -37,7 +43,7 @@ Fraenkel AA (1922).
 \bibitem[{Geyer(2007)}]{sets:geyer:2007}
 Geyer CJ (2007).
 \newblock \emph{fuzzyRankTests: Fuzzy Rank Tests and Confidence Intervals}.
-\newblock R package version 0.3-2,
+\newblock \proglang{R} package version 0.3-2,
   \urlprefix\url{http://www.stat.umn.edu/geyer/fuzz/}.
 
 \bibitem[{Klement \emph{et~al.}(2000)Klement, Mesiar, and
@@ -55,7 +61,7 @@ Knuth DE (1973).
 Lewin A (2007).
 \newblock \emph{fuzzyFDR: Exact calculation of fuzzy decision rules for
   multiple testing}.
-\newblock R package version 1.0.
+\newblock \proglang{R} package version 1.0.
 
 \bibitem[{Matth{\'e} \emph{et~al.}(2006)Matth{\'e}, Caluwe, de~Tr{\'e}, Hallez,
   Verstraete, Leman, Cornelis, Moelants, and
@@ -64,30 +70,32 @@ Matth{\'e} T, Caluwe RD, de~Tr{\'e} G, Hallez A, Verstraete J, Leman M,
   Cornelis O, Moelants D, Gansemans J (2006).
 \newblock \enquote{Similarity Between Multi-valued Thesaurus Attributes: Theory
   and Application in Multimedia Systems.}
-\newblock In \enquote{Flexible Query Answering systems,} Lecture Notes in
+\newblock In \enquote{Flexible Query Answering Systems,} Lecture Notes in
   Computer Science, pp. 331--342. Springer.
 
 \bibitem[{Meyer and Buchta(2008)}]{sets:meyer+buchta:2008}
 Meyer D, Buchta C (2008).
 \newblock \emph{\pkg{proxy}: Distance and Similarity Measures}.
-\newblock \textsf{R} package version 0.4-1.
+\newblock \proglang{R} package version 0.4-1.
 
 \bibitem[{Meyer and Hornik(2008)}]{sets:meyer+hornik:2008}
 Meyer D, Hornik K (2008).
 \newblock \emph{\pkg{sets}}.
-\newblock \textsf{R} package version 0.5.
+\newblock \proglang{R} package version 0.7.
+
+\bibitem[{Mizutani \emph{et~al.}(2008)Mizutani, Inokuchi, and
+  Miyamoto}]{sets:mizutani+inokuchi+miyamoto:2008}
+Mizutani K, Inokuchi R, Miyamoto S (2008).
+\newblock \enquote{Algorithms of Nonlinear Document Clustering Based on Fuzzy
+  Multiset Model.}
+\newblock \emph{International Journal of Intelligent Systems}, \textbf{23},
+  176--198.
 
 \bibitem[{Roberts(2007)}]{sets:roberts:2007}
 Roberts DW (2007).
 \newblock \emph{fso: Fuzzy Set Ordination}.
-\newblock R package version 1.0-1,
+\newblock \proglang{R} package version 1.0-1,
   \urlprefix\url{http://ecology.msu.montana.edu/labdsv/R/lab11/lab11.html}.
-
-\bibitem[{Semagul \emph{et~al.}(2008)Semagul, Emine, Rabiye, Senay, and
-  Hatice}]{sets:semagul+emine+rabiye:2008}
-Semagul A, Emine A, Rabiye M, Senay U, Hatice U (2008).
-\newblock \emph{fuzzyOP: Fuzzy numbers and the main mathematical operations}.
-\newblock R package version 1.0.
 
 \bibitem[{Singh \emph{et~al.}(2007)Singh, Ibrahim, Yohanna, and
   Singh}]{sets:singh+ibrahim+yohanna:2007}
@@ -98,8 +106,8 @@ Singh D, Ibrahim A, Yohanna T, Singh J (2007).
 \bibitem[{Vinterbo(2007)}]{sets:vinterbo:2007}
 Vinterbo SA (2007).
 \newblock \emph{gcl: Compute a fuzzy rules or tree classifier from data}.
-\newblock R package version 1.06.5, \urlprefix\url{http://www.r-project.org,
-  http://www.mit.edu/~sav/fuzzy/}.
+\newblock \proglang{R} package version 1.06.5,
+  \urlprefix\url{http://www.r-project.org, http://www.mit.edu/~sav/fuzzy/}.
 
 \bibitem[{Wirth(1983)}]{sets:wirth:1983}
 Wirth N (1983).

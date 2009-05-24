@@ -14,60 +14,9 @@ function(x, y, matchfun = .exact_match)
 
 gset_complement <-
 function(x, y = NULL)
-    .gset_complement_using_support_and_matchfun(x, y)
-
-.gset_complement_using_support_and_matchfun <-
-function(x, y = NULL, support = set_union(x, y), matchfun = .exact_match)
 {
-    ## auto-complement
-    if (is.null(y))
-        y <- gset_universe(x)
-    if (is.null(y)) {
-        if (gset_is_crisp(x))
-            return(gset())
-        else if (gset_is_fuzzy_set(x))
-                return(.make_gset_from_support_and_memberships(.get_support(x),
-                                                               .N.(.get_memberships(x))))
-        else if (is.na(y)) {
-            memberships <- lapply(.get_memberships(x), function(i) {
-                .make_gset_from_support_and_memberships(lapply(.get_support(i), .N.),
-                                                        .get_memberships(i))
-            })
-            return(.make_gset_from_support_and_memberships(.get_support(x),
-                                                           memberships))
-        }
-    }
-
-    ## For "ordinary sets", call set function
-    if (gset_is_set(x) && gset_is_set(y))
-        return(.set_complement_using_matchfun(x, y, matchfun))
-
-    ## extract memberships, normalized for target support
-    m_x <- .memberships_for_support(x, support, matchfun)
-    m_y <- .memberships_for_support(y, support, matchfun)
-
-    memberships <-
-    if (gset_is_fuzzy_set(x) && gset_is_fuzzy_set(y)) {
-        .T.(.N.(m_x), m_y)
-    } else {
-        ## expand memberships
-        maxlen <- max(if (is.list(m_x)) sapply(m_x, length) else m_x,
-                      if (is.list(m_y)) sapply(m_y, length) else m_y)
-        m_x <- lapply(m_x, .expand_membership, len = maxlen)
-        m_y <- lapply(m_y, .expand_membership, len = maxlen)
-
-        ## compute target memberships
-        lapply(seq_along(m_x),
-               function(i) .T.(.N.(m_x[[i]]), m_y[[i]]))
-    }
-
-    ## simplify multiset/multiset-case
-    if (gset_is_crisp(x) && gset_is_crisp(y))
-        memberships <- sapply(memberships, sum)
-
-    ## return resulting gset
-    .make_gset_from_support_and_memberships(support,
-                                            .canonicalize_memberships(memberships))
+    Cx <- .gset_complement(x)
+    if (is.null(y)) Cx else gset_intersection(Cx, y)
 }
 
 cset_complement <-
@@ -80,10 +29,55 @@ function(x, y = NULL)
         matchfun <- .matchfun(x)
         orderfun <- .orderfun(x)
     }
-    support <- cset(set_union(x, y), matchfun = matchfun)
-    .make_cset_from_gset_and_orderfun_and_matchfun(
-        .gset_complement_using_support_and_matchfun(x, y, support, matchfun),
-        orderfun,
-        matchfun)
+
+    Cx <- .make_cset_from_gset_and_orderfun_and_matchfun(
+              .gset_complement(x,
+                               universe = cset_universe(x),
+                               bound = cset_bound(x)),
+               orderfun,
+               matchfun
+    )
+    if (is.null(y)) Cx else cset_intersection(Cx, y)
 }
 
+.gset_complement <-
+function(x, universe = gset_universe(x), bound = gset_bound(x))
+{
+    if (set_is_empty(universe) || bound < 1L)
+        return(set())
+
+    ## efficiency hack: by default, the complement gets the universe
+    ## of the original set, *except* if there is a default universe
+    ## and the universe attribute of the original set is missing.
+    tuniverse <- universe
+    if (!is.null(sets_options("universe")) && is.null(attr(x, "universe")))
+        tuniverse <- NULL
+
+    if (gset_is_set(x) && bound == 1L)
+        gset(set_complement(x, universe), universe = tuniverse, bound = 1L)
+    else if (gset_is_crisp(x)) {
+        M <- gset(universe, rep(bound, length(universe)))
+        structure(.set_bound(.set_universe(gset_difference(M, x), tuniverse), bound),
+                  class = c("gset", "cset"))
+    } else if (gset_is_fuzzy_set(x) && bound == 1L)
+        .make_gset_from_support_and_memberships(
+              universe,
+              .N.(.memberships_for_support(x, universe)),
+              universe = tuniverse,
+              bound = bound
+        )
+    else {
+        connector <- function(x, y) .N.(y)
+        M <- gset(universe, rep(bound, length(universe)))
+        memberships <-
+            .apply_connector_to_list_of_gsets_and_support(list(M, x),
+                                                          universe,
+                                                          connector)
+        .make_gset_from_support_and_memberships(
+              universe,
+              memberships,
+              universe = tuniverse,
+              bound = bound
+        )
+    }
+}

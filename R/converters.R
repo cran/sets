@@ -58,12 +58,14 @@ function(x)
     .make_set_with_order(.make_set_from_list(x[O]), O)
 }
 
+make_set_with_order.matrix <-
 make_set_with_order.data.frame <-
 function(x) {
     x <- unique(x)
     O <- do.call(order, x)
-    .make_set_with_order(.make_set_from_list(lapply(split(x, rownames(x)),
-                                                    as.tuple)), O)
+    n <- rownames(x)
+    if (is.null(n)) n <- seq_len(nrow(x))
+    .make_set_with_order(.make_set_from_list(lapply(split(x, n), as.tuple)), O)
 }
 
 .make_set_with_order <-
@@ -89,7 +91,7 @@ function(x, mapping = NULL, margin = NULL)
             if (is.null(margin))
                 margin <- which(D == L)
             permute <- rep.int(list(seq_len(L)), length(D))
-            permute[margin] <- rep(list(x$order), length(margin))
+            permute[margin] <- rep.int(list(x$order), length(margin))
             do.call("[", c(list(mapping), permute, list(drop = FALSE)))
         } else
             mapping[x$order]
@@ -165,8 +167,13 @@ function(x)
 }
 
 as.gset.data.frame <-
+as.gset.matrix <-
 function(x)
-    as.gset(lapply(split(x, rownames(x)), as.tuple))
+{
+    n <- rownames(x)
+    if (is.null(n)) n <- seq_len(nrow(x))
+    as.gset(lapply(split(x, n), as.tuple))
+}
 
 as.list.gset <-
 function(x, ...)
@@ -226,6 +233,7 @@ function(x)
 as.cset.cset <-
     identity
 
+as.cset.matrix <-
 as.cset.data.frame <-
 as.cset.logical <-
 function(x)

@@ -22,7 +22,8 @@ x \%is\% y
     default universe). For \code{fuzy_partition}: further arguments passed to \code{FUN}.}
   \item{antecedent, consequent}{parts of an inference rule (see
     details).}
-  \item{variables}{Set of fuzzy variables.}
+  \item{variables}{Set or tuple of fuzzy variables (note that
+    tuples must be used if two variables have the same definition).}
   \item{rules}{Set of rules.}
   \item{system}{A fuzzy system.}
   \item{values}{Named list of input values to the system. The names must

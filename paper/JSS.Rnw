@@ -1,5 +1,5 @@
 \documentclass[article]{jss}
-\usepackage{amsfonts,hyperref}
+\usepackage{amsfonts,hyperref,enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% declarations for jss.cls %%
@@ -36,25 +36,25 @@ and matching functions.
 %% publication information
 %% NOTE: This needs to filled out ONLY IF THE PAPER WAS ACCEPTED.
 %% If it was not (yet) accepted, leave them commented.
-%% \Volume{13}
-%% \Issue{9}
-%% \Month{September}
-%% \Year{2004}
-%% \Submitdate{2004-09-29}
-%% \Acceptdate{2004-09-29}
+%% \Volume{}
+%% \Issue{}
+%% \Month{May}
+%% \Year{2009}
+%% \Submitdate{2009-02-22}
+%% \Acceptdate{2009-05-29}
 
 %% The address of (at least) one author should be given
 %% in the following format:
 \Address{
   David Meyer\\
   Department of Information Systems and Operations\\
-  E-mail: \email{David.Meyer@wu-wien.ac.at}\\
-  URL: \url{http://wi.wu-wien.ac.at/~meyer/}\\
+  E-mail: \email{David.Meyer@wu.ac.at}\\
+  URL: \url{http://wi.wu.ac.at/~meyer/}\\
 
   Kurt Hornik\\
   Department of Statistics and Mathematics\\
-  E-mail: \email{Kurt.Hornik@wu-wien.ac.at}\\
-  URL: \url{http://statmath.wu-wien.ac.at/~hornik/}\\
+  E-mail: \email{Kurt.Hornik@wu.ac.at}\\
+  URL: \url{http://statmath.wu.ac.at/~hornik/}\\
 
   Wirtschaftsuniversit\"at Wien\\
   Augasse 2--6\\
@@ -150,6 +150,10 @@ programming languages:  \proglang{Java} and \proglang{C++}
 provide corresponding abstract data types (ADTs) in their class
 libraries, \proglang{Pascal} and \proglang{Python}
 offer sets as native data type.
+Indeed, since set elements are order-invariant and unique,
+lookup mechanisms can be implemented very efficiently (for example via
+hashing, resulting in nearly constant run-time complexity, compared to linear
+search, requiring $n/2$ steps on the average for $n$ elements).
 Surprisingly enough, sets are not standard in many
 mathematical programming environments such as \proglang{Matlab} and
 \proglang{Mathematica}, and also \R. Although the two latter offer
@@ -203,7 +207,7 @@ by triples describing the triangles' corner points for which the
 memberships become $(0,1,0)$, respectively. Similarly, the \pkg{FKBL}
 package for fuzzy knowledge base learning \citep{sets:alvarez:2007}
 uses sequences of triangular fuzzy sets, defined by a vector of corner
-points. Finally, \pkg{fuzzyOP} \citep{sets:semagul+emine+rabiye:2008}
+points. Finally, \pkg{fuzzyOP} \citep{sets:aklan+altindas+macit:2008}
 provides support for fuzzy
 numbers: A set of $n$ numbers is represented by a $k \times 2n$
 numeric matrix, where two consecutive columns represent (at most $k$)
@@ -301,16 +305,27 @@ the list elements, and match the actual objects using a simple linear
 search. (Note that since the element list is sorted, elements with same
 representation are grouped, so the search will typically be fast.)
 
-Objects for sets, generalized sets and customizable sets have \code{S3}
+The implementation is based on \R's \code{S3} class system, allowing
+the definition of generic functions, dispatching appropriate methods
+depending on the first argument's class information.
+Objects for sets, generalized sets and customizable sets have
 classes \class{set}, \class{gset} and \class{cset}, respectively, with
 \class{set} inheriting from \class{gset} in turn inheriting from
-\class{cset}. Accordingly, all operations have \samp{set\_},
-\samp{gset\_} or \samp{cset\_} prefixes, respectively, to give the user
+\class{cset}.
+Semantically suitable operators (such as \code{\&} for intersection)
+are then overloaded to dispatch the right internal function
+corresponding to the operands' classes.
+Additionally, all operations can directly be accessed using the
+corresponding name combined with a \samp{set\_}, \samp{gset\_}, or
+\samp{cset\_} prefix to give the user
 the choice of up- or downcasts when objects of different class levels
 are involved in one computation. For example, consider the union of the
-set $\{1\}$ and the fuzzy set $\{2/0.5\}$: If the result should be a
+set $\{1\}$ and the fuzzy set $\{2/0.5\}$: using the generic operator
+will give an error since the operands' classes differ. The user needs,
+in fact, resolve the semantic ambiguity by explicitly choosing the
+intended operation: If the result should be a
 generalized (fuzzy) set, \codefun{gset\_union} should be used.  To make
-the result a set (stripping membership information), one employs
+the result a set (stripping membership information), s/he employs
 \codefun{set\_union} instead.
 
 \section{Sets}
@@ -331,7 +346,7 @@ set("test", c, set("a", 2.5), list(1, 2))
 Mainly for cosmetic reasons, there is also a tuple class that can be
 used for vectors:
 <<>>=
-set(1, pair(1,2), tuple(1,2,3))
+set(1, pair(1,2), tuple(1L, 2L, 3L))
 @
 In addition, there is a generic \codefunind{as.set}
 function coercing suitable objects to sets.
@@ -339,25 +354,26 @@ function coercing suitable objects to sets.
 s2 <- as.set(2:4)
 print(s2)
 @
-There are some basic predicate functions (and corresponding operators)
+There are some basic predicate functions (and corresponding generic operators)
 defined for the (in)equality (\code{!=}, \code{==}),
 (proper) subset (\code{<}, \code{<=}), (proper) superset (\code{>},
 \code{>=}), and element-of (\code{\%e\%}) operations:
 
 <<setpredicates>>=
 set_is_empty(set())
-
-set_is_subset(set(1), set(1,2))
 set(1) <= set(1,2)
 @
-Note that all predicate functions are vectorized:
+Note that all predicate functions are vectorized for convenience:
 <<>>=
-set_contains_element(set(1,2,3), 1)
+@
 1:4 %e% set(1L, 2L, 3L)
 @
 The sequence \code{1:4} as \emph{one} element would be looked up by
 using \code{list(1:4)} on the left-hand side.
-Other than these functions and operators, one can use
+The class-specific functions dispatched by the generic operators
+are \codefun{set\_contains\_element},
+\codefun{set\_is\_equal}, etc.
+Other than these predicate functions, one can use
 \codefun{length} for the cardinality:
 <<>>=
 length(s)
@@ -379,10 +395,30 @@ and \code{2\^} for the power set:
 <<>>=
 2 ^ s
 @
+The class-specific functions
 \codefunind{set\_union}, \codefunind{set\_intersection}, and
 \codefunind{set\_symdiff} accept more than two arguments.\footnote{The
   $n$-ary symmetric difference of a collection of sets consists of all
   elements contained in an odd number of the sets in the collection.}
+It is also possible to compute the \emph{relative} complement of a set $X$ in
+$Y$, basically removing the elements of $X$ from $Y$:
+<<>>=
+set_complement(set(1), set(1,2,3))
+@
+Note, however, that for sets (as opposed to \emph{generalized} sets),
+the concept of a ``universe'' is not necessarily required, and
+therefore the \emph{absolute} complement of a set not a well-defined operation.
+In the \pkg{sets} package, objects of class
+\class{set} are special cases of generalized sets. To stay faithful to
+the simplicity of the original set concept,
+we \emph{define} a \class{set} object's
+universe to be identical to the set itself.
+The \emph{absolute} complement of a \class{set} object
+is therefore always the empty set:
+<<>>>=
+!set(1)
+@
+
 \codefunind{set\_combn} returns the set of all subsets of specified
 length:
 <<<>>=
@@ -444,32 +480,51 @@ set_outer(set(1,2), set(1,2,3), "/")
 
 There are several extensions of sets such as \emph{fuzzy sets}
 and \emph{multisets}. Both can be be seen as special cases of
-\emph{fuzzy multisets}. We present how they are constructed, and
+\emph{fuzzy multisets}. All have in common that they are defined on some
+\emph{universe} of elements, and that each element maps to some
+membership information.
+We present how generalized sets are constructed, and
 demonstrate the effect of choosing different fuzzy logic families.
 
 \subsection{Constructors and specific methods}
 
-Generalized sets are created using the \codefun{gset} function,
-expecting support and membership information. This
-can be done in four ways:
+Generalized sets are created using the \codefun{gset} function. The
+required arguments depend on whether membership information is specified
+extensionally (listing members) or intensionally
+(giving a rule for membership):
 
 \begin{enumerate}
-\item Specify the support only (this yields a \dQuote{classical} set).
-\item Specify support and memberships.
-\item Specify support and membership function.
-\item Specify a set of elements along with their individual membership
-  grades, using the element function (\codefun{e}).
+\item Extensional specification:
+  \begin{enumerate}[a]
+  \item Specify support and memberships as separate vectors. If
+    memberships are omitted, they are assumed to be 1.
+  \item Specify a set of elements along with their individual membership
+    grades, using the element function (\codefun{e}).
+  \end{enumerate}
+\item Intensive specification: Specify universe and membership function.
 \end{enumerate}
 
-\noindent Note that by default, for efficiency reasons, \codefun{gset} will not
-store elements with zero memberships grades. The specification of an
-universe is thus only mandatory with membership functions. A default
-universe can be set using \codefun{sets\_options}.
+\noindent Note that for efficiency reasons, \codefun{gset} will not
+store elements with zero memberships grades, and the specification of an
+universe is only required with membership functions.
+For convenience (and storage efficiency), a
+default universe can be defined using \codefun{sets\_options}.
+Set-specific universes supersede the default universe, if any.
+If no universe (general or specific) is defined, the support of a set will be
+interpreted as its universe. For multisets, the definition of a
+(general or set-specific) universe can be complemented by a maximum
+multiplicity or \emph{bound}.
 
 \noindent Without membership information, \codefun{gset} creates a set (the support is converted to a set internally):
 <<keep.source=TRUE>>=
 X <- c("A", "B", "C")
 gset(support = X)
+@
+Note, however, that unlike for \class{set} objects, it is possible to
+define a universe that differs from (i.e., is a proper superset than)
+the support:
+<<>>=
+gset(support = X, universe = LETTERS[1:10])
 @
 A multiset requires an integer membership vector:
 <<>>=
@@ -517,22 +572,27 @@ such as union and intersection are available:
 X <- gset(c("A", "B", "C"), 4:6)
 Y <- gset(c("B", "C", "D"), 1:3)
 
-gset_union(X, Y)
-gset_intersection(X, Y)
+X | Y
+X & Y
 @
-Additionally, the sum and the difference of sets are defined,
-which add and subtract multiplicities (or memberships for fuzzy sets):
+Additionally, the product (\codefun{gset\_product}), sum (\code{+}),
+and difference (\code{-}) of sets are defined,
+which multiply, add, and subtract
+multiplicities (or memberships for fuzzy sets):
 <<>>=
-gset_sum(X, Y)
-gset_difference(X, Y)
+X + Y
+X - Y
+gset_product(X, Y)
 @
 For fuzzy (multi-)sets, not only the relative, but also the
-absolute complement is defined:
+absolute complement (\code{!}) is defined:
 <<>>=
-gset_complement(gset(1, 0.3))
 !gset(1, 0.3)
+X <- gset("a", universe = letters[1:3])
+!X
+!!X
+!gset(1L, 2, universe = 1:3, bound = 3)
 @
-(Note the use of the \code{!} operator).
 
 \codefun{gset\_mean} creates a new set by averaging corresponding
 memberships using the arithmetic, geometric or harmonic mean.
@@ -548,20 +608,26 @@ gset_mean(set(1), set(1, 2))
 
 The membership vector of a generalized set can be transformed via
 \codefun{gset\_transform\_memberships}, applying any
-\emph{vectorized} function the memberships:
+\emph{vectorized} function to the memberships:
 <<>>=
 x <- gset(1:10, 1:10/10)
 gset_transform_memberships(x, pmax, 0.5)
 @
-Note the effect of applying transformations to (multi)sets:
+Note that for multisets, an element's
+membership (multiplicity) $m$ is interpreted as a one-vector of length
+$m$, yielding possibly unexpected results:
 <<>>=
 x <- gset(1, 2)
 gset_transform_memberships(x, `*`, 0.5)
-
-## compare this to:
+@
+For multisets, the \codefun{rep} function is a more natural choice
+for membership transformations:
+<<>>=
+@
 rep(x, 0.5)
 @
-In addition, three convenience functions exist: \codefun{gset\_concentrate} and
+In addition, three convenience functions are defined for fuzzy (multi-)sets:
+\codefun{gset\_concentrate} and
 \codefun{gset\_dilate} apply the square and the square root function,
 and \codefun{gset\_normalize} normalizes the memberships to a specified
 maximum:
@@ -570,6 +636,7 @@ gset_dilate(y)
 gset_concentrate(y)
 gset_normalize(y, 0.5)
 @
+(Note that these functions clearly have no effect for multisets.)
 
 \subsection{Fuzzy logic and fuzzy sets}
 
@@ -608,15 +675,15 @@ print(Y)
 First, we try the Zadeh logic (default):
 <<>>=
 fuzzy_logic("Zadeh")
-gset_intersection(X, Y)
-gset_union(X, Y)
+X & Y
+X | Y
 gset_complement(X, Y)
 @
 The results are different by switching to the Fodor logic:
 <<>>=
 fuzzy_logic("Fodor")
-gset_intersection(X, Y)
-gset_union(X, Y)
+X & Y
+X | Y
 gset_complement(X, Y)
 @
 <<fuzzyoff,echo=FALSE,results=hide>>=
@@ -639,6 +706,7 @@ gaussian curve (\codefun{fuzzy\_normal}),
 double gaussian curve (\codefun{fuzzy\_two\_normals}),
 bell curve (\codefun{fuzzy\_bell}),
 sigmoid curve (\codefun{fuzzy\_sigmoid}),
+PI curve (\codefun{fuzzy\_pi}),
 trapezoid (\codefun{fuzzy\_trapezoid}),
 and triangle (\codefun{fuzzy\_triangular}, \codefun{fuzzy\_cone}). For
 example, a fuzzy normal function and a corresponding fuzzy set
@@ -651,10 +719,12 @@ gset(charfun = N, universe = -3:3)
 @
 For convenience, we
 also provide wrappers that directly generate corresponding sets,
-given a specified (default) universe:
+given a specified universe:
 <<>>=
 fuzzy_normal_gset(universe = -3:3)
 @
+(If no universe is specified, the default universe is used; if this is
+also missing, the universe currently defaults to \code{seq(0, 20, 0.1)}.)
 It is also possible to create function generators for characteristic
 functions from other functions (such as distribution functions):
 <<>>=
@@ -731,6 +801,14 @@ solid (red) line: union; dashed (green) line: arithmetic mean).}
 \label{fig:plots}
 \end{center}
 \end{figure}
+
+Finally, we note that the \pkg{sets} package provides basic
+infrastructure for fuzzy inference (\codefun{fuzzy\_inference}),
+involving the definition of
+linguistic variables (\codefun{fuzzy\_variable}, \codefun{fuzzy\_partition})
+and fuzzy rules (\codefun{fuzzy\_rule}) to build a fuzzy
+system (\codefun{fuzzy\_system}). A few methods for defuzzification
+(\codefun{gset\_defuzzify}) are also provided.
 
 \section{User-definable extensions}
 \label{sec:csets}
@@ -842,7 +920,7 @@ as.cset(c("A", "quick", "brown", "fox", "quick"))
 \label{sec:examples}
 
 In the following, we present two examples for the use of multisets
-and generalized sets.
+and fuzzy multisets.
 
 \subsection{Multisets}
 
@@ -887,91 +965,99 @@ fisher.test(l[[1]])$p.value
 
 \subsection{Fuzzy multisets}
 
-Companies typically evaluate the effectiveness of their promotional
-activities through surveys, where respondents state
-whether and to which extent they associate some attributes to the
-promoted products. Suppose, e.g, that a
-commercial for a new car conveys the idea of \dQuote{sportiness} and
-\dQuote{coolness}---the surveys will help to assess if
-these \dQuote{messages} have really been perceived by
-customers. It is also common to include competing products.
-For each of product, customers will need to pick some attributes from
-a list and specify some rating. The resulting data can be represented
-by fuzzy multisets: one for each product, the support being the set of
-attributes perceived, and the memberships representing the respondents'
-ratings for each of the attributes. In the following, we will use some
-simulated data (see Appendix \ref{sec:productcode} for the code):
-<<echo=FALSE>>=
-create_products <-
-function(attributes = c("comfortable", "sporty", "fast", "spacious",
-         "cool", "economic", "trendy", "stylish"),
-         values = 1:10 / 10,
-         N = 10)
-{
-    sample_FUN <- function(n, values)
-        lapply(sample(length(values), n, replace = TRUE),
-               function(i) sample(values, i))
-
-    attr_list <- sample_FUN(N, attributes)
-    value_list <- lapply(sapply(attr_list, length), sample_FUN, values)
-
-    Map(gset, attr_list, value_list)
-}
-@
+Fuzzy multisets can be used to represent objects appearing several
+times with different membership grades (e.g., weights, degrees of
+credibility, \dots). \cite{sets:mizutani+inokuchi+miyamoto:2008}
+describe an interesting application of fuzzy multisets to text mining:
+The occurrences of some terms of interest (``neural network'',
+``fuzzy'', ``image'') in titles, abstracts, and keywords
+of 30 documents on fuzzy theory are represented by fuzzy
+multisets, with varying memberships depending on whether a term occurs
+in the title (degree 1), the keywords (degree 0.6), and/or the
+abstract (degree 0.2).
 <<>>=
-set.seed(4712)
-cars <- create_products(N = 10)
-cars[1:2]
+data("fuzzy_docs")
+print(fuzzy_docs[8:9])
 @
-The \pkg{sets} package implements the
-Jaccard similarity, defined as
-$|X \cap Y| / |X \cup Y|$ given two generalized sets $X$ and $Y$, $|\cdot|$
+This information is then used to compute distances between documents,
+and ultimately to compare several (non-linear) clustering methods
+regarding their abilities of recovering the true underlying
+structure. In fact, it is known that the first 12 documents are
+related to neural networks, and the remaining 18 to image
+processing.
+
+In the following, we will perform simple hierarchical
+clustering. We start by computing a distance matrix for the 30
+documents. The \pkg{sets} package implements the
+Jaccard dissimilarity, defined as
+$1 - |X \cap Y| / |X \cup Y|$ given two generalized sets $X$ and $Y$, $|\cdot|$
 denoting the cardinality for generalized sets.
-Using the \pkg{proxy} package \citep{sets:meyer+buchta:2008},
-one can calculate a similarity matrix between all products for
-user-defined similarity measures:
+A corresponding dissimilarity matrix can be obtained using,
+e.g., the \pkg{proxy} package \citep{sets:meyer+buchta:2008}:
 <<>>=
-library("proxy")
-sim <- simil(cars, method = gset_similarity)
+library(proxy)
+d <- dist(fuzzy_docs, gset_dissimilarity)
 @
-After transformation into a dissimilarity object:
+We then apply Ward's clustering method:
 <<>>=
-d <- as.dist(sim)
+cl1 <- hclust(d, "ward")
 @
-this can be used for, e.g., hierarchical clustering to find
-\dQuote{close} products (see the dendrogram in Figure \ref{fig:cluster}):
-<<cluster,plot=FALSE>>=
-plot(hclust(d))
-@
-Cars 1 and 6 as well as 3 and 10 seem to \dQuote{map} to similar attributes:
+resulting in a clustering depicted in Figure \ref{fig:cluster1}.
+Clearly, the neural network-related documents (\#1--\#12) are separated from
+the image processing papers:
 <<>>=
-cars[c(3,10)]
-@
-Further, if the customer data base includes consumer preferences, these can be
-matched to the existing products for specific recommendations in the
-context of one-to-one marketing campaigns. We use fuzzy sets to
-represent some customers' preferences:
-<<>>=
-customer1 <- gset(c("sporty", "trendy"), c(0.8, 0.6))
-customer2 <- gset(c("comfortable", "spacious"), c(0.5, 0.9))
-customer_DB <- list(customer1, customer2)
-@
-A simple 1-nearest-neighbor approach can be used to identify the
-best-matching product(s): again using the \pkg{proxy} package, we
-compute the cross-similarities between customers and products
-and seek the indexes with highest similarities:
-<<>>=
-max.col(simil(customer_DB, cars, gset_similarity))
+labs1 <- cutree(cl1, 2)
+print(labs1)
 @
 
 \setkeys{Gin}{width=0.7\textwidth}
 \begin{figure}[h]
 \begin{center}
 <<clusterplot,fig=TRUE,echo=FALSE>>=
-<<cluster>>
+plot(cl1)
 @
-\caption{Dendrogram for cars data.}
-\label{fig:cluster}
+\caption{Dendrogram for the \texttt{fuzzy\_docs} data, clustered using
+  Ward's method on Jaccard distances computed from fuzzy multisets.}
+\label{fig:cluster1}
+\end{center}
+\end{figure}
+
+Note that for this data, using
+different weightings for terms in titles, keywords and
+abstracts are key to recover the subgroups.
+Naive text mining approaches operate on ``classical''
+term-document-matrices only, counting term occurrences without further
+information on their relevance:
+<<>>=
+tdm <- set_outer(c("neural networks", "fuzzy", "image"), fuzzy_docs, `%in%`)
+print(tdm)
+@
+By again computing Jaccard distances:
+<<>>=
+d <- dist(tdm, "Jaccard", by_rows = FALSE)
+@
+and the corresponding hierarchical clustering,
+visualized in Figure \ref{fig:cluster2}:
+<<>>=
+cl2 <- hclust(d, "ward")
+@
+we can see that the ``standard'' text mining approach fails to
+correctly assign four documents (\#9--\#12):
+<<>>=
+labs2 <- cutree(cl2, 2)
+print(labs2)
+table(labs1, labs2)
+@
+
+\setkeys{Gin}{width=0.7\textwidth}
+\begin{figure}[h]
+\begin{center}
+<<clusterplot2,fig=TRUE,echo=FALSE>>=
+plot(cl2)
+@
+\caption{Dendrogram for the \texttt{fuzzy\_docs} data, using Ward's
+  method on a term-document-matrix generated for the data.}
+\label{fig:cluster2}
 \end{center}
 \end{figure}
 
@@ -1078,27 +1164,6 @@ an important application of sets.
   \end{description}
 
 \end{appendix}
-
-\section[Code for generating the cars data]{Code for generating the \texttt{cars} data}
-\label{sec:productcode}
-
-\begin{Sinput}
-create_products <-
-function(attributes = c("comfortable", "sporty", "fast", "spacious",
-         "cool", "economic", "trendy", "stylish"),
-         values = 1:10 / 10,
-         N = 10)
-{
-    sample_FUN <- function(n, values)
-        lapply(sample(length(values), n, replace = TRUE),
-               function(i) sample(values, i))
-
-    attr_list <- sample_FUN(N, attributes)
-    value_list <- lapply(sapply(attr_list, length), sample_FUN, values)
-
-    Map(gset, attr_list, value_list)
-}
-\end{Sinput}
 
 \bibliography{sets}
 

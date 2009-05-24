@@ -85,7 +85,7 @@ function(x, type = "l", ylim = NULL,
     } else {
         m <- seq_along(universe)
     }
-    plot(m, rep(0, length(universe)),
+    plot(m, rep.int(0, length(universe)),
          ylim = ylim,
          type = "n",
          axes = FALSE,
@@ -162,7 +162,7 @@ function(x, type = "l", col = 1, continuous = TRUE, universe = NULL, ...)
     universe <- .expand(universe)
     if (.domain_is_numeric(universe)) {
         ndom <- sort(unique(unlist(cset(universe, matchfun = match))))
-        y <- rep(0, length(ndom))
+        y <- rep.int(0, length(ndom))
         s <- cset(x, matchfun = match)
         .match <- matchfun(function(x, y) isTRUE(all.equal(x, y)))
         matches <- .match(unlist(s), ndom)

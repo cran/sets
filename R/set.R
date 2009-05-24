@@ -81,7 +81,7 @@ function(e1, e2)
                if(is.set(e2))
                    set_power(e2)
                else
-                   do.call(set_cartesian, rep(list(e1), e2))
+                   do.call(set_cartesian, rep.int(list(e1), e2))
            }
            )
 
