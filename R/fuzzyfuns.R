@@ -172,7 +172,7 @@ function(center = NULL, radius = 2, height = 1, return_base_corners = TRUE)
 }
 class(fuzzy_cone) <- "charfun_generator"
 
-fuzzy_pi <-
+fuzzy_pi3 <-
 function(mid = NULL, min = NULL, max = NULL, height = 1,
          return_base_corners = TRUE)
 {
@@ -195,7 +195,32 @@ function(mid = NULL, min = NULL, max = NULL, height = 1,
         ret
     }
 }
-class(fuzzy_pi) <- "charfun_generator"
+class(fuzzy_pi3) <- "charfun_generator"
+
+fuzzy_pi4 <- function (knots, height = 1, return_base_corners = TRUE)
+{
+    if (height > 1 || height < 0)
+        stop("Height must be in the unit interval.")
+    if (length(knots) != 4L)
+        stop("Need four knots.")
+    function(x) {
+        ret <- ifelse(x <= knots[1] | x >= knots[4],
+                      0,
+                      ifelse(x > knots[1] & x <= ((knots[1] + knots[2]) / 2),
+                             2  * ((x - knots[1]) / (knots[2] - knots[1]))^2,
+                             ifelse(x > ((knots[1] + knots[2])/2) & x < knots[2],
+                                    1 - 2*((x - knots[2]) / (knots[2] - knots[1]))^2,
+                                    ifelse(x >= knots[2] & x <= knots[3],
+                                           height,
+                                           ifelse(x > knots[3] & x <= ((knots[3] + knots[4]) / 2),
+                                                  1 - 2 * ((x - knots[3]) / (knots[4] - knots[3]))^2,
+                                                  2 * ((x - knots[4]) / (knots[4] - knots[3]))^2)))))
+        if (return_base_corners)
+            ret[match(c(knots[1], knots[4]), x)] <- .Machine$double.eps
+        ret
+    }
+}
+class(fuzzy_pi4)<- "charfun_generator"
 
 ## * fuzzy set generators for convenience
 
@@ -259,11 +284,16 @@ function(center = NULL, radius = 2, height = 1, universe = NULL,
                               return_base_corners = return_base_corners),
          universe = .expand(universe))
 
-fuzzy_pi_gset <-
+fuzzy_pi3_gset <-
 function(mid = NULL, min = NULL, max = NULL, height = 1, universe = NULL,
          return_base_corners = TRUE)
-    gset(charfun = fuzzy_pi(mid = mid, min = min, max = max, height = height,
-                            return_base_corners = return_base_corners),
+    gset(charfun = fuzzy_pi3(mid = mid, min = min, max = max, height = height,
+                             return_base_corners = return_base_corners),
+         universe = .expand(universe))
+
+fuzzy_pi4_gset <-
+function(knots, height = 1, universe = NULL, return_base_corners = TRUE)
+    gset(charfun = fuzzy_pi4(knots = knots, height = height, return_base_corners = return_base_corners),
          universe = .expand(universe))
 
 ### * tuple generator

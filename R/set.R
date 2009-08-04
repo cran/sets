@@ -5,12 +5,15 @@
 ### Basic stuff (constructors, print/summary methods)
 set <-
 function(...) {
-    ret <- .make_set_from_list(.list_sort(.list_unique(list(...))))
+    ret <- .set(...)
     n <- names(ret)
     if (!is.null(n) && any(duplicated(n[n != ""])))
         stop("Labels must be unique.")
     ret
 }
+
+.set <- function(...)
+    .make_set_from_list(.list_sort(.list_unique(list(...))))
 
 print.set <-
 function(x, ...)

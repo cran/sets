@@ -24,7 +24,7 @@ canonicalize_set_and_mapping(x, mapping = NULL, margin = NULL)
 \value{
   A list with three named components:
   \item{set}{The set created from \code{x}.}
-  \item{mapping}{\code{mapping}, possibly reorderd to match the order
+  \item{mapping}{\code{mapping}, possibly reordered to match the order
     of \code{set}.}
   \item{order}{The order used for rearranging the mapping.}
 }

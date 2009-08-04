@@ -142,6 +142,11 @@ fuzzy_logic(new, \dots)
   \emph{Fuzzy Preference Modelling and Multicriteria Decision Support}.
   Kluwer Academic Publishers, Dordrecht.
 
+  D. Meyer and K. Hornik (2009),
+  Generalized and customizable sets in R,
+  \emph{Journal of Statistical Software} \bold{31}(2), 1--27.
+  \url{http://www.jstatsoft.org/v31/i02/}
+
   B. Schweizer and A. Sklar (1983),
   \emph{Probabilistic Metric Spaces}.
   North-Holland, New York.  ISBN 0-444-00666-4.

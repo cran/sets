@@ -21,7 +21,7 @@ tuple_outer(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
     matrix; otherwise, a recursive one (a list with \code{dim}
     attribute).}
   \item{quote}{logical indicating whether the character strings used for
-    the row and column names of the returned matrix shoulda
+    the row and column names of the returned matrix should
     be quoted.}
   \item{\dots}{Additional arguments passed to the \code{FUN}.}
 }

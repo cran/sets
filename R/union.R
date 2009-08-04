@@ -1,8 +1,14 @@
 c.set <-
 set_union <-
 function(...)
-    do.call(set,
-            unlist(lapply(list(...), .make_list_elements), recursive = FALSE))
+{
+    ret <- do.call(.set,
+                   unlist(lapply(list(...), .make_list_elements), recursive = FALSE))
+    n <- names(ret)
+    if (!is.null(n) && any(duplicated(n[n != ""])))
+        names(ret) <- NULL
+    ret
+}
 
 c.gset <-
 gset_union <-

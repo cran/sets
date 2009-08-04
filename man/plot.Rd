@@ -63,7 +63,7 @@ plot(gset(c("a", "b"), list(1:2/2, 0.3)))
 ## characteristic functions
 plot(fuzzy_normal)
 plot(tuple(fuzzy_normal, fuzzy_bell), col = 1:2)
-plot(fuzzy_pi_gset(min = 2, max = 15))
+plot(fuzzy_pi3_gset(min = 2, max = 15))
 
 ## superposing plots using lines()
 x <- fuzzy_normal_gset()

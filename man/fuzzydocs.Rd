@@ -11,10 +11,10 @@ data("fuzzy_docs")
 }
 \format{
   \code{fuzzy_docs} is a list of 30 fuzzy multisets, representing the
-  occurence of the terms \dQuote{neural networks}, \dQuote{fuzzy}, and
+  occurrence of the terms \dQuote{neural networks}, \dQuote{fuzzy}, and
   \dQuote{image} in each document. Each term appears with up to
   three membership values representing weights,
-  depending on whether the term occured
+  depending on whether the term occurred
   in the abstract (0.2), the keywords section (0.6), and/or the title
   (1). The first 12 documents concern neural networks, the remaining 18
   image processing. In the reference, various clustering methods have
