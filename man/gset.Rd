@@ -61,7 +61,7 @@ gset_height(x)
 gset_universe(x)
 gset_bound(x)
 
-gset_memberships(x)
+gset_memberships(x, filter = NULL)
 gset_transform_memberships(x, FUN, \dots)
 gset_concentrate(x)
 gset_dilate(x)
@@ -105,9 +105,11 @@ is_element(e)
 }
 \arguments{
   \item{x}{For \code{e()}, \code{as.gset()} and \code{is.gset()}:
-    an \R object. A (g)set object otherwise.}
+    an \R object. A (g)set object otherwise. \code{gset_memberships()}
+    also accepts tuple objects.}
   \item{y}{A (g)set object.}
   \item{e}{An object of class \code{element}.}
+  \item{filter}{Optional vector of elements to be filtered.}
   \item{m}{Number of elements to choose.}
   \item{support}{A set of elements giving the support of the gset
     (elements with non-zero memberships). Must be a subset of the
@@ -185,13 +187,16 @@ is_element(e)
   The \code{\link{mean}} and \code{\link[stats]{median}}
   methods try to convert the object to a numeric vector before calling
   the default methods. \code{set_combn} returns the gset of all
-  subsets of specfied length. 
+  subsets of specified length. 
 
   \code{gset_support}, \code{gset_core}, and \code{gset_peak}
   return the set of elements with memberships greater than zero, equal
   to one, and equal to the maximum membership, respectively.
   \code{gset_memberships} returns the membership
-  vector. \code{gset_height} returns only the largest membership degree.
+  vector(s) of a given (tuple of) gset(s), optionally
+  restricted to the elements specified by \code{filter}.
+  \code{gset_height} returns only
+  the largest membership degree.
   \code{gset_cardinality} computes either the absolute or the
   relative cardinality, i.e. the memberships sum, or the absolute
   cardinality divided by the number of elements, respectively.
@@ -233,11 +238,18 @@ is_element(e)
   \code{\link{gset_outer}}, and
   \code{\link{tuple}} for tuples (\dQuote{vectors}).
 }
+\references{
+  D. Meyer and K. Hornik (2009),
+  Generalized and customizable sets in R,
+  \emph{Journal of Statistical Software} \bold{31}(2), 1--27.
+  \url{http://www.jstatsoft.org/v31/i02/}
+}
 \examples{
 ## multisets
 (A <- gset(letters[1:5], memberships = c(3, 2, 1, 1, 1)))
 (B <- gset(c("a", "c", "e", "f"), memberships = c(2, 2, 1, 2)))
 rep(B, 2)
+gset_memberships(tuple(A, B), c("a","c"))
 
 gset_union(A, B)
 gset_intersection(A, B)

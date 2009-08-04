@@ -65,7 +65,7 @@ set_combn(x, m)
   the (proper) superset predicate, and \code{==} and \code{!=} for
   (in)equality. The \code{length} method for sets gives the
   cardinality. \code{set_combn} returns the set of all
-  subsets of specfied length. The \code{Summary} methods do also work if
+  subsets of specified length. The \code{Summary} methods do also work if
   defined for the set elements. The \code{\link{mean}} and
   \code{\link[stats]{median}}
   methods try to convert the object to a numeric vector before calling
@@ -111,6 +111,12 @@ set_combn(x, m)
   \code{\link{set_outer}},
   \code{\link{gset}} for generalized sets,
   and \code{\link{tuple}} for tuples (\dQuote{vectors}).
+}
+\references{
+  D. Meyer and K. Hornik (2009),
+  Generalized and customizable sets in R,
+  \emph{Journal of Statistical Software} \bold{31}(2), 1--27.
+  \url{http://www.jstatsoft.org/v31/i02/}
 }
 \examples{
 ## constructor

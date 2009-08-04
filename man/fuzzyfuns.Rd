@@ -9,7 +9,8 @@
 \alias{fuzzy_sigmoid}
 \alias{fuzzy_trapezoid}
 \alias{fuzzy_triangular}
-\alias{fuzzy_pi}
+\alias{fuzzy_pi3}
+\alias{fuzzy_pi4}
 \alias{fuzzy_normal_gset}
 \alias{fuzzy_two_normals_gset}
 \alias{fuzzy_bell_gset}
@@ -17,7 +18,8 @@
 \alias{fuzzy_trapezoid_gset}
 \alias{fuzzy_triangular_gset}
 \alias{fuzzy_cone_gset}
-\alias{fuzzy_pi_gset}
+\alias{fuzzy_pi3_gset}
+\alias{fuzzy_pi4_gset}
 \title{Fuzzy membership functions}
 \description{Fuzzy membership and set creator functions.}
 \usage{
@@ -34,7 +36,8 @@ fuzzy_sigmoid(cross = NULL, slope = 0.5, height = 1, chop = 0)
 fuzzy_trapezoid(corners = NULL, height = c(1,1), return_base_corners = TRUE)
 fuzzy_triangular(corners = NULL, height = 1, return_base_corners = TRUE)
 fuzzy_cone(center = NULL, radius = 2, height = 1, return_base_corners = TRUE)
-fuzzy_pi(mid = NULL, min = NULL, max = NULL, height = 1, return_base_corners = TRUE)
+fuzzy_pi3(mid = NULL, min = NULL, max = NULL, height = 1, return_base_corners = TRUE)
+fuzzy_pi4(knots, height = 1, return_base_corners = TRUE)
 
 fuzzy_normal_gset(mean = NULL, sd = 1, log = FALSE, height = 1,
                   chop = 0, universe = NULL)
@@ -50,13 +53,15 @@ fuzzy_triangular_gset(corners = NULL, height = 1, universe = NULL,
                       return_base_corners = TRUE)
 fuzzy_cone_gset(center = NULL, radius = 2, height = 1, universe = NULL,
                 return_base_corners = TRUE)
-fuzzy_pi_gset(mid = NULL, min = NULL, max = NULL, height = 1,
+fuzzy_pi3_gset(mid = NULL, min = NULL, max = NULL, height = 1,
               universe = NULL, return_base_corners = TRUE)
+fuzzy_pi4_gset(knots, height = 1,
+               universe = NULL, return_base_corners = TRUE)
 }
 \arguments{
   \item{x}{An \R object.}
   \item{n}{Positive integer indicating the number of sets to be created,
-    or integer vector of location paramters used to create the sets.}
+    or integer vector of location parameters used to create the sets.}
   \item{FUN}{Function to be used for creating a membership function.
     Needs to be vectorized, i.e., is expected to take a vector of set
     elements and to return a vector of numeric values.}
@@ -77,12 +82,14 @@ fuzzy_pi_gset(mid = NULL, min = NULL, max = NULL, height = 1,
     distribution.}
   \item{slope}{Double indicating the slope at the cross-over point.}
   \item{corners}{Double values (vector of length four)
-    indicating the abscisses of the four corners of the resulting
+    indicating the abscissas of the four corners of the resulting
     trapezoid.}
-  \item{min, mid, max}{Doubles indicating the abscisses of the three
+  \item{min, mid, max}{Doubles indicating the abscissas of the three
     spline knots \eqn{(\code{min}, 0)}, \eqn{(\code{mid},
       \code{height})} and \eqn{(\code{max}, 0)}
     the curve passes through.}
+  \item{knots}{Vector of doubles of length four indicating the abscissas
+    of the spline knots the curve passes through.}
   \item{return_base_corners}{Logical indicating whether membership grades
     for the base line corner elements should be returned as small values
     (\code{.Machine$double.eps}) instead of 0.
@@ -134,9 +141,15 @@ fuzzy_pi_gset(mid = NULL, min = NULL, max = NULL, height = 1,
       \eqn{(\code{center}, \code{height})}, and
       \eqn{(\code{center} + \code{radius}, 0)}.}
     
-    \item{\code{fuzzi_pi}}{constructs a spline based on two quadratic
+    \item{\code{fuzzi_pi3}}{constructs a spline based on two quadratic
       functions, passing through the knot points \eqn{(\code{min}, 0)},
-      \eqn{(\code{mid}, \code{height})} and \eqn{(\code{max}, 0)}}
+      \eqn{(\code{mid}, \code{height})} and \eqn{(\code{max}, 0)}.}
+    
+    \item{\code{fuzzi_pi4}}{constructs a spline based on an S-shaped and
+      a Z-shaped curve forming a \eqn{\pi}-shaped one, passing through
+      the four knots \eqn{(\code{knots[1]}, 0)}, \eqn{(\code{knots[2]},
+	\code{height})}, \eqn{(\code{knots[3]}, \code{height})}, and \eqn{(\code{knots[4]}, 0)}.
+    }
   }
 
   \code{charfun_generator} takes a vectorized function as argument,
@@ -152,7 +165,7 @@ fuzzy_pi_gset(mid = NULL, min = NULL, max = NULL, height = 1,
   \code{fuzzy_trapezoid} and \code{fuzzy_triangular}).  The chosen
   generating function \code{FUN} is called with \code{n} different
   values chosen along the \code{universe} passed to the
-  first argument, thus varing the position or the resulting graph.
+  first argument, thus varying the position or the resulting graph.
 }
 \value{
   For \code{charfun_generator}, a \emph{generating function}

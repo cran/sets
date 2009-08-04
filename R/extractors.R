@@ -1,32 +1,30 @@
 ## extractors
 
 gset_memberships <-
-function(x)
+function(x, filter = NULL)
 {
-    if (!is.gset(x))
-        stop("Argument 'x' must be a generalized set.")
-    .get_memberships(x)
+    ex <- if(is.null(filter))
+        sets:::.get_memberships
+    else
+        function(i) sets:::.get_memberships(i[filter])
+    if (is.tuple(x)) lapply(x, ex) else ex(x)
 }
 
 gset_support <-
 function(x)
-{
-    if (!is.gset(x))
-        stop("Argument 'x' must be a generalized set.")
     as.set(.get_support(x))
-}
 
 gset_core <-
 function(x)
-    as.set(.get_support(x)[sapply(gset_memberships(x), max) == 1])
+    as.set(.get_support(x)[sapply(.get_memberships(x), max) == 1])
 
 gset_height <-
 function(x)
-    max(unlist(gset_memberships(x)))
+    max(unlist(.get_memberships(x)))
 
 gset_peak <-
 function(x)
-    as.set(.get_support(x)[sapply(gset_memberships(x), max) == gset_height(x)])
+    as.set(.get_support(x)[sapply(.get_memberships(x), max) == gset_height(x)])
 
 gset_charfun <-
 function(x)
@@ -49,19 +47,11 @@ function(x)
 
 gset_universe <-
 function(x)
-{
-    if (!is.gset(x))
-        stop("Argument 'x' must be a generalized set.")
     .get_universe(x)
-}
 
 gset_bound <-
 function(x)
-{
-    if (!is.gset(x))
-        stop("Argument 'x' must be a generalized set.")
     .get_bound(x)
-}
 
 print.gset_charfun <-
 function(x, ...)
@@ -70,35 +60,19 @@ function(x, ...)
     invisible(x)
 }
 
-### * cset extractors
+### * cset extractors (mostly copies of the gset extractors)
 
-cset_memberships <-
-function(x)
-{
-    if (!is.cset(x))
-        stop("Argument 'x' must be a customizable set.")
-    .get_memberships(x)
-}
+cset_memberships <- gset_memberships
 
-cset_support <-
-function(x)
-{
-    if (!is.cset(x))
-        stop("Argument 'x' must be a customizable set.")
-    as.set(.get_support(x))
-}
+cset_support <- gset_support
 
-cset_core <-
-function(x)
-    as.set(.get_support(x)[sapply(cset_memberships(x), max) == 1L])
+cset_core <- gset_core
 
-cset_height <-
-function(x)
-    max(unlist(cset_memberships(x)))
+cset_height <- gset_height
 
 cset_peak <-
 function(x)
-    as.set(.get_support(x)[sapply(cset_memberships(x), max) == cset_height(x)])
+    as.set(.get_support(x)[sapply(.get_memberships(x), max) == cset_height(x)])
 
 cset_charfun <-
 function(x)
@@ -120,21 +94,9 @@ function(x)
     structure(ret, class = "cset_charfun")
 }
 
-cset_universe <-
-function(x)
-{
-    if (!is.cset(x))
-        stop("Argument 'x' must be a customizable set.")
-    .get_universe(x)
-}
+cset_universe <- gset_universe
 
-cset_bound <-
-function(x)
-{
-    if (!is.cset(x))
-        stop("Argument 'x' must be a customizable set.")
-    .get_bound(x)
-}
+cset_bound <- gset_bound
 
 print.cset_charfun <-
 function(x, ...)

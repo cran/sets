@@ -59,7 +59,7 @@ cset_support(x)
 cset_core(x)
 cset_peak(x)
 cset_height(x)
-cset_memberships(x)
+cset_memberships(x, filter = NULL)
 cset_universe(x)
 cset_bound(x)
 
@@ -120,7 +120,7 @@ cset_combn(x, m)
     elements to be matched) and \code{table} (vector of elements to be
     matched against). The return value is an integer vector of the
     matching positions (or \code{NA} if there is no match).
-    Note that the default beavior is to test for \emph{identity}.}
+    Note that the default behavior is to test for \emph{identity}.}
   \item{FUN}{A predicate testing for equality of two objects.}
   \item{orderfun}{A function taking a list and returning an integer vector,
     specifying the order in which an iterator processes the set
@@ -136,6 +136,7 @@ cset_combn(x, m)
       than or equal}).}
   \item{height}{Double from the unit interval for scaling memberships.}
   \item{e}{An object of class \code{element}.}
+  \item{filter}{Optional vector of elements to be filtered.}
   \item{m}{Number of elements to choose.}
   \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{level}{The minimum membership level.}
@@ -175,6 +176,12 @@ cset_combn(x, m)
   \code{\link{gset}} for generalized sets, 
   \code{\link{cset_outer}}, and
   \code{\link{tuple}} for tuples (\dQuote{vectors}).
+}
+\references{
+  D. Meyer and K. Hornik (2009),
+  Generalized and customizable sets in R,
+  \emph{Journal of Statistical Software} \bold{31}(2), 1--27.
+  \url{http://www.jstatsoft.org/v31/i02/}
 }
 \examples{
 ## default behavior of sets: matching of elements is very strict

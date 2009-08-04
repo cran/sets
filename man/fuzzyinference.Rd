@@ -51,7 +51,7 @@ x \%is\% y
     \item Application of fuzzy operators (AND, OR, NOT) in the
       antecedents of some given rules.
     \item Implication from the antecedent to the consequent.
-    \item Aggregation of the consequents accross the rules.
+    \item Aggregation of the consequents across the rules.
     \item Defuzzification of the resulting fuzzy set.
   }
   
