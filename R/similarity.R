@@ -67,7 +67,7 @@ function(x, y, method = c("Jaccard", "symdiff", "L1", "L2"))
 ### internal
 
 .distfunL2 <- function(x, y) {
-    if (cset_is_multiset(x))
+    if (cset_is_multiset(x, na.rm = TRUE))
         sqrt(.distfunL1(x, y))
     else
         sqrt(sum(unlist(.apply_connector_to_list_of_gsets_and_support(list(x, y),

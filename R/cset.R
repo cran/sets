@@ -73,6 +73,22 @@ function(x, i, value)
          .matchfun(x))
 }
 
+### na.omit
+
+na.omit.cset <-
+function(object, ...)
+{
+    m <- .get_memberships(object)
+    if (!is.list(m))
+        m[is.na(m)] <- 0
+    else
+        m <- lapply(m, function(i) {
+            m2 <- .get_memberships(i)
+            m2[is.na(m2) | is.na(i)] <- 0
+            .make_gset_from_support_and_memberships(i, m2)
+        })
+    .make_gset_from_support_and_memberships(object, m)
+}
 
 ### Ops-method
 
@@ -136,7 +152,7 @@ function(x, ...)
 format.cset <-
 function(x, ...) {
     FUN <- cset_orderfun(x)
-    x <- if (gset_is_set(x))
+    x <- if (isTRUE(gset_is_set(x)))
         .as.list(x)
     else
         .make_list_of_elements_from_cset(x)
@@ -153,10 +169,14 @@ summary.cset <-
 function(object, ...)
 {
     len <- length(object)
+    if (na <- is.na(len))
+        len <- length.set(object)
     out <- if (len == 0L)
         gettext("The empty set.")
     else if (len == 1L)
         gettext("A customizable set with 1 element.")
+    else if (na)
+        gettextf("A customizable set with %g elements.", len)
     else
         gettextf("A customizable set with cardinality %g.", len)
     if(!is.null(attr(object, "matchfun")) && !is.null(attr(object, "orderfun")))
@@ -166,7 +186,7 @@ function(object, ...)
     else if(!is.null(attr(object, "orderfun")))
         out <- paste(out, "The order function is user-defined.")
 
-    structure(out, class = "summary.cset")
+    .structure(out, class = "summary.cset")
 }
 
 ### internal stuff
@@ -185,10 +205,10 @@ function(gset, orderfun = NULL, matchfun = NULL)
         return(gset)
 
     ## create structure (including overwriting gset-class)
-    structure(gset,
-              orderfun = orderfun,
-              matchfun = matchfun,
-              class = "cset")
+    .structure(gset,
+               orderfun = orderfun,
+               matchfun = matchfun,
+               class = "cset")
 }
 
 .duplicated_by_matchfun <-

@@ -66,22 +66,23 @@ function(x)
     inherits(x, c("gset", "set"))
 
 gset_is_empty <-
-function(x)
+function(x, na.rm = FALSE)
 {
     if(is.cset(x))
-        gset_cardinality(x) == 0
+        gset_cardinality(x, na.rm = na.rm) == 0
     else
-        sapply(x, gset_cardinality) == 0
+        sapply(x, gset_cardinality, na.rm = na.rm) == 0
 }
 
 gset_is_subset <-
-function(x, y)
+function(x, y, na.rm = FALSE)
 {
     .help <-
         function(a, b) set_is_subset(a, b) &&
     all(unlist(.apply_connector_to_list_of_gsets_and_support(list(a, b),
                                                              .get_support(a),
-                                                             `<=`)))
+                                                             `<=`)),
+        na.rm = na.rm)
     if(is.cset(x))
         .help(x, y)
     else
@@ -89,21 +90,23 @@ function(x, y)
 }
 
 gset_is_proper_subset <-
-function(x, y)
+function(x, y, na.rm = FALSE)
 {
-    gset_is_subset(x, y) &
+    gset_is_subset(x, y, na.rm = na.rm) &
     if(is.cset(x))
-        length(x) != length(y)
+        cset_cardinality(x, na.rm = na.rm) != cset_cardinality(y, na.rm = na.rm)
     else
-        sapply(x, length) != sapply(y, length)
+        sapply(x, cset_cardinality, na.rm = na.rm) != sapply(y, cset_cardinality, na.rm = na.rm)
 }
 
 gset_is_equal <-
-function(x, y)
+function(x, y, na.rm = FALSE)
 {
     .help <- function(a, b)
-        ((length(a) == length(b))
-         && (length(gset_intersection(a,b)) == length(a)))
+        cset_cardinality(a, na.rm = na.rm) ==
+            cset_cardinality(b, na.rm = na.rm) &&
+    cset_cardinality(gset_intersection(a, b), na.rm = na.rm) ==
+        cset_cardinality(a, na.rm = na.rm)
     if(is.cset(x))
         .help(x, y)
     else
@@ -115,32 +118,36 @@ function(x, e)
     set_contains_element(as.set(.make_list_of_elements_from_cset(x)), e(e))
 
 gset_is_multiset <-
-function(x)
+function(x, na.rm = FALSE)
 {
     m <- .get_memberships(x)
-    !is.list(m) && any(m > 1)
+    !is.list(m) && (na.rm && any(m > 1, na.rm = TRUE) ||
+                    !na.rm && any(m > 1) && !any(m < 1, na.rm = TRUE))
 }
 
 gset_is_crisp <-
 gset_is_set_or_multiset <-
-function(x)
+function(x, na.rm = FALSE)
 {
     m <- .get_memberships(x)
-    !is.list(m) && all(m >= 1)
+    !is.list(m) && (na.rm && all(m >= 1, na.rm = TRUE) ||
+                    !na.rm && all(m >= 1) && !any(m < 1, na.rm = TRUE))
 }
 
 gset_is_fuzzy_set <-
-function(x)
+function(x, na.rm = FALSE)
 {
     m <- .get_memberships(x)
-    !is.list(m) && (any(m < 1))
+    !is.list(m) && (na.rm && any(m < 1, na.rm = TRUE) ||
+                    !na.rm && any(m < 1) && !any(m > 1, na.rm = TRUE))
 }
 
 gset_is_set_or_fuzzy_set <-
-function(x)
+function(x, na.rm = FALSE)
 {
     m <- .get_memberships(x)
-    !is.list(m) && (all(m <= 1))
+    !is.list(m) && (na.rm && all(m <= 1, na.rm = TRUE) ||
+                    !na.rm && all(m <= 1) && !any(m > 1, na.rm = TRUE))
 }
 
 gset_is_fuzzy_multiset <-
@@ -148,10 +155,10 @@ function(x)
     is.list(.get_memberships(x))
 
 gset_is_set <-
-function(x)
+function(x, na.rm = FALSE)
 {
     m <- .get_memberships(x)
-    !is.list(m) && all(m == 1)
+    !is.list(m) && all(m == 1, na.rm = na.rm)
 }
 
 ## cset-predicates
@@ -161,22 +168,24 @@ function(x)
     inherits(x, c("cset", "gset", "set"))
 
 cset_is_empty <-
-function(x)
+function(x, na.rm = FALSE)
 {
     if(is.cset(x))
-        cset_cardinality(x) == 0
+        cset_cardinality(x, na.rm = na.rm) == 0
     else
-        sapply(x, cset_cardinality) == 0
+        sapply(x, cset_cardinality, na.rm = na.rm) == 0
 }
 
 cset_is_subset <-
-function(x, y)
+function(x, y, na.rm = FALSE)
 {
     .help <-
         function(a, b) set_is_subset(a, b) &&
     all(unlist(.apply_connector_to_list_of_gsets_and_support(list(a, b),
                                                              .get_support(a),
-                                                             `<=`)))
+                                                             `<=`)),
+        na.rm = na.rm
+        )
     if(is.cset(x))
         .help(x, y)
     else
@@ -184,21 +193,25 @@ function(x, y)
 }
 
 cset_is_proper_subset <-
-function(x, y)
+function(x, y, na.rm = FALSE)
 {
-    cset_is_subset(x, y) &
+    cset_is_subset(x, y, na.rm = na.rm) &
     if(is.cset(x))
-        length(x) != length(y)
+        cset_cardinality(x, na.rm = na.rm) !=
+            cset_cardinality(y, na.rm = na.rm)
     else
-        sapply(x, length) != sapply(y, length)
+        sapply(x, cset_cardinality, na.rm = na.rm) !=
+            sapply(y, cset_cardinality, na.rm = na.rm)
 }
 
 cset_is_equal <-
-function(x, y)
+function(x, y, na.rm = FALSE)
 {
     .help <- function(a, b)
-        ((length(a) == length(b))
-         && (length(cset_intersection(a,b)) == length(a)))
+        cset_cardinality(a, na.rm = na.rm) ==
+            cset_cardinality(b, na.rm = na.rm) &&
+    cset_cardinality(cset_intersection(a, b), na.rm = na.rm) ==
+        cset_cardinality(a, na.rm = na.rm)
     if(is.cset(x))
         .help(x, y)
     else
@@ -221,29 +234,29 @@ function(x, e)
 }
 
 cset_is_multiset <-
-function(x)
-    gset_is_multiset(x)
+function(x, na.rm = FALSE)
+    gset_is_multiset(x, na.rm = na.rm)
 
 cset_is_crisp <-
 cset_is_set_or_multiset <-
-function(x)
-    gset_is_crisp(x)
+function(x, na.rm = FALSE)
+    gset_is_crisp(x, na.rm = na.rm)
 
 cset_is_fuzzy_set <-
-function(x)
-    gset_is_fuzzy_set(x)
+function(x, na.rm = FALSE)
+    gset_is_fuzzy_set(x, na.rm = na.rm)
 
 cset_is_set_or_fuzzy_set <-
-function(x)
-    gset_is_set_or_fuzzy_set(x)
+function(x, na.rm = FALSE)
+    gset_is_set_or_fuzzy_set(x, na.rm = na.rm)
 
 cset_is_fuzzy_multiset <-
 function(x)
     gset_is_fuzzy_multiset(x)
 
 cset_is_set <-
-function(x)
-    gset_is_set(x)
+function(x, na.rm = FALSE)
+    gset_is_set(x, na.rm = na.rm)
 
 ## contains_element operator dispatch
 
@@ -254,7 +267,11 @@ function(e, x)
         set_contains_element(x, e)
     else if(is.gset(x))
         gset_contains_element(x, e)
-    else
+    else if(is.cset(x))
         cset_contains_element(x, e)
+    else if(is.interval(x))
+        interval_contains_element(x, e)
+    else
+        stop("Predicate undefined.")
 }
 

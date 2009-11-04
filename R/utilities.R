@@ -141,3 +141,8 @@ function(x)
 function(x)
     all(unlist(lapply(x, is.numeric)) &
         (unlist(lapply(x, length)) == 1L))
+
+### fast structure replacement
+
+.structure <- function(x, ...)
+    `attributes<-`(x, c(attributes(x), list(...)))

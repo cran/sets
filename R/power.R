@@ -15,7 +15,7 @@ function(x)
 gset_power <-
 function(x)
 {
-    if (length(x) == 0L) return(set(set()))
+    if (isTRUE(length(x) == 0)) return(set(set()))
     .make_gset_from_list(c(list(gset()),
                            unlist(lapply(seq_along(x),
                                          function(i) gset_combn(x, i)
@@ -28,7 +28,7 @@ function(x)
 cset_power <-
 function(x)
 {
-    if (length(x) == 0L) return(set(set()))
+    if (isTRUE(length(x) == 0)) return(set(set()))
     .make_gset_from_list(c(list(gset()),
                            unlist(lapply(seq_along(x),
                                          function(i) cset_combn(x, i)

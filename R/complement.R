@@ -49,17 +49,19 @@ function(x, universe = gset_universe(x), bound = gset_bound(x))
     ## efficiency hack: by default, the complement gets the universe
     ## of the original set, *except* if there is a default universe
     ## and the universe attribute of the original set is missing.
-    tuniverse <- universe
-    if (!is.null(sets_options("universe")) && is.null(attr(x, "universe")))
-        tuniverse <- NULL
+    tuniverse <-
+        if (!is.null(sets_options("universe")) && is.null(attr(x, "universe")))
+            NULL
+        else
+            universe
 
-    if (gset_is_set(x) && bound == 1L)
+    if (isTRUE(gset_is_set(x)) && bound == 1L)
         gset(set_complement(x, universe), universe = tuniverse, bound = 1L)
-    else if (gset_is_crisp(x)) {
+    else if (gset_is_crisp(x, na.rm = TRUE)) {
         M <- gset(universe, rep(bound, length(universe)))
-        structure(.set_bound(.set_universe(gset_difference(M, x), tuniverse), bound),
+        .structure(.set_bound(.set_universe(gset_difference(M, x), tuniverse), bound),
                   class = c("gset", "cset"))
-    } else if (gset_is_fuzzy_set(x) && bound == 1L)
+    } else if (gset_is_fuzzy_set(x, na.rm = TRUE) && bound == 1L)
         .make_gset_from_support_and_memberships(
               universe,
               .N.(.memberships_for_support(x, universe)),

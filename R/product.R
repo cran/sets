@@ -9,7 +9,7 @@ function(...)
         return(set())
 
     ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, gset_is_set))))
         return(support)
 
     ## apply connector
@@ -28,11 +28,11 @@ function(...)
     ## compute target support using correct matchfuns
     support <- cset(.set_intersection(.as.list(l), matchfun),
                     orderfun, matchfun)
-    if (cset_is_empty(support))
+    if (isTRUE(cset_is_empty(support)))
         return(set())
 
     ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, cset_is_set))))
         return(support)
 
     ## create gset by applying conorm, and then make cset

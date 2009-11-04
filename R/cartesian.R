@@ -9,6 +9,8 @@ function(...)
     .make_set_of_tuples_from_list_of_lists(.cartesian_product(l))
 }
 
+### FIXME: does it make sense to add a na.rm argument here?
+### For fuzzy multisets, we are using .T. which has no na.rm ...
 gset_cartesian <-
 function(...)
 {
@@ -16,11 +18,11 @@ function(...)
     if (nargs() < 2L)
         return(..1)
     l <- lapply(list(...), as.list)
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, gset_is_set))))
         return(as.gset(set_cartesian(...)))
 
     ## handle empty sets
-    if (!all(sapply(l, length)))
+    if (any(sapply(l, length) == 0, na.rm = TRUE))
         return(gset())
 
     ## compute cartesian products of support and memberships
@@ -31,14 +33,14 @@ function(...)
 
     ## compute tuple memberships by applying the T-norm to the components
     memberships <-
-        if (all(sapply(l, gset_is_crisp)))
+        if (all(sapply(l, gset_is_crisp, na.rm = TRUE)))
             sapply(memberships, function(i) prod(unlist(i)))
-        else if (all(sapply(l, gset_is_fuzzy_set))) {
+        else if (all(sapply(l, gset_is_fuzzy_set, na.rm = TRUE))) {
             sapply(memberships, function(i) Reduce(.T., unlist(i)))
         } else {
             lapply(memberships, function(i) {
                 ## normalize memberships
-                maxlen <- max(sapply(i, length))
+                maxlen <- max(sapply(i, gset_cardinality, na.rm = TRUE))
                 m <- lapply(i, .expand_membership, len = maxlen, rep = FALSE)
                 mult <- unlist(do.call(Map, c(list(prod),
                                               lapply(m, .get_memberships)

@@ -3,11 +3,12 @@ plot.gset <-
 function(x, type = NULL, ylim = NULL,
          xlab = "Universe", ylab = "Membership Grade", ...)
 {
-    if (cset_is_empty(x))
+    if (cset_is_empty(x, na.rm = TRUE))
         return(invisible(x))
 
     if (is.null(type))
-        type <- if(cset_is_set_or_fuzzy_set(x) && .domain_is_numeric(x))
+        type <- if(cset_is_set_or_fuzzy_set(x, na.rm = TRUE) &&
+                   .domain_is_numeric(x))
             "l"
         else
             "barplot"
@@ -15,12 +16,12 @@ function(x, type = NULL, ylim = NULL,
     if (!cset_is_fuzzy_multiset(x) && (type != "barplot"))
         return(plot(tuple(x), ...))
 
-    if (is.null(ylim) && !cset_is_multiset(x))
+    if (is.null(ylim) && !cset_is_multiset(x, na.rm = TRUE))
         ylim <- c(0,1)
 
     m <- cset_memberships(x)
     if (cset_is_fuzzy_multiset(x)) {
-        maxlen <- max(sapply(m, length))
+        maxlen <- max(sapply(m, length), na.rm = TRUE)
         m <- sapply(m, .expand_membership, len = maxlen)
     }
     barplot(m,
@@ -67,8 +68,11 @@ function(x, type = "l", ylim = NULL,
     }
 
     ## ylim
-    if (is.null(ylim) && !any(sapply(l, cset_is_multiset)))
-        ylim <- c(0, 1)
+    ylim <- if (is.null(ylim) &&
+                !any(sapply(l, cset_is_multiset, na.rm = TRUE)))
+        c(0, 1)
+    else
+        c(0, max(unlist(lapply(l, .get_memberships)), na.rm = TRUE))
 
     ## find common domain
     names(l) <- NULL ## remove labels
@@ -79,12 +83,12 @@ function(x, type = "l", ylim = NULL,
     NUMMODE <- .domain_is_numeric(universe)
 
     ## prepare plot region
-    if (NUMMODE) {
+    m <- if (NUMMODE) {
         universe <- cset(universe, matchfun = match)
-        m <- sort(unique(unlist(universe)))
-    } else {
-        m <- seq_along(universe)
-    }
+        sort(unique(unlist(universe)))
+    } else
+        seq_along(universe)
+
     plot(m, rep.int(0, length(universe)),
          ylim = ylim,
          type = "n",

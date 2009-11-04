@@ -20,7 +20,7 @@ function(...)
     support <- do.call(set_union, l)
 
     ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, gset_is_set))))
         return(support)
 
     ## apply connector
@@ -43,7 +43,7 @@ function(...)
                     orderfun = orderfun)
 
     ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, gset_is_set))))
         return(support)
 
     ## create gset by applying conorm, and then make cset

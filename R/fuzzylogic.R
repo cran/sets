@@ -15,9 +15,14 @@
 ## .I. <- function(x, y) ifelse(x <= y, 1, y)
 
 .N. <- function(x) fuzzy_logic()$N(x)
-.T. <- function(x, y) fuzzy_logic()$T(x, y)
-.S. <- function(x, y) fuzzy_logic()$S(x, y)
-.I. <- function(x, y) fuzzy_logic()$I(x, y)
+.T. <- function(x, y)
+    if (xor(is.na(y), is.na(x)) && sum(x, y, na.rm = TRUE) == 0)
+    0 else fuzzy_logic()$T(x, y)
+.S. <- function(x, y)
+    if (xor(is.na(y), is.na(x)) && sum(x, y, na.rm = TRUE) == 1)
+    1 else fuzzy_logic()$S(x, y)
+.I. <- function(x, y)
+    if (is.na(y) && !is.na(x) && x == 0) 1 else fuzzy_logic()$I(x, y)
 
 ## Use dynamic variables for the fuzzy connectives.
 ## Note that there are also parametric fuzzy logic families, which we
@@ -54,9 +59,9 @@ function(name, T, S, N, I = NULL, params = NULL)
     if(is.null(I))
         I <- function(x, y)
             stop("Implication not available.", call. = FALSE)
-    structure(list(name = name, T = T, S = S, N = N, I = I,
-                   params = params),
-              class = "fuzzy_logic_family")
+    .structure(list(name = name, T = T, S = S, N = N, I = I,
+                    params = params),
+               class = "fuzzy_logic_family")
 }
 
 fuzzy_logic_family_Zadeh <-
@@ -297,7 +302,7 @@ function(p)
                            )
     }
 }
-    
+
 
 
 fuzzy_logic_families <-

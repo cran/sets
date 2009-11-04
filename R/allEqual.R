@@ -1,7 +1,7 @@
 all.equal.set <-
 function(target, current, ...)
 {
-    if (gset_is_equal(target, current))
+    if (gset_is_equal(target, current, na.rm = TRUE))
         return(TRUE)
 
     msg <- NULL
@@ -9,12 +9,12 @@ function(target, current, ...)
         msg <- paste("target is ", data.class(target), ", current is ",
                      data.class(current), sep = "")
     } else {
-        if ((lt <- length(target)) != (lc <- length(current)))
+        if (isTRUE((lt <- length(target)) != (lc <- length(current))))
             msg <- paste("cardinality of target is ", lt, ", of current is ",
                          lc, sep = "")
-        if ((lc <- length(gset_difference(current, target))) > 0)
+        if (isTRUE((lc <- length(gset_difference(current, target))) > 0))
             msg <- c(msg, paste(lc, "elements of current are not in target"))
-        if ((lt <- length(gset_difference(target, current))) > 0)
+        if (isTRUE((lt <- length(gset_difference(target, current))) > 0))
             msg <- c(msg, paste(lt, "elements of target are not in current"))
     }
     msg
@@ -23,17 +23,20 @@ function(target, current, ...)
 all.equal.gset <-
 function(target, current, ...)
 {
-    if (gset_is_equal(target, current))
+    if (gset_is_equal(target, current, na.rm = TRUE))
         return(TRUE)
 
     if (data.class(target) != data.class(current))
         paste("target is ", data.class(target), ", current is ",
               data.class(current), sep = "")
-    else if (gset_is_fuzzy_set(target) && gset_is_multiset(current))
+    else if (gset_is_fuzzy_set(target, na.rm = TRUE) &&
+             gset_is_multiset(current, na.rm = TRUE))
         "target is a fuzzy set, current is a multiset"
-    else if (gset_is_fuzzy_set(current) && gset_is_multiset(target))
+    else if (gset_is_fuzzy_set(current, na.rm = TRUE) &&
+             gset_is_multiset(target, na.rm = TRUE))
         "current is a fuzzy set, target is a multiset"
-    else if ((lt <- length(target)) != (lc <- length(current)))
+    else if ((lt <- gset_cardinality(target, na.rm = TRUE)) !=
+             (lc <- gset_cardinality(current, na.rm = TRUE)))
         paste("cardinality of target is ", lt, ", of current is ",
               lc, sep = "")
     else
@@ -43,7 +46,7 @@ function(target, current, ...)
 all.equal.cset <-
 function(target, current, ...)
 {
-    if (cset_is_equal(target, current))
+    if (cset_is_equal(target, current, na.rm = TRUE))
         return(TRUE)
 
     msg <- all.equal.gset(target, current, ...)

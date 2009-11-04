@@ -19,6 +19,7 @@ function(system, values, implication = c("minimum", "product"))
                        "%is%" = list(expr[[1L]], as.call(list(as.name("$"),
                                      expr[[2L]], expr[[3L]])),
                                      values[[ as.character(expr[[2L]]) ]]),
+                       "(" = list(expr[[1L]], Recall(expr[[2L]])),
                        expr))
     }
 
@@ -43,9 +44,9 @@ function(system, values, implication = c("minimum", "product"))
 fuzzy_rule <-
 function(antecedent, consequent)
 {
-    structure(list(antecedent = substitute(antecedent),
-                   consequent = substitute(consequent)),
-              class = "fuzzy_rule")
+    .structure(list(antecedent = substitute(antecedent),
+                    consequent = substitute(consequent)),
+               class = "fuzzy_rule")
 }
 
 print.fuzzy_rule <-
@@ -57,8 +58,8 @@ function(x, ...)
 
 fuzzy_system <-
 function(variables, rules)
-    structure(list(variables = variables, rules = rules),
-              class = "fuzzy_system")
+    .structure(list(variables = variables, rules = rules),
+               class = "fuzzy_system")
 
 
 print.fuzzy_system <-
@@ -109,9 +110,9 @@ function(varnames, FUN = fuzzy_normal, universe = NULL, ...)
         n <- as.numeric(varnames)
         varnames <- names(varnames)
     }
-    structure(fuzzy_tuple(FUN = FUN, n = n, ...,
-                          universe = universe, names = varnames),
-              class = c("fuzzy_variable", "tuple"))
+    .structure(fuzzy_tuple(FUN = FUN, n = n, ...,
+                           universe = universe, names = varnames),
+               class = c("fuzzy_variable", "tuple"))
 }
 
 fuzzy_variable <-
@@ -123,7 +124,7 @@ function(...) {
     for (i in seq_along(l))
         if (is.function(l[[i]]))
             l[[i]] <- gset(charfun = l[[i]], universe = universe)
-    structure(as.tuple(l), class = c("fuzzy_variable", "tuple"))
+    .structure(as.tuple(l), class = c("fuzzy_variable", "tuple"))
 }
 
 print.fuzzy_variable <-

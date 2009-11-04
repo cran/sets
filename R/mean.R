@@ -1,17 +1,14 @@
 .meanfun <-
-function(type)
-{
-    switch(type,
-           arithmetic = function(x, y) (x + y) / 2,
-           geometric = function(x, y) sqrt(x * y),
-           harmonic = function(x, y) 2 / (1 / x + 1 / y))
-}
+list(arithmetic = function(x, y) (x + y) / 2,
+     geometric = function(x, y) sqrt(x * y),
+     harmonic = function(x, y) 2 / (1 / x + 1 / y)
+     )
 
 gset_mean <-
 function(x, y, type = c("arithmetic", "geometric", "harmonic"))
 {
     l <- list(x, y)
-    FUN <- .meanfun(match.arg(type))
+    FUN <- .meanfun[[match.arg(type)]]
 
     ## compute target support
     support <- do.call(set_union, l)
@@ -25,7 +22,7 @@ cset_mean <-
 function(x, y, type = c("arithmetic", "geometric", "harmonic"))
 {
     l <- list(x, y)
-    FUN <- .meanfun(match.arg(type))
+    FUN <- .meanfun[[match.arg(type)]]
 
     ## check matchfun and orderfun
     matchfun <- .check_matchfun(l)

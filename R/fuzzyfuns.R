@@ -310,6 +310,6 @@ function(FUN = fuzzy_normal, n = 5, ..., universe = NULL, names = NULL)
     if (length(n) == 1L)
         n <- .get_support(universe)[seq(from = 1, to = length(universe),
                                         length.out = n)]
-    structure(as.tuple(lapply(n, F)), names = names)
+    .structure(as.tuple(lapply(n, F)), names = names)
 }
 

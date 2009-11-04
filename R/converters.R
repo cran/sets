@@ -101,18 +101,11 @@ function(x, mapping = NULL, margin = NULL)
 
 ###
 
-format.set <-
-function(x, ...) {
-    .format_set_or_tuple(x, "{", "}", ...)
-}
-
 as.list.set <-
 function(x, ...)
     .as.list(x)
 
 ### gset converters
-
-### for the time being, just call as.set() via the gset() default
 
 as.gset <-
 function(x)
@@ -140,23 +133,21 @@ as.gset.tuple <-
 function(x)
     as.gset(as.list(x))
 
-as.gset.numeric <-
-function(x)
+as.gset.numeric <- function(x) .as.gset.atomic(x, as.numeric)
+as.gset.character <- function(x) .as.gset.atomic(x, as.character)
+as.gset.factor <- function(x) .as.gset.atomic(x, as.factor)
+as.gset.ordered <- function(x) .as.gset.atomic(x, as.ordered)
+as.gset.integer <- function(x) .as.gset.atomic(x, as.integer)
+as.gset.logical <- function(x) .as.gset.atomic(x, as.logical)
+
+.as.gset.atomic <-
+function(x, FUN)
 {
-    ## floating point numbers are a real mess!
-    tab <- table(as.character(x))
-    .make_gset_from_support_and_memberships(as.numeric(names(tab)),
-                                            as.vector(tab))
+    tab <- table(x)
+    .make_gset_from_support_and_memberships(FUN(c(names(tab), NA)),
+                                            c(as.vector(tab), sum(is.na(x))))
 }
 
-as.gset.factor <-
-as.gset.ordered <-
-as.gset.character <-
-as.gset.integer <-
-as.gset.logical <-
-function(x)
-    .make_gset_from_support_and_memberships(.list_sort(.list_unique(x)),
-                                            as.vector(table(as.character(x))))
 
 as.gset.list <-
 function(x)
@@ -279,7 +270,7 @@ function(x, ...)
         L <- L[FUN]
         ms <- ms[FUN]
     }
-    structure(L, memberships = ms)
+    .structure(L, memberships = ms)
 }
 
 as.character.cset <-

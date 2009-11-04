@@ -32,7 +32,7 @@ function(object, ...)
         gettext("A set with 1 element.")
     else
         gettextf("A set with %d elements.", len)
-    structure(out, class = "summary.set")
+    .structure(out, class = "summary.set")
 }
 
 print.summary.set <-
@@ -41,6 +41,16 @@ function(x, ...)
     writeLines(x)
     invisible(x)
 }
+
+format.set <-
+function(x, ...) {
+    .format_set_or_tuple(x, "{", "}", ...)
+}
+
+Math.set <-
+function(x, ...)
+    as.set(get(.Generic)(unlist(x), ...))
+
 
 ### operators
 
@@ -130,7 +140,7 @@ function(x, i, value)
 
 .make_set_from_list <-
 function(x)
-   structure(x, class = c("set", "gset", "cset"))
+   .structure(x, class = c("set", "gset", "cset"))
 
 .format_set_or_tuple <-
 function(x, left, right, ...)

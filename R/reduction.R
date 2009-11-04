@@ -30,13 +30,15 @@ function(x, operation = c("union", "intersection"), ...)
                             )
     } else if (all(sapply(x, is.gset))) {
         clo <- closure(x, operation)
-        FUN <- function(e) !gset_is_equal(closure(gset_difference(x, set(e)),
-                                                  operation), clo)
+        FUN <- function(e)
+            !isTRUE(gset_is_equal(closure(gset_difference(x, set(e)),
+                                          operation), clo))
         as.set(Filter(FUN, .as.list(x)))
     } else {
         clo <- closure(x, operation)
-        FUN <- function(e) !cset_is_equal(closure(cset_difference(x, set(e)),
-                                                  operation), clo)
+        FUN <- function(e)
+            !isTRUE(cset_is_equal(closure(cset_difference(x, set(e)),
+                                          operation), clo))
         as.set(Filter(FUN, .as.list(x)))
     }
 }
