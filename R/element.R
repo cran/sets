@@ -6,7 +6,7 @@ function(x, memberships = 1L)
     if (is_element(x)) return(x)
     if (length.set(memberships) > 1L)
         memberships <- as.gset(memberships)
-    else if (memberships >= 1)
+    else if (isTRUE(memberships >= 1))
         memberships <- as.integer(memberships)
     .stop_if_memberships_are_invalid(memberships)
     .make_element_from_support_and_memberships(x, memberships)
@@ -14,9 +14,9 @@ function(x, memberships = 1L)
 
 .make_element_from_support_and_memberships <-
 function(x, memberships)
-    structure(list(x),
-              memberships = memberships,
-              class = "element")
+    .structure(list(x),
+               memberships = memberships,
+               class = "element")
 
 
 print.element <-

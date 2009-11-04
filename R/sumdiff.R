@@ -4,7 +4,7 @@ function(...)
     l <- list(...)
 
     ## determine connector
-    CON <- if (all(sapply(l, gset_is_crisp)))
+    CON <- if (all(sapply(l, gset_is_crisp, na.rm = TRUE)))
         `+`
     else
         function(x, y) pmin(1, x + y)
@@ -44,7 +44,7 @@ function(...)
     orderfun <- .check_orderfun(l)
 
     ## determine connector
-    CON <- if (all(sapply(l, gset_is_crisp)))
+    CON <- if (all(sapply(l, gset_is_crisp, na.rm = TRUE)))
         `+`
     else
         function(x, y) pmin(1, x + y)
@@ -81,7 +81,7 @@ function(...)
     support <- cset(as.set(l[[1]]),
                     matchfun = matchfun,
                     orderfun = orderfun)
-    if (cset_is_empty(support))
+    if (isTRUE(cset_is_empty(support)))
         return(support)
 
 

@@ -4,9 +4,9 @@ gset_transform_memberships <-
 function(x, FUN, ...)
 {
     F <- function(x) pmax(0, pmin(1, FUN(x, ...)))
-    m <- if (cset_is_set_or_multiset(x))
+    m <- if (cset_is_set_or_multiset(x, na.rm = TRUE))
         lapply(.get_memberships(x), function(i) gset(F(1), i))
-    else if (cset_is_fuzzy_set(x))
+    else if (!cset_is_fuzzy_multiset(x))
         F(.get_memberships(x))
     else
         lapply(.get_memberships(x), F)
@@ -34,7 +34,7 @@ function(x, height = 1)
     if (height < 0 || height > 1)
         stop("Height must be in the unit interval.")
     gset_transform_memberships(x, function(i) height * i /
-                               max(.get_memberships(x)))
+                               max(.get_memberships(x), na.rm = TRUE))
 }
 
 ## internal functions to handle memberships
@@ -52,19 +52,12 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
     ret <- if (rep) {
         if (is.list(x))
             rep.int(as.numeric(x), M)
-        else if ((length(x) == 1L) && (x > 1))
+        else if (length(x) == 1L && !is.na(x) && x > 1)
             rep.int(1, x)
         else
             x
     } else {
         as.numeric(x)
-    }
-
-    ## optionally, sort values
-    if (!is.null(decreasing)) {
-        O <- order(ret, decreasing = decreasing)
-        ret <- ret[O]
-        if (!rep) M <- M[O]
     }
 
     ## optionally, fill up with 0s
@@ -74,17 +67,28 @@ function(x, decreasing = TRUE, len = NA, rep = TRUE)
             M <- c(M, rep.int(0, len - length(M)))
     }
 
+    ## optionally, sort values
+    if (!is.null(decreasing)) {
+        O <- order(ret, decreasing = decreasing)
+        ret <- ret[O]
+        if (!rep) M <- M[O]
+    }
+
     if (rep)
         ret
     else
-        structure(ret, memberships = M)
+        .structure(ret, memberships = M)
 }
 
 .memberships_for_support <-
 function(x, support, matchfun = .exact_match)
 {
-    tmp <- .get_memberships(x)[matchfun(support, .get_support(x))]
-    tmp[is.na(tmp)] <- 0
+    m <- matchfun(support, .get_support(x))
+    tmp <- if (all(is.na(m)))
+        m
+    else
+        .get_memberships(x)[m]
+    tmp[is.na(m)] <- 0
     tmp
 }
 

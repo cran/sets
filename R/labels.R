@@ -87,7 +87,7 @@ function(x, limit = NULL, quote = sets_options("quote"), ...) {
     if (is.null(limit))
         limit <- 2L
     if (quote)
-        x <- paste("\"", x, "\"", sep = "")
+        x <- ifelse(is.na(x), x, paste("\"", x, "\"", sep = ""))
     .format_or_class(x, limit, ...)
 }
 
@@ -102,6 +102,7 @@ LABEL.set <-
 LABEL.gset <-
 LABEL.cset <-
 LABEL.tuple <-
+LABEL.interval <-
 function(x, limit = NULL, ...) {
     if (is.null(limit))
         limit <- 6L
@@ -114,7 +115,7 @@ function(x, limit, ...)
     l <- length.set(x)
     if (l < limit) {
         if (is.integer(x))
-            format(paste(x, "L", sep = ""), ...)
+            format(ifelse(is.na(x), x, paste(x, "L", sep = "")), ...)
         else
             format(x, ...)
     } else

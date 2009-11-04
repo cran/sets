@@ -12,7 +12,7 @@ function(l, matchfun = .exact_match)
         l[[1L]]
     else if(len < 3L) {
         i <- j <- 1
-        if (length(l[[2L]]) < length(l[[1L]])) i <- 2 else j <- 2
+        if (length.set(l[[2L]]) < length.set(l[[1L]])) i <- 2 else j <- 2
         .make_set_from_list(.as.list(l[[i]])[unique(na.omit(matchfun(l[[j]],
                                                                      l[[i]])))])
     } else
@@ -27,12 +27,12 @@ function(...)
     ## compute target support
     support <- do.call(set_intersection, l)
 
-    ## handle empty supprt
-    if (gset_is_empty(support))
+    ## handle empty support
+    if (set_is_empty(support))
         return(set())
 
     ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, gset_is_set))))
         return(support)
 
     ## apply connector
@@ -53,11 +53,11 @@ function(...)
                     orderfun, matchfun)
 
     ## handle empty supprt
-    if (cset_is_empty(support))
+    if (set_is_empty(support))
         return(set())
 
     ## handle the "ordinary set" case
-    if (all(sapply(l, gset_is_set)))
+    if (isTRUE(all(sapply(l, cset_is_set))))
         return(support)
 
     ## create gset by applying conorm, and then make cset

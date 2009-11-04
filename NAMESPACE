@@ -1,6 +1,7 @@
 useDynLib("sets")
 
 importFrom("stats", "median")
+importFrom("stats", "na.omit")
 
 export("%e%",
        "%D%",
@@ -32,6 +33,7 @@ S3method("[", "set")
 S3method("[[", "set")
 S3method("[<-", "set")
 S3method("[[<-", "set")
+S3method("Math","set")
 S3method("Ops","set")
 S3method("Summary","set")
 S3method("all.equal","set")
@@ -235,6 +237,7 @@ S3method("format", "cset")
 S3method("length", "cset")
 S3method("mean", "cset")
 S3method("median", "cset")
+S3method("na.omit", "cset")
 S3method("plot", "cset")
 S3method("lines", "cset")
 S3method("print","cset")
@@ -272,6 +275,7 @@ export("%e%",
 
 S3method("[", "tuple")
 S3method("[<-", "tuple")
+S3method("Math","tuple")
 S3method("Ops","tuple")
 S3method("Summary","tuple")
 S3method("print","tuple")
@@ -355,6 +359,90 @@ S3method("print","fuzzy_system")
 S3method("print","fuzzy_variable")
 S3method("plot","fuzzy_system")
 S3method("plot","fuzzy_variable")
+
+## interval stuff
+export("%..%",
+       "%<%",
+       "%>%",
+       "%<=%",
+       "%<=%",
+       "as.interval",
+       "integers",
+       "integers2reals",
+       "interval",
+       "interval_complement",
+       "interval_contains_element",
+       "interval_difference",
+       "interval_division",
+       "interval_domain",
+       "interval_intersection",
+       "interval_is_bounded",
+       "interval_is_closed",
+       "interval_is_countable",
+       "interval_is_degenerate",
+       "interval_is_empty",
+       "interval_is_equal",
+       "interval_is_finite",
+       "interval_is_greater_than",
+       "interval_is_greater_than_or_equal",
+       "interval_is_half_bounded",
+       "interval_is_left_bounded",
+       "interval_is_left_closed",
+       "interval_is_left_open",
+       "interval_is_less_than",
+       "interval_is_less_than_or_equal",
+       "interval_is_left_unbounded",
+       "interval_is_proper",
+       "interval_is_proper_subinterval",
+       "interval_is_right_bounded",
+       "interval_is_right_closed",
+       "interval_is_right_open",
+       "interval_is_right_unbounded",
+       "interval_is_subinterval",
+       "interval_is_unbounded",
+       "interval_is_uncountable",
+       "interval_measure",
+       "interval_power",
+       "interval_product",
+       "interval_sum",
+       "interval_symdiff",
+       "interval_union",
+       "is.interval",
+       "naturals",
+       "naturals0",
+       "reals",
+       "reals2integers"
+       )
+
+S3method("Math", "interval")
+S3method("abs", "interval")
+S3method("as.character", "interval")
+S3method("as.double", "interval")
+S3method("as.interval", "default")
+S3method("as.interval", "interval")
+S3method("as.interval", "list")
+S3method("as.interval", "NULL")
+S3method("as.interval", "numeric")
+S3method("as.interval", "set")
+S3method("as.interval", "tuple")
+S3method("as.list", "interval")
+S3method("c", "interval")
+S3method("format", "interval")
+S3method("[", "interval")
+S3method("[[", "interval")
+S3method("length", "interval")
+S3method("make_set_with_order", "interval")
+S3method("max", "interval")
+S3method("mean", "interval")
+S3method("min", "interval")
+S3method("Ops", "interval")
+S3method("print", "interval")
+S3method("print", "summary.interval")
+S3method("prod", "interval")
+S3method("range", "interval")
+S3method("str", "interval")
+S3method("sum", "interval")
+S3method("summary", "interval")
 
 ### internal dispatch
 S3method(".as.list", "default")

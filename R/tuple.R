@@ -18,7 +18,7 @@ function(...)
 
 .make_tuple_from_list <-
 function(x)
-    structure(x, class = "tuple")
+    .structure(x, class = "tuple")
 
 singleton <-
 function(...)
@@ -168,6 +168,10 @@ function(e1, e2)
     .make_tuple_from_list(ret)
 
 }
+
+Math.tuple <-
+function(x, ...)
+    as.tuple(get(.Generic)(unlist(x), ...))
 
 Summary.tuple <-
 function(..., na.rm = FALSE)
