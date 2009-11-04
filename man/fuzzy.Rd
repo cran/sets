@@ -33,7 +33,7 @@ fuzzy_logic(new, \dots)
   by calling \code{fuzzy_logic} with a character
   string specifying the family name, and optional parameters.  Let us
   refer to \eqn{N(x) = 1 - x} as the \emph{standard} negation, and,
-  for a t-norm \eqn{T}, let \eqn{S(x, y) = 1 - T(1 - x, 1 - y)} by the
+  for a t-norm \eqn{T}, let \eqn{S(x, y) = 1 - T(1 - x, 1 - y)} be the
   \emph{dual} (or complementary) t-conorm.  Available specifications and
   corresponding families are as follows, with the standard negation used
   unless stated otherwise.

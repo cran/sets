@@ -36,6 +36,7 @@
 \alias{gset_memberships}
 \alias{gset_support}
 \alias{gset_universe}
+\alias{gset_has_missings}
 \alias{gset_is_crisp}
 \alias{gset_is_fuzzy_set}
 \alias{gset_is_multiset}
@@ -81,6 +82,7 @@ gset_is_set_or_multiset(x, na.rm = FALSE)
 gset_is_set_or_fuzzy_set(x, na.rm = FALSE)
 gset_is_fuzzy_multiset(x)
 gset_is_crisp(x, na.rm = FALSE)
+gset_has_missings(x)
 
 gset_cardinality(x, type = c("absolute", "relative"), na.rm = FALSE)
 gset_union(\dots)
