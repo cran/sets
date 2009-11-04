@@ -12,9 +12,9 @@ set_similarity(x, y, method = "Jaccard")
 gset_similarity(x, y, method = "Jaccard")
 cset_similarity(x, y, method = "Jaccard")
 
-set_dissimilarity(x, y, method = c("Jaccard", "symdiff", "L1", "L2"))
-gset_dissimilarity(x, y, method = c("Jaccard", "symdiff", "L1", "L2"))
-cset_dissimilarity(x, y, method = c("Jaccard", "symdiff", "L1", "L2"))
+set_dissimilarity(x, y, method = c("Jaccard", "Manhattan", "Euclidean", "L1", "L2"))
+gset_dissimilarity(x, y, method = c("Jaccard", "Manhattan", "Euclidean", "L1", "L2"))
+cset_dissimilarity(x, y, method = c("Jaccard", "Manhattan", "Euclidean", "L1", "L2"))
 }
 \arguments{
   \item{x, y}{Two (generalized/customizable) sets.}
@@ -24,10 +24,12 @@ cset_dissimilarity(x, y, method = c("Jaccard", "symdiff", "L1", "L2"))
   For two generalized sets \eqn{X} and \eqn{Y}, the
   \code{Jaccard} similarity is \eqn{|X \cap Y| / |X \cup Y|}{|X intersect Y| /
     |X U Y|} where \eqn{|\cdot|}{|.|} denotes the cardinality for
-  generalized sets (sum of memberships). The \code{Jaccard} or
-  \code{symdiff} dissimilarity is 1 minus the similarity.
+  generalized sets (sum of memberships). The \code{Jaccard} 
+  dissimilarity is 1 minus the similarity.
 
-  The \code{L1} and \code{L2} dissimilarities are defined as
+  The \code{L1} (or \code{Manhattan}) and \code{L2} (or
+  \code{Euclidean}) 
+  dissimilarities are defined as
   follows. For two fuzzy multisets \eqn{A} and \eqn{B} on a
   given universe \eqn{X} with elements \eqn{x}, let
   \eqn{M_A(x)} and \eqn{M_B(x)} be functions returning the memberships of an

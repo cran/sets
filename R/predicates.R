@@ -161,6 +161,16 @@ function(x, na.rm = FALSE)
     !is.list(m) && all(m == 1, na.rm = na.rm)
 }
 
+gset_has_missings <-
+function(x)
+{
+    M <- .get_memberships(x)
+    if (is.list(M))
+        any(is.na(unlist(M))) || any(is.na(unlist(lapply(M, .get_memberships))))
+    else
+        any(is.na(M))
+}
+
 ## cset-predicates
 
 is.cset <-
@@ -257,6 +267,10 @@ function(x)
 cset_is_set <-
 function(x, na.rm = FALSE)
     gset_is_set(x, na.rm = na.rm)
+
+cset_has_missings <-
+function(x)
+    gset_has_missings(x)
 
 ## contains_element operator dispatch
 

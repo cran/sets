@@ -15,14 +15,24 @@
 ## .I. <- function(x, y) ifelse(x <= y, 1, y)
 
 .N. <- function(x) fuzzy_logic()$N(x)
+
+## ensure that .T.(NA, 0) == 0
 .T. <- function(x, y)
-    if (xor(is.na(y), is.na(x)) && sum(x, y, na.rm = TRUE) == 0)
-    0 else fuzzy_logic()$T(x, y)
+    `[<-`(fuzzy_logic()$T(x, y),
+          xor(is.na(y), is.na(x)) & pmin.int(x, y, na.rm = TRUE) == 0,
+          0)
+
+## ensure that .S.(NA, 1) == 1
 .S. <- function(x, y)
-    if (xor(is.na(y), is.na(x)) && sum(x, y, na.rm = TRUE) == 1)
-    1 else fuzzy_logic()$S(x, y)
+    `[<-`(fuzzy_logic()$S(x, y),
+          xor(is.na(y), is.na(x)) & pmax.int(x, y, na.rm = TRUE) == 1,
+          1)
+
+## ensure that .I.(0, NA) == 1
 .I. <- function(x, y)
-    if (is.na(y) && !is.na(x) && x == 0) 1 else fuzzy_logic()$I(x, y)
+    `[<-`(fuzzy_logic()$I(x, y),
+          is.na(y) & !is.na(x) & x == 0,
+          1)
 
 ## Use dynamic variables for the fuzzy connectives.
 ## Note that there are also parametric fuzzy logic families, which we
@@ -54,15 +64,19 @@ local({
 })
 
 fuzzy_logic_family <-
-function(name, T, S, N, I = NULL, params = NULL)
+function(name, T, S, N, I = NULL, params = NULL, meta = NULL)
 {
     if(is.null(I))
         I <- function(x, y)
             stop("Implication not available.", call. = FALSE)
     .structure(list(name = name, T = T, S = S, N = N, I = I,
-                    params = params),
+                    params = params, meta = meta),
                class = "fuzzy_logic_family")
 }
+
+fuzzy_logic_predicates <-
+function()
+    fuzzy_logic()$meta
 
 fuzzy_logic_family_Zadeh <-
 function()
@@ -70,7 +84,13 @@ function()
                        N = function(x) 1 - x,
                        T = function(x, y) pmin(x, y),
                        S = function(x, y) pmax(x, y),
-                       I = function(x, y) ifelse(x <= y, 1, y))
+                       I = function(x, y) ifelse(x <= y, 1, y),
+                       meta =
+                       list(is_de_Morgan_triple = TRUE,
+                            N_is_standard = TRUE,
+                            T_is_continuous = TRUE,
+                            T_is_Archimedean = FALSE)
+                       )
 
 fuzzy_logic_family_drastic <-
 function()
@@ -79,7 +99,17 @@ function()
                        T = function(x, y)
                        ifelse(pmax(x, y) == 1, pmin(x, y), 0),
                        S = function(x, y)
-                       ifelse(pmin(x, y) == 0, pmax(x, y), 1))
+                       ifelse(pmin(x, y) == 0, pmax(x, y), 1),
+                       meta =
+                       list(is_de_Morgan_triple = TRUE,
+                            N_is_standard = TRUE,
+                            T_is_continuous = FALSE,
+                            T_is_Archimedean = TRUE,
+                            T_generator = function(x) {
+                                ifelse(x < 1, 2 - x, 0)
+                            }
+                            )
+                       )
 
 fuzzy_logic_family_product <-
 function()
@@ -87,7 +117,15 @@ function()
                        N = function(x) 1 - x,
                        T = function(x, y) x * y,
                        S = function(x, y) x + y - x * y,
-                       I = function(x, y) pmin(y / x, 1))
+                       I = function(x, y) pmin(y / x, 1),
+                       meta =
+                       list(is_de_Morgan_triple = TRUE,
+                            N_is_standard = TRUE,
+                            T_is_continuous = TRUE,
+                            T_is_Archimedean = TRUE,
+                            T_generator = function(x) { - log(x) }
+                            )
+                       )
 
 fuzzy_logic_family_Lukasiewicz <-
 function()
@@ -95,8 +133,17 @@ function()
                        N = function(x) 1 - x,
                        T = function(x, y) pmax(x + y - 1, 0),
                        S = function(x, y) pmin(x + y, 1),
-                       I = function(x, y) pmin(1 - x + y, 1))
+                       I = function(x, y) pmin(1 - x + y, 1),
+                       meta =
+                       list(is_de_Morgan_triple = TRUE,
+                            N_is_standard = TRUE,
+                            T_is_continuous = TRUE,
+                            T_is_Archimedean = TRUE,
+                            T_generator = function(x) { 1 - x }
+                            )
+                       )
 
+## Nilpotent minimum (\min_0).
 fuzzy_logic_family_Fodor <-
 function()
     fuzzy_logic_family(name = "Fodor",
@@ -106,7 +153,14 @@ function()
                        S = function(x, y)
                        ifelse(x + y < 1, pmax(x, y), 1),
                        I = function(x, y)
-                       ifelse(x <= y, 1, pmax(1 - x, y)))
+                       ifelse(x <= y, 1, pmax(1 - x, y)),
+                       meta =
+                       list(is_de_Morgan_triple = TRUE,
+                            N_is_standard = TRUE,
+                            T_is_continuous = FALSE,
+                            T_is_Archimedean = FALSE
+                            )
+                       )
 
 ## Frank family (Fodor & Roubens, page 20).
 ## One parameter family with 0 <= s <= \infty, where 0, 1 and \infty
@@ -126,7 +180,23 @@ function(s)
                            N = function(x) 1 - x,
                            T = T,
                            S = function(x, y) 1 - T(1 - x, 1 - y),
-                           params = list(s = s))
+                           I = function(x, y)
+                           ifelse(x <= y, 1,
+                                  log(1 + (s - 1) * (s^y - 1) /
+                                                    (s^x - 1)) / log(s)),
+                           params = list(s = s),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE,
+                                T_is_continuous = TRUE,
+                                T_is_Archimedean = TRUE,
+                                T_generator = function(x) {
+                                    log((s - 1) / (s^x - 1))
+                                }
+                                ## Note:
+                                ##   f^{-1}(x) = \log_s(1 + (s-1)e^{-x})
+                                )
+                           )
     }
 }
 
@@ -152,8 +222,24 @@ function(alpha = NULL, beta = 0, gamma = 0)
                        S = function(x, y)
                        (x + y + (beta - 1) * x * y) /
                         (1 + beta * x * y),
+                       I = function(x, y)
+                       ifelse(x <= y, 1,
+                              ((y * (alpha + (1 - alpha) * x)) /
+                               (x + (1 - alpha) * y * (x - 1)))),
                        params =
-                       list(alpha = alpha, beta = beta, gamma = gamma)
+                       list(alpha = alpha, beta = beta, gamma = gamma),
+                       meta =
+                       list(is_de_Morgan_triple =
+                            alpha == (1 + beta) / (1 + gamma),
+                            N_is_standard = (gamma == 0),
+                            T_is_continuous = TRUE,
+                            T_is_Archimedean = TRUE,
+                            T_generator = function(x) {
+                                log((alpha + (1 - alpha) * x) / x)
+                            }
+                            ## Note:
+                            ##   f^{-1}(x) = p / (e^x + p - 1)
+                            )
                        )
 }
 
@@ -177,7 +263,20 @@ function(p)
                            N = function(x) 1 - x,
                            T = T,
                            S = function(x, y) 1 - T(1 - x, 1 - y),
-                           params = list(p = p)
+                           I = function(x, y)
+                           ifelse(x <= y, 1, (1 - x^p + y^p) ^ (1/p)),
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE,
+                                T_is_continuous = TRUE,
+                                T_is_Archimedean = TRUE,
+                                T_generator = function(x) {
+                                    (1 - x^p) / p
+                                }
+                                ## Note:
+                                ##   f^{-1}(x) = (1 - px)^{1/p}
+                                )
                            )
     }
 }
@@ -197,7 +296,21 @@ function(p)
                            pmax(0, 1 - ((1 - x)^p + (1 - y)^p)^(1/p)),
                            S = function(x, y)
                            pmin(1, (x^p + y^p) ^ (1/p)),
-                           params = list(p = p)
+                           I = function(x, y)
+                           ifelse(x <= y, 1,
+                                  1 - ((1 - y)^p - (1 - x)^p)^(1/p)),
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE,
+                                T_is_continuous = TRUE,
+                                T_is_Archimedean = TRUE,
+                                T_generator = function(x) {
+                                    1 - x^p
+                                }
+                                ## Note:
+                                ##   f^{-1}(x) = 1 - x^{1/p}
+                                )
                            )
     }
 }
@@ -219,7 +332,22 @@ function(p)
                            N = function(x) 1 - x,
                            T = T,
                            S = function(x, y) 1 - T(1 - x, 1 - y),
-                           params = list(p = p)
+                           I = function(x, y)
+                           ifelse(x <= y, 1,
+                                  1 / (1 + ((1 / y - 1)^p -
+                                            (1 / x - 1)^p)^(1/p))),
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE,
+                                T_is_continuous = TRUE,
+                                T_is_Archimedean = TRUE,
+                                T_generator = function(x) {
+                                    (1 / x - 1)^p
+                                }
+                                ## Note:
+                                ##   f^{-1}(x) = 1/(1 + x^{1/p})
+                                )
                            )
     }
 }
@@ -238,7 +366,22 @@ function(p)
                            N = function(x) 1 - x,
                            T = T,
                            S = function(x, y) 1 - T(1 - x, 1 - y),
-                           params = list(p = p)
+                           I = function(x, y)
+                           ifelse(x <= y, 1,
+                                  exp(-((abs(log(y))^p -
+                                         abs(log(x))^p))^(1/p))),
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE,
+                                T_is_continuous = TRUE,
+                                T_is_Archimedean = TRUE,
+                                T_generator = function(x) {
+                                    (- log(x))^p
+                                }
+                                ## Note:
+                                ##   f^{-1}(x) = \exp(-x^{1/p})
+                                )
                            )
     }
 }
@@ -258,7 +401,21 @@ function(p)
                            pmax(0, (x + y - 1 + p * x * y) / (1 + p)),
                            S = function(x, y)
                            pmin(1, x + y - p * x * y / (1 + p)),
-                           params = list(p = p)
+                           I = function(x, y)
+                           ifelse(x <= y, 1,
+                                  (1 + (1 + p) * y - x) / (1 + p * x)),
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE,
+                                T_is_continuous = TRUE,
+                                T_is_Archimedean = TRUE,
+                                T_generator = function(x) {
+                                    1 - log(1 + p * x) / log(1 + p)
+                                }
+                                ## Note
+                                ##   f^{-1}(x) = ((1 + p)^{1-x} - 1) / p
+                                )
                            )
 }
 
@@ -277,7 +434,14 @@ function(p)
                            N = function(x) 1 - x,
                            T = T,
                            S = function(x, y) 1 - T(1 - x, 1 - y),
-                           params = list(p = p)
+                           ## Solve T(x, z) = y for x >= y ...
+                           I = function(x, y)
+                           ifelse(x <= y, 1, pmax(p / x, 1) * y),
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE
+                                )
                            )
     }
 }
@@ -298,11 +462,14 @@ function(p)
                            pmax(0, (1 + p) * (x + y - 1) - p * x * y),
                            S = function(x, y)
                            pmin(1, x + y + p * x * y),
-                           params = list(p = p)
+                           params = list(p = p),
+                           meta =
+                           list(is_de_Morgan_triple = TRUE,
+                                N_is_standard = TRUE
+                                )
                            )
     }
 }
-
 
 
 fuzzy_logic_families <-
@@ -321,3 +488,16 @@ fuzzy_logic_families <-
          "Dubois-Prade" = fuzzy_logic_family_Dubois_Prade,
          "Yu" = fuzzy_logic_family_Yu
          )
+
+## See also e.g. http://en.wikipedia.org/wiki/Construction_of_t-norms
+## for more information.
+
+## This has the generators for most Archimedean t-norms, but typically
+## not the residual implications: so we use the result that
+##   I(x, y) = f^{(-1)}(\max(f(y) - f(x), 0))
+## where f is the (additive) generator and f^{(-1)} its pseudoinverse,
+## defined as
+##   f^{(-1)}(x) = f^{-1}(x) if x \le f(0) and 0 otherwise.
+## For the implication, note that x \le y implies f(x) \ge f(y) and
+## hence I(x, y) = f^{(-1)}(0) = 1; otherwise,
+##   I(x, y) = f^{(-1)}(f(y) - f(x)), x \ge y.

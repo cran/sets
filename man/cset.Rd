@@ -39,6 +39,7 @@
 \alias{cset_is_set_or_multiset}
 \alias{cset_is_fuzzy_multiset}
 \alias{cset_is_set}
+\alias{cset_has_missings}
 \alias{length.cset}
 \alias{matchfun}
 \alias{mean.cset}
@@ -92,6 +93,7 @@ cset_is_set_or_multiset(x, na.rm = FALSE)
 cset_is_set_or_fuzzy_set(x, na.rm = FALSE)
 cset_is_fuzzy_multiset(x)
 cset_is_crisp(x, na.rm = FALSE)
+cset_has_missings(x)
 
 cset_cardinality(x, type = c("absolute", "relative"), na.rm = FALSE)
 cset_union(\dots)
