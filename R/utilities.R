@@ -12,7 +12,7 @@ function(x)
         nx <- d[i]
         orep <- orep / nx
         out[[i]] <-
-            .as.list(x[[i]])[rep.int(rep.int(seq_len(nx),
+            as.list(x[[i]])[rep.int(rep.int(seq_len(nx),
                                             rep.int(rep_fac, nx)), orep)]
         rep_fac <- rep_fac * nx
     }

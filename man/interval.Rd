@@ -150,8 +150,8 @@ x \%>=\% y
     interval objects).}
 }
 \details{
-  An interval object represents a multi-interval, i.e., a union of disjunct,
-  possibly unbounded (i.e., infinite)
+  An interval object represents a multi-interval, i.e., a union of
+  disjoint, possibly unbounded (i.e., infinite)
   ranges of numbers---either the extended reals, or sequences of
   integers. The usual set operations (union, complement, intersection)
   and predicates (equality, (proper) inclusion) are implemented. If
@@ -171,7 +171,7 @@ x \%>=\% y
 
   \code{sets_options()} allows to change the style of open bounds
   according to the ISO 31-11 standard using reversed brackets instead of
-  round parantheses (see examples).
+  round parentheses (see examples).
 }
 \value{For the predicates: a logical value. For all other functions:
   an interval object.}
