@@ -306,7 +306,7 @@ function(x)
 
 interval_measure <-
 function(x)
-    sum(sapply(x, `[[`, "r") - sapply(x, `[[`, "l"))
+    sum(sapply(unclass(x), `[[`, "r") - sapply(unclass(x), `[[`, "l"))
 
 ## Summary methods
 
@@ -422,7 +422,7 @@ function(x)
                                             domain = dom
                                             )
 
-    do.call(c.interval, lapply(x, FUN))
+    do.call(c.interval, lapply(unclass(x), FUN))
 }
 
 Math.interval <-
@@ -495,7 +495,7 @@ function(x, ...)
     } else
         function(i) as.interval(lapply(seq.int(i$l, i$r), .Generic, ...))
 
-    do.call(c.interval, lapply(x, FUN))
+    do.call(c.interval, lapply(unclass(x), FUN))
 }
 
 ## interval arithmetic
@@ -503,16 +503,17 @@ function(x, ...)
 .interval_ops <-
 function(l, OP)
 {
-    len <- length(l <- lapply(l, function(i) integers2reals(as.interval(i))))
+    len <- length(l <- lapply(unclass(l),
+                              function(i) integers2reals(as.interval(i))))
     FUN <- function(x, y)
-        do.call(c.interval, set_outer(x, y, OP))
+        do.call(c.interval, set_outer(unclass(x), unclass(y), OP))
 
     if (len < 1L)
         .empty_interval()
     else if (len < 2L)
         l[[1L]]
     else
-        Reduce(FUN, l)
+        Reduce(FUN, unclass(l))
 }
 
 .bounds <- function(x, y)
@@ -615,7 +616,7 @@ function(x, n)
                                                 )
     }
 
-    do.call(c.interval, lapply(x, FUN))
+    do.call(c.interval, lapply(unclass(x), FUN))
 
 }
 
@@ -685,7 +686,7 @@ function(x, ...)
             } else
             c(x, y)
         }
-        l <- Reduce(.merge, lapply(x, list))
+        l <- Reduce(.merge, lapply(unclass(x), list))
 
         ## format individual interval
         .format <- function(x) {
@@ -698,12 +699,12 @@ function(x, ...)
                       bounds[3 + x$rc], sep = "")
         }
 
-        paste(sapply(l, .format), collapse = " U ")
+        paste(sapply(unclass(l), .format), collapse = " U ")
 
     } else {
         .format <- function(x)
             if (x$l == x$r) x$l else paste(x$l, "..", x$r, sep = "")
-        paste(sapply(x, .format), collapse = ", ")
+        paste(sapply(unclass(x), .format), collapse = ", ")
     }
 }
 
@@ -716,7 +717,8 @@ as.interval.numeric <-
 function(x)
 {
     if (all(is.finite(x)) && isTRUE(all.equal(as.integer(x), x)))
-        return(do.call(c.interval, lapply(x, function(i) integers(i, i))))
+        return(do.call(c.interval, lapply(unclass(x),
+                                          function(i) integers(i, i))))
     else
         reals(min(x, na.rm = TRUE), max(x, na.rm = TRUE))
 }
@@ -728,16 +730,17 @@ as.interval.tuple <- function(x) interval(x[[1]], x[[2]])
 as.interval.logical <-
 as.interval.NULL <- function(x) .empty_interval()
 
-as.list.interval <- function(x, ...) unclass(x)
+as.list.interval <- function(x, ...) lapply(seq_along(x), function(i) x[[i]])
 
 make_set_with_order.interval <-
 function(x) {
     if (interval_domain(x) == "R") {
         FUN <- function(i)
             if (isTRUE(all.equal(i$l, i$r))) i$l else pair(i$l, i$r)
-        .make_set_with_order(.make_set_from_list(lapply(x, FUN)))
+        .make_set_with_order(.make_set_from_list(lapply(unclass(x), FUN)))
     } else {
-        .make_set_with_order(.make_set_from_list(unlist(lapply(x, function(i) seq(i$l, i$r)))))
+        .make_set_with_order(.make_set_from_list(unlist(lapply(unclass(x),
+                                                               function(i) seq(i$l, i$r)))))
     }
 }
 
@@ -750,7 +753,7 @@ function(x, ...) {
     if (r[1] == -Inf) x <- x[-1]
     l <- length(x)
     if (l > 0L && r[2] == Inf) x <- x[-l]
-    unlist(lapply(x, function(i) seq(i$l, i$r)))
+    unlist(lapply(unclass(x), function(i) seq(i$l, i$r)))
 }
 
 ### print and summary stuff
@@ -976,7 +979,7 @@ function()
 
 .sort_interval <-
 function(x)
-    x[order(sapply(x, `[[`, "l"), sapply(x, `[[`, "r"))]
+    x[order(sapply(unclass(x), `[[`, "l"), sapply(unclass(x), `[[`, "r"))]
 
 .merge_uncountables <-
 function(x, y)
@@ -1028,7 +1031,7 @@ function(x, y)
 function(x, reals = TRUE)
 {
     Reduce(if (reals) .merge_uncountables else .merge_countables,
-           lapply(x, list))
+           lapply(unclass(x), list))
 }
 
 .canonicalize_interval <-
