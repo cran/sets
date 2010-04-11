@@ -1,3 +1,13 @@
+Changes to 1.0-6:
+
+ o small fix in all.eqaul
+
+Changes to 1.0-5:
+
+ o bug fix in all.equal
+
+ o overloaded set operators will now work for operands of mixed set types
+
 Changes to 1.0-4:
 
  o as.list.interval() now returns a list of intervals instead of

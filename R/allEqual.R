@@ -25,7 +25,7 @@ function(target, current, ...)
 {
     if (gset_is_equal(target, current, na.rm = TRUE))
         return(TRUE)
-    if (isTRUE(all.equal(gset_support(target), gset_support(current)))
+    if (isTRUE(all.equal(as.list(target), as.list(current)))
         && isTRUE(all.equal(gset_memberships(target), gset_memberships(current))))
         return(TRUE)
 
