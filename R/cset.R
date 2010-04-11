@@ -96,11 +96,23 @@ Ops.cset <-
 function(e1, e2)
 {
     if(nargs() == 1L) {
+        ## dispatch manually for subclasses
+        if (inherits(e1, "set"))
+            Ops_set(e1, e2, .Generic = .Generic, .Class = .Class)
+        if (inherits(e1, "gset"))
+            Ops_gset(e1, e2, .Generic = .Generic, .Class = .Class)
+
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
                           .Generic, .Class))
         return(cset_complement(e1))
     }
+
+    ## dispatch manually for subclasses
+    if (inherits(e1, "set") && inherits(e2, "set"))
+        Ops_set(e1, e2, .Generic = .Generic, .Class = .Class)
+    if (inherits(e1, "gset") && inherits(e2, "gset"))
+        Ops_gset(e1, e2, .Generic = .Generic, .Class = .Class)
 
     if(!(as.character(.Generic)
          %in% c("<", "<=", ">", ">=", "==", "!=",
