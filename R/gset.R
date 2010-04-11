@@ -154,10 +154,10 @@ function(x, i, value)
          memberships = gset_memberships(x))
 }
 
-Ops.gset <-
-function(e1, e2)
+Ops_gset <-
+function(e1, e2, .Generic, .Class)
 {
-    if (nargs() == 1L) {
+    if (missing(e2) == 1L) {
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
                           .Generic, .Class))

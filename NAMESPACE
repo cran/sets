@@ -34,7 +34,7 @@ S3method("[[", "set")
 S3method("[<-", "set")
 S3method("[[<-", "set")
 S3method("Math","set")
-S3method("Ops","set")
+#S3method("Ops","set")
 S3method("Summary","set")
 S3method("all.equal","set")
 S3method("as.list", "set")
@@ -122,7 +122,7 @@ export("%e%",
        "is.gset"
        )
 
-S3method("Ops","gset")
+#S3method("Ops","gset")
 S3method("Summary","gset")
 S3method("[", "gset")
 S3method("[[", "gset")

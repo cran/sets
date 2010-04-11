@@ -54,10 +54,10 @@ function(x, ...)
 
 ### operators
 
-Ops.set <-
-function(e1, e2)
+Ops_set <-
+function(e1, e2, .Generic, .Class)
 {
-    if (nargs() == 1L) {
+    if (missing(e2)) {
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
                           .Generic, .Class))

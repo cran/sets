@@ -25,6 +25,9 @@ function(target, current, ...)
 {
     if (gset_is_equal(target, current, na.rm = TRUE))
         return(TRUE)
+    if (isTRUE(all.equal(gset_support(target), gset_support(current)))
+        && isTRUE(all.equal(gset_memberships(target), gset_memberships(current))))
+        return(TRUE)
 
     if (data.class(target) != data.class(current))
         paste("target is ", data.class(target), ", current is ",
@@ -35,8 +38,8 @@ function(target, current, ...)
     else if (gset_is_fuzzy_set(current, na.rm = TRUE) &&
              gset_is_multiset(target, na.rm = TRUE))
         "current is a fuzzy set, target is a multiset"
-    else if ((lt <- gset_cardinality(target, na.rm = TRUE)) !=
-             (lc <- gset_cardinality(current, na.rm = TRUE)))
+    else if (!isTRUE(all.equal(lt <- gset_cardinality(target, na.rm = TRUE),
+             lc <- gset_cardinality(current, na.rm = TRUE))))
         paste("cardinality of target is ", lt, ", of current is ",
               lc, sep = "")
     else

@@ -37,6 +37,7 @@ set_is_equal <-
 function(x, y)
 {
     .help <- function(a, b)
+        identical(a, b) ||
         ((length(a) == length(b))
          && (length(set_intersection(a,b)) == length(a)))
     if(is.cset(x))
@@ -103,6 +104,7 @@ gset_is_equal <-
 function(x, y, na.rm = FALSE)
 {
     .help <- function(a, b)
+        identical(a, b) ||
         cset_cardinality(a, na.rm = na.rm) ==
             cset_cardinality(b, na.rm = na.rm) &&
     cset_cardinality(gset_intersection(a, b), na.rm = na.rm) ==
@@ -218,6 +220,7 @@ cset_is_equal <-
 function(x, y, na.rm = FALSE)
 {
     .help <- function(a, b)
+        identical(a, b) ||
         cset_cardinality(a, na.rm = na.rm) ==
             cset_cardinality(b, na.rm = na.rm) &&
     cset_cardinality(cset_intersection(a, b), na.rm = na.rm) ==
