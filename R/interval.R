@@ -838,11 +838,11 @@ interval_is_half_bounded <-
 function(x)
     xor(interval_is_left_bounded(x), interval_is_right_bounded(x))
 
-interval_is_proper <- Negate(interval_is_degenerate)
-
 interval_is_degenerate <-
 function(x)
     interval_is_empty(x) || isTRUE(all.equal(min(x), max(x)))
+
+interval_is_proper <- Negate(interval_is_degenerate)
 
 interval_is_empty <-
 function(x)
