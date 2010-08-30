@@ -1,6 +1,10 @@
+Changes to 1.0-7:
+
+ o small fix in interval code
+
 Changes to 1.0-6:
 
- o small fix in all.eqaul
+ o small fix in all.equal
 
 Changes to 1.0-5:
 
