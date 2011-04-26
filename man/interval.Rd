@@ -51,10 +51,16 @@
 \alias{interval_symdiff}
 \alias{interval_union}
 \alias{is.interval}
+\alias{max.interval}
+\alias{mean.interval}
+\alias{min.interval}
 \alias{naturals}
 \alias{naturals0}
+\alias{range.interval}
 \alias{reals}
 \alias{reals2integers}
+\alias{prod.interval}
+\alias{sum.interval}
 \alias{\%..\%}
 \alias{\%<\%}
 \alias{\%>\%}
@@ -169,6 +175,10 @@ x \%>=\% y
   discretizes a real multi-interval. \code{integers2reals()} returns a
   multi-interval of corresponding (degenerate) real intervals.
 
+  The summary functions \code{min}, \code{max}, \code{range},
+  \code{sum}, \code{mean} and \code{prod} are implemented and work
+  on the interval bounds.
+
   \code{sets_options()} allows to change the style of open bounds
   according to the ISO 31-11 standard using reversed brackets instead of
   round parentheses (see examples).
@@ -209,8 +219,7 @@ reals(1) ## half-unbounded
 !reals(1,5)
 interval_complement(reals(1,5), reals(2, Inf))
 
-## combine/union
-c(reals(2,4), reals(3,5))
+## combine/c(reals(2,4), reals(3,5))
 reals(2,4) | reals(3,5)
 
 ## intersection
@@ -253,7 +262,7 @@ integers()
 naturals()
 naturals0()
 
-3 %..% 5
+3 \%..\% 5
 integers(3, 5)
 integers(3, 5) | integers(6,9)
 integers(3, 5) | integers(7,9)
@@ -280,5 +289,11 @@ x + y
 x - y
 x * y
 x / y
+
+## summary functions
+min(x, y)
+max(y)
+range(y)
+mean(y)
 }
 \keyword{math}
