@@ -63,7 +63,7 @@ function(l = NULL, r = NULL,
     if (is.null(r)) r <- Inf
     if (!is.numeric(l) || !is.numeric(r))
         stop("Need numeric bounds.")
-    interval(l = l, r = r, bound = bounds, domain = "R")
+    interval(l = l, r = r, bounds = bounds, domain = "R")
 }
 
 interval <-
@@ -637,7 +637,7 @@ function(x, min = -Inf, max = Inf)
                 recursive = FALSE)
 
     ## canonicalize
-    .make_interval_from_list_and_domain(.canonicalize_interval(x, real = TRUE),
+    .make_interval_from_list_and_domain(.canonicalize_interval(x, reals = TRUE),
                                         "R")
 }
 
@@ -658,7 +658,7 @@ function(x)
     }
 
     ## canonicalize
-    .make_interval_from_list_and_domain(.canonicalize_interval(x, real = FALSE),
+    .make_interval_from_list_and_domain(.canonicalize_interval(x, reals = FALSE),
                                         domain = "Z")
 }
 
