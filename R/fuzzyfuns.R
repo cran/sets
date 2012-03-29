@@ -58,8 +58,8 @@ function(mean = NULL, sd = c(1,1),
     if (!is.null(height) && (height < 0 || height > 1))
         stop("Height must be in the unit interval.")
 
-    sd <- seq(sd, length.out = 2)
-    log <- seq(log, length.out = 2)
+    sd <- rep(sd, length.out = 2)
+    log <- rep(log, length.out = 2)
 
     function(x) {
         if (is.null(mean))
