@@ -203,7 +203,7 @@ function(e1, e2, .Generic, .Class)
 
 .make_gset_from_list <-
 function(list)
-    .structure(list, class = "gset")
+    .structure(list, class = c("gset", "cset"))
 
 .make_gset_from_support_and_memberships <-
 function(support, memberships, universe = NULL, bound = NULL)

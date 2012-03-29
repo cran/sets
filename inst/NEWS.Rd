@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
+
+\section{Changes in version 1.0-9}{
+  \itemize{
+    \item small bug fix in \code{fuzzy_two_normals()}
+  }
+}
+
 \section{Changes in version 1.0-8}{
   \itemize{
     \item Package news converted to Rd format.

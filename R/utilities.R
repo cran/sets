@@ -94,6 +94,7 @@ function(equalityfun)
 .list_order <-
 function(x, decreasing = FALSE, ...) {
     .as.character <- function(x, ...) {
+## FIXME: also serialize S4 objects
         rec <- unlist(lapply(x, is.recursive))
         x[rec] <- lapply(x[rec], serialize, NULL)
         unlist(lapply(x, paste, collapse = ""))
