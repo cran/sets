@@ -180,7 +180,7 @@ function(x, ...) {
 summary.cset <-
 function(object, ...)
 {
-    len <- length(object)
+    len <- cset_cardinality(object)
     if (na <- is.na(len))
         len <- length.set(object)
     out <- if (len == 0L)

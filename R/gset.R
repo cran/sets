@@ -88,7 +88,7 @@ function(x, ...)
 summary.gset <-
 function(object, ...)
 {
-    len <- length(object)
+    len <- gset_cardinality(object)
     if (na <- is.na(len))
         len <- length.set(object)
     out <- if (len == 0L)
@@ -235,7 +235,7 @@ function(support, memberships, universe = NULL, bound = NULL)
 
         ## compute index of entries with 0 memberships.
         z <- if (is.list(memberships))
-            sapply(memberships, length) == 0
+            sapply(memberships, gset_cardinality) == 0
         else
             memberships == 0
 
@@ -349,7 +349,8 @@ function(l, support, connector, matchfun = .exact_match,
         ## determine max. membership cardinality
         is_list <- sapply(m, is.list)
         FUN <- function(i) if (all(is.na(i))) 0 else max(i, na.rm = TRUE)
-        mlen <- max(if (any(is_list)) sapply(m[is_list], sapply, length),
+        mlen <- max(if (any(is_list)) sapply(m[is_list], sapply,
+                                             gset_cardinality),
                     if (any(!is_list)) sapply(m[!is_list], FUN),
                     na.rm = TRUE)
 
