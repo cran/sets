@@ -20,7 +20,7 @@ function(x, y, method = "Jaccard")
         if (gset_is_empty(x) && gset_is_empty(y))
             1
         else
-            length(gset_intersection(x, y)) / length(gset_union(x, y))
+            gset_cardinality(gset_intersection(x, y)) / gset_cardinality(gset_union(x, y))
     }
 }
 
@@ -33,7 +33,7 @@ function(x, y, method = "Jaccard")
         if (cset_is_empty(x) && cset_is_empty(y))
             1
         else
-            length(cset_intersection(x, y)) / length(cset_union(x, y))
+            cset_cardinality(cset_intersection(x, y)) / cset_cardinality(cset_union(x, y))
     }
 }
 

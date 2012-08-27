@@ -22,7 +22,7 @@ function(...)
         return(as.gset(set_cartesian(...)))
 
     ## handle empty sets
-    if (any(sapply(l, length) == 0, na.rm = TRUE))
+    if (any(sapply(l, gset_cardinality) == 0, na.rm = TRUE))
         return(gset())
 
     ## compute cartesian products of support and memberships

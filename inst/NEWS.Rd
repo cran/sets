@@ -1,6 +1,17 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-10}{
+  \itemize{
+    \item The \code{length()} methods for [cg]sets are no 
+    longer aliases for \code{gset_cardinality()},
+    but for \code{set_cardinality()} (i.e., give the number of
+    elements in the [cg]set).
+    This change has been made since \code{length()}
+    methods are expected to yield integer values only.
+  }
+}
+
 \section{Changes in version 1.0-9}{
   \itemize{
     \item small bug fix in \code{fuzzy_two_normals()}

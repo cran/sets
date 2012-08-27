@@ -1,4 +1,6 @@
 set_cardinality <-
+length.gset <-
+length.cset <-
 length.set <-
 function(x)
     length(.as.list(x))
@@ -23,11 +25,6 @@ function(x, type = c("absolute", "relative"), na.rm = FALSE)
     else
         ret / length.set(x)
 }
-
-length.gset <-
-length.cset <-
-function(x)
-    gset_cardinality(x)
 
 cset_cardinality <-
 function(x, type = c("absolute", "relative"), na.rm = FALSE)
