@@ -1,9 +1,9 @@
-a429e08c7afd3e8517d34022a59cb38f *DESCRIPTION
-39880405bb3f8db582e460d7e3e2cd63 *NAMESPACE
+93319efa07a48545eefeeff119a9dc42 *DESCRIPTION
+4d6c8a33a79fee11def1796983c9db79 *NAMESPACE
 6c9e578af5c153fa3f34c453315c7a88 *R/allEqual.R
 d28e559c2b0a6ab0492da9a968218589 *R/cardinality.R
 1e585ad894d124ecfe9f8817ce43253b *R/cartesian.R
-a8a5e2e679d0a0d26af51dc3a89139c8 *R/closure.R
+3486394dfc8eeea77b826d6adb2822e0 *R/closure.R
 5a106c6b410704fe790ffda869a3d7b6 *R/combn.R
 825375ff468dab0950e7fe914f75c7be *R/complement.R
 5eecb75b1884e8e448f025c91c4b8f11 *R/converters.R
@@ -27,7 +27,7 @@ e0442e5bf3ad59567ffd4515305636c3 *R/options.R
 f65b908c2be9f00fce541bd3dc57a461 *R/power.R
 fab4710f0e9094fdc51e83c8a529dafb *R/predicates.R
 1ebd530ce56aed5cddbd7ab0b292593e *R/product.R
-d493ba94e42bcedbf12f7deb9d9b908b *R/reduction.R
+deccc3969e28586e6c7f426a3c59d444 *R/reduction.R
 685b17ddd67e47e0eec188bd8cb0412d *R/rep.R
 d989fa5321726792096b0332d1f46c62 *R/set.R
 94cc4bb670a3a0b3bc11438abffebaa9 *R/similarity.R
@@ -43,7 +43,7 @@ fbd933467fc28a9ac9af92e00153fd95 *R/zzz.R
 3b4d4de9adf47fa1b01f6e7c118b2817 *inst/CITATION
 e09d746f6a805699c445d8a203b17bd1 *inst/NEWS.Rd
 e4313bda3aa509b76950f268df037711 *inst/doc/sets.Rnw
-801377c5bd1064b68a807e8ac88cb4b7 *inst/doc/sets.pdf
+cd9289a1b4728f00d3fbdc30da222949 *inst/doc/sets.pdf
 21888d850904fabb5921bf5d8e262c3e *man/canonicalizeSetMapping.Rd
 e4445aff16665fa7185284b22d91e983 *man/closure.Rd
 7bf576e31eabb3e6a9ab56ac55de8a27 *man/cset.Rd
@@ -60,7 +60,7 @@ b563c0fb24c5e0612c69da1232a7e5fd *man/interval.Rd
 e2e819fab1da9fd22b3319fac6e5035c *man/set.Rd
 cfcb2ff815f2982ddd0cf43f101ee364 *man/similarity.Rd
 1b4201ead73e121606493d6e970b4aac *man/tuple.Rd
-6075629b01713de9fc127dc6ba713613 *src/closure.c
+121519c05effa681c7b25d3d6482cde0 *src/closure.c
 a23d138493863e30a17c4b01026a1c13 *src/qsort-Vbody.h
 e4313bda3aa509b76950f268df037711 *vignettes/sets.Rnw
 fd462cce5cd15b59d96ec1a9ba2b1136 *vignettes/sets.bib

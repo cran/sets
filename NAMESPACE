@@ -1,4 +1,7 @@
-useDynLib("sets")
+useDynLib("sets",
+          "R_closure",
+          "R_reduction"
+          )
 
 importFrom("stats", "median")
 importFrom("stats", "na.omit")
