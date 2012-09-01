@@ -56,5 +56,5 @@ function(x, operation = c("union", "intersection"), ...)
 
 binary_closure <-
 function(x, operation = c("union", "intersection"))
-    .Call("R_closure", x,
+    .Call(R_closure, x,
           pmatch(match.arg(operation), c("union", "intersection")))

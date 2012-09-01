@@ -125,7 +125,7 @@ SEXP R_closure(SEXP x, SEXP R_op) {
 	}
     }
     // Initialize hash table.
-    if (nr > 536870912)
+    if (nr > 1073741824)
 	error("size %d too large for hashing", nr);
     k  = 2 * nr;
     n  = 2;
@@ -185,7 +185,7 @@ SEXP R_closure(SEXP x, SEXP R_op) {
 
 	// Resize hash table.
 	if ((k = 2 * n) == LENGTH(ht)) {
-	    if (n > 536870912)
+	    if (n > 1073741824)
 		error("size %d too large for hashing");
 	    UNPROTECT_PTR(ht);
 
