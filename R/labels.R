@@ -29,7 +29,8 @@ function(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL, ...)
     l <- length(x)
 
     ## recycle max_width and dots as needed
-    max_width <- rep(max_width, length.out = l)
+    if (!is.null(max_width))
+        max_width <- rep(max_width, length.out = l)
     dots <- rep(dots, length.out = l)
 
     ## check existing labels

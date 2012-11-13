@@ -1,6 +1,18 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-12}{
+  \itemize{
+    \item small fix in LABELS (when called with NULL)
+  }
+}
+
+\section{Changes in version 1.0-11}{
+  \itemize{
+    \item Author/Maintainer info removed from DESCRIPTION
+  }
+}
+
 \section{Changes in version 1.0-10}{
   \itemize{
     \item The \code{length()} methods for [cg]sets are no 
