@@ -33,10 +33,14 @@ fuzzy_two_normals(mean = NULL, sd = c(1,1), log = c(FALSE, FALSE),
                   height = 1, chop = 0)
 fuzzy_bell(center = NULL, cross = NULL, slope = 4, height = 1, chop = 0)
 fuzzy_sigmoid(cross = NULL, slope = 0.5, height = 1, chop = 0)
-fuzzy_trapezoid(corners = NULL, height = c(1,1), return_base_corners = TRUE)
-fuzzy_triangular(corners = NULL, height = 1, return_base_corners = TRUE)
-fuzzy_cone(center = NULL, radius = 2, height = 1, return_base_corners = TRUE)
-fuzzy_pi3(mid = NULL, min = NULL, max = NULL, height = 1, return_base_corners = TRUE)
+fuzzy_trapezoid(corners = NULL, height = c(1,1),
+                return_base_corners = TRUE)
+fuzzy_triangular(corners = NULL, height = 1,
+                 return_base_corners = TRUE)
+fuzzy_cone(center = NULL, radius = 2, height = 1,
+           return_base_corners = TRUE)
+fuzzy_pi3(mid = NULL, min = NULL, max = NULL, height = 1,
+          return_base_corners = TRUE)
 fuzzy_pi4(knots, height = 1, return_base_corners = TRUE)
 
 fuzzy_normal_gset(mean = NULL, sd = 1, log = FALSE, height = 1,

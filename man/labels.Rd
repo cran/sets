@@ -7,7 +7,8 @@
   Creates \dQuote{nice} labels from objects.
 }
 \usage{
-LABELS(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL, \dots)
+LABELS(x, max_width = NULL, dots = "...", unique = FALSE,
+       limit = NULL, \dots)
 LABEL(x, limit = NULL, \dots)
 \method{LABEL}{character}(x, limit = NULL, quote = sets_options("quote"), \dots)
 }

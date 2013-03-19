@@ -39,7 +39,8 @@ cl <- hclust(d, "ward")
 ## retrieve two clusters
 cutree(cl, 2)
 
-## -> clearly, the clusters are formed by docs 1--12 and 13--30, respectively.
+## -> clearly, the clusters are formed by docs 1--12 and 13--30,
+## respectively.
 
 }
 \keyword{datasets}

@@ -68,7 +68,9 @@ cset_transform_memberships(x, FUN, \dots)
 cset_concentrate(x)
 cset_dilate(x)
 cset_normalize(x, height = 1)
-cset_defuzzify(x, method = c("meanofmax", "smallestofmax", "largestofmax", "centroid"))
+cset_defuzzify(x,
+               method = c("meanofmax", "smallestofmax",
+                          "largestofmax", "centroid"))
 
 matchfun(FUN)
 

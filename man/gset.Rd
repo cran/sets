@@ -67,7 +67,9 @@ gset_transform_memberships(x, FUN, \dots)
 gset_concentrate(x)
 gset_dilate(x)
 gset_normalize(x, height = 1)
-gset_defuzzify(x, method = c("meanofmax", "smallestofmax", "largestofmax", "centroid"))
+gset_defuzzify(x,
+               method = c("meanofmax", "smallestofmax",
+                          "largestofmax", "centroid"))
 
 gset_is_empty(x, na.rm = FALSE)
 gset_is_subset(x, y, na.rm = FALSE)
@@ -271,7 +273,8 @@ A <- gset(3L, memberships = 0.5, universe = 1:5)
 
 ## fuzzy multisets
 (A <- gset(c("a", "b", "d"),
-         memberships = list(c(0.3, 1, 0.5), c(0.9, 0.1), gset(c(0.4, 0.7), c(1, 2)))))
+         memberships = list(c(0.3, 1, 0.5), c(0.9, 0.1),
+                            gset(c(0.4, 0.7), c(1, 2)))))
 (B <- gset(c("a", "c", "d", "e"),
          memberships = list(c(0.6, 0.7), c(1, 0.3), c(0.4, 0.5), 0.9)))
 gset_union(A, B)

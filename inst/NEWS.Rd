@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-13}{
+  \itemize{
+    \item Rd improvements
+  }
+}
+
 \section{Changes in version 1.0-12}{
   \itemize{
     \item small fix in LABELS (when called with NULL)

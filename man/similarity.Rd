@@ -12,9 +12,15 @@ set_similarity(x, y, method = "Jaccard")
 gset_similarity(x, y, method = "Jaccard")
 cset_similarity(x, y, method = "Jaccard")
 
-set_dissimilarity(x, y, method = c("Jaccard", "Manhattan", "Euclidean", "L1", "L2"))
-gset_dissimilarity(x, y, method = c("Jaccard", "Manhattan", "Euclidean", "L1", "L2"))
-cset_dissimilarity(x, y, method = c("Jaccard", "Manhattan", "Euclidean", "L1", "L2"))
+set_dissimilarity(x, y,
+                  method = c("Jaccard", "Manhattan", "Euclidean",
+                             "L1", "L2"))
+gset_dissimilarity(x, y,
+                   method = c("Jaccard", "Manhattan", "Euclidean",
+                              "L1", "L2"))
+cset_dissimilarity(x, y,
+                   method = c("Jaccard", "Manhattan", "Euclidean",
+                              "L1", "L2"))
 }
 \arguments{
   \item{x, y}{Two (generalized/customizable) sets.}

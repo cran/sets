@@ -277,7 +277,8 @@ c(reals(2,5), integers(7,9))
 interval_complement(reals(2,5), integers())
 interval_complement(integers(2,5), reals())
 
-try(interval_complement(integers(), reals()), silent = TRUE) ## infeasible --> error
+try(interval_complement(integers(), reals()), silent = TRUE)
+## infeasible --> error
 
 integers() <= reals()
 reals() <= integers()
