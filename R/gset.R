@@ -160,7 +160,8 @@ function(e1, e2, .Generic, .Class)
     if (missing(e2) == 1L) {
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
-                          .Generic, .Class))
+                          .Generic, .Class),
+                 domain = NA)
         return(gset_complement(e1))
     }
 
@@ -168,7 +169,8 @@ function(e1, e2, .Generic, .Class)
          %in% c("<", "<=", ">", ">=", "==", "!=",
                 "&", "|", "*", "+", "-", "^")))
         stop(gettextf("Generic '%s' not defined for \"%s\" objects.",
-                      .Generic, .Class))
+                      .Generic, .Class),
+             domain = NA)
 
     if(as.character(.Generic) == "^") {
         if(is.gset(e1) &&

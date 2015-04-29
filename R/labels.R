@@ -39,7 +39,7 @@ function(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL, ...)
         ret <- rep.int("", l)
 
     ## create a label for components without given one
-    empty <- ret == ""
+    empty <- is.na(ret) | (ret == "")
     if (any(empty))
         ret[empty] <- sapply(x[empty], LABEL, limit, ...)
 

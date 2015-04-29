@@ -104,7 +104,8 @@ function(e1, e2)
 
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
-                          .Generic, .Class))
+                          .Generic, .Class),
+                 domain = NA)
         return(cset_complement(e1))
     }
 
@@ -118,7 +119,8 @@ function(e1, e2)
          %in% c("<", "<=", ">", ">=", "==", "!=",
                 "&", "|", "*", "+", "-", "^")))
         stop(gettextf("Generic '%s' not defined for \"%s\" objects.",
-                      .Generic, .Class))
+                      .Generic, .Class),
+             domain = NA)
 
     if(as.character(.Generic) == "^") {
         if(is.cset(e1) &&

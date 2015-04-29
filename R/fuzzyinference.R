@@ -1,6 +1,8 @@
 #### fuzzy inference
 
 `%is%` <- function(x, y) gset_charfun(x)(y)
+## FUN <- matchfun(function(x,y) isTRUE(all.equal(x,y)))
+##`%is%` <- function(x, y) cset_charfun(cset(x, matchfun = FUN))(y)
 
 fuzzy_inference <-
 function(system, values, implication = c("minimum", "product"))
@@ -105,7 +107,8 @@ function(varnames, FUN = fuzzy_normal, universe = NULL, ...)
     n <- length(varnames)
     if (is.numeric(varnames)) {
         nam <- names(varnames)
-        if (is.null(nam) || any(nchar(nam) < 1L))
+        empty <- !nzchar(nam)
+        if (is.null(nam) || any(is.na(empty)) || any(empty))
             stop("Position vector must be named.")
         n <- as.numeric(varnames)
         varnames <- names(varnames)
@@ -118,7 +121,7 @@ function(varnames, FUN = fuzzy_normal, universe = NULL, ...)
 fuzzy_variable <-
 function(...) {
     n <- names(l <- list(...))
-    if (is.null(n) || any(nchar(n) < 1L))
+    if (is.null(n) || any(!nzchar(n)))
         stop("Argument list must be named.")
     universe <- .expand()
     for (i in seq_along(l))

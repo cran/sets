@@ -360,7 +360,8 @@ function(e1, e2)
     if (nargs() == 1L) {
         if(!((ch <- as.character(.Generic)) %in% c("-", "!")))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
-                          .Generic, .Class))
+                          .Generic, .Class),
+                 domain = NA)
         if (ch == "!")
             return(interval_complement(e1))
         else
@@ -371,7 +372,8 @@ function(e1, e2)
          %in% c("<", "<=", ">", ">=", "==", "!=",
                 "&", "|", "*", "+", "-", "/", "^")))
         stop(gettextf("Generic '%s' not defined for \"%s\" objects.",
-                      .Generic, .Class))
+                      .Generic, .Class),
+             domain = NA)
 
     switch(.Generic,
            "|"  = interval_union(e1, e2),

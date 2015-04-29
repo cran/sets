@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-14}{
+  \itemize{
+    \item internal fix because nchar(NA) now returns NA
+  }
+}
+
 \section{Changes in version 1.0-13}{
   \itemize{
     \item Rd improvements

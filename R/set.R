@@ -60,7 +60,8 @@ function(e1, e2, .Generic, .Class)
     if (missing(e2)) {
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
-                          .Generic, .Class))
+                          .Generic, .Class),
+                 domain = NA)
         return(gset_complement(e1))
     }
 
@@ -68,7 +69,8 @@ function(e1, e2, .Generic, .Class)
          %in% c("<", "<=", ">", ">=", "==", "!=",
                 "&", "|", "*", "+", "-", "^")))
         stop(gettextf("Generic '%s' not defined for \"%s\" objects.",
-                      .Generic, .Class))
+                      .Generic, .Class),
+             domain = NA)
 
     if(as.character(.Generic) == "^") {
         if(is.set(e1) &&
@@ -117,7 +119,8 @@ function(x, i = x)
 `[[.set` <-
 function(x, i)
 {
-    if (!is.character(i) || length(i) > 1L || nchar(i) < 1L) i <- list(i)
+    if (!is.character(i) || length(i) > 1L || !nzchar(i))
+        i <- list(i)
     .as.list(x)[[.lookup_elements(x, i)]]
 }
 
