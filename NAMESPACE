@@ -3,8 +3,10 @@ useDynLib("sets",
           "R_reduction"
           )
 
-importFrom("stats", "median")
-importFrom("stats", "na.omit")
+importFrom("graphics", "axis", "barplot", "lines", "par", "plot", "text")
+importFrom("grDevices", "grey.colors")
+importFrom("stats", "approxfun", "dnorm", "median", "na.omit", "weighted.mean")
+importFrom("utils", "combn", "str")
 
 export("%e%",
        "%D%",
