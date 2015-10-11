@@ -1,5 +1,5 @@
 \documentclass[article,nojss]{jss}
-\usepackage{amsfonts,enumerate,thumbpdf}
+\usepackage{amsfonts,enumerate}
 
 \author{David Meyer\\WU Wirtschaftsuniversit{\"a}t Wien \And
         Kurt Hornik\\WU Wirtschaftsuniversit{\"a}t Wien}

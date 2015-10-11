@@ -455,3 +455,13 @@ S3method("summary", "interval")
 S3method(".as.list", "default")
 S3method(".as.list", "set")
 S3method(".as.list", "gset")
+
+### intended for internal usage only
+export(".cartesian_product",
+       ".exact_match",
+       ".get_memberships",
+       ".make_gset_from_support_and_memberships",
+       ".make_set_of_tuples_from_list_of_lists",
+       ".ntuple",
+       ".set_subset",
+       "fuzzy_logic_predicates")

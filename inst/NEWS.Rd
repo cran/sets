@@ -1,15 +1,22 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-16}{
+  \itemize{
+    \item no user-level changes
+  }
+}
+
 \section{Changes in version 1.0-15}{
   \itemize{
-    \item add import statements for functions in recommended packages to NAMESPACE
+    \item add import statements for functions in recommended packages to
+    \file{NAMESPACE}
   }
 }
 
 \section{Changes in version 1.0-14}{
   \itemize{
-    \item internal fix because nchar(NA) now returns NA
+    \item internal fix because \code{nchar(NA)} now returns \code{NA}
   }
 }
 
@@ -21,7 +28,7 @@
 
 \section{Changes in version 1.0-12}{
   \itemize{
-    \item small fix in LABELS (when called with NULL)
+    \item small fix in \code{LABELS()} (when called with \code{NULL})
   }
 }
 
