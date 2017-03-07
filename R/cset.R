@@ -67,7 +67,9 @@ function(x, i = x, value)
 function(x, i, value)
 {
     if (!is.character(i) || length(i) > 1L) i <- list(i)
-    cset(gset(`[[<-`(.as.list(x), .lookup_elements(x, i, .matchfun(x)), value),
+    if (length(lookup <- .lookup_elements(x, i, .matchfun(x))) < 1L) return(x)
+
+    cset(gset(`[[<-`(.as.list(x), lookup, value),
          memberships = cset_memberships(x)),
          .orderfun(x),
          .matchfun(x))

@@ -21,7 +21,7 @@ function(X, Y, FUN = "*", ..., SIMPLIFY = TRUE, quote = FALSE)
     Y <- as.list(Y)
 
     ## loop
-    xrep <- rep(X, times = (ylen <- length(Y)))
+    xrep <- rep.int(X, times = (ylen <- length(Y)))
     yrep <- rep(Y, each = (xlen <- length(X)))
     ret <- mapply(FUN, xrep, yrep, MoreArgs = list(...), SIMPLIFY = FALSE)
 

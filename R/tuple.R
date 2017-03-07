@@ -10,7 +10,7 @@ function(...)
     l <- list(...)
     nam <- names(l)
     if (!is.null(nam)) {
-        nam <- rep(nam, length.out = length(l))
+        nam <- rep_len(nam, length.out = length(l))
         names(l) <- nam
     }
     .make_tuple_from_list(l)
@@ -156,8 +156,8 @@ function(e1, e2)
 {
     if (!missing(e2)) {
         len <- max(length(e1), length(e2))
-        e1 <- rep(e1, length.out = len)
-        e2 <- rep(e2, length.out = len)
+        e1 <- rep_len(e1, length.out = len)
+        e2 <- rep_len(e2, length.out = len)
         ret <- lapply(seq_len(len),
                       function(i) do.call(.Generic, list(e1[[i]], e2[[i]])))
     } else {
@@ -184,12 +184,20 @@ function(x, ...)
     NextMethod()
 }
 
-median.tuple <-
-function(x, na.rm = FALSE)
-{
-    x <- as.numeric(x)
-    NextMethod()
+## <FIXME>
+## Simplify when depending on R >= 3.4.0
+if(is.na(match("...", names(formals(median))))) {
+    median.tuple <- function(x, na.rm = FALSE) {
+        x <- as.numeric(x)
+        NextMethod()
+    }
+} else {
+    median.tuple <- function(x, na.rm = FALSE, ...) {
+        x <- as.numeric(x)
+        NextMethod()
+    }
 }
+## </FIXME>
 
 tuple_outer <- set_outer
 

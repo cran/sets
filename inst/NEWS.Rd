@@ -1,6 +1,16 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-17}{
+  \itemize{
+    \item add \code{lengths} method
+    \item the extract operator (\code{[[}) now returns \code{NULL} if
+    the requested element can not be found instead of throwing a cryptical
+    error message
+    \item some small internal optimizations
+  }
+}
+
 \section{Changes in version 1.0-16}{
   \itemize{
     \item no user-level changes

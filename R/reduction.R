@@ -45,5 +45,5 @@ function(x, operation = c("union", "intersection"), ...)
 
 binary_reduction <-
 function(x, operation = c("union", "intersection"))
-    .Call(R_reduction, x,
+    .Call(sets_reduction, x,
           pmatch(match.arg(operation), c("union", "intersection")))

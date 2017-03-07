@@ -18,11 +18,18 @@ function(x, ...)
     mean(as.numeric(x), ...)
 }
 
-median.set <-
-function(x, na.rm = FALSE)
-{
-    median(as.numeric(x), na.rm = na.rm)
+## <FIXME>
+## Simplify when depending on R >= 3.4.0
+if(is.na(match("...", names(formals(median))))) {
+    median.set <- function(x, na.rm = FALSE) {
+        median(as.numeric(x), na.rm = na.rm)
+    }
+} else {
+    median.set <- function(x, na.rm = FALSE, ...) {
+        median(as.numeric(x), na.rm = na.rm, ...)
+    }
 }
+## </FIXME>
 
 ## gset Summary methods
 
@@ -52,22 +59,40 @@ function(x, ..., na.rm = FALSE)
     weighted.mean(v, m, na.rm = na.rm)
 }
 
-median.gset <-
-function(x, na.rm = FALSE)
-{
-    if (gset_is_fuzzy_multiset(x))
-        stop("Operation not defined for fuzzy multisets.")
-    x <- if (gset_is_fuzzy_set(x, na.rm = TRUE))
-        as.numeric(x) * .get_memberships(x)
-    else {
-        n <- as.numeric(x)
-        m <- .get_memberships(x)
-        n[is.na(m)] <- NA
-        m[is.na(m)] <- 1
-        rep.int(n, times = m)
+## <FIXME>
+## Simplify when depending on R >= 3.4.0
+if(is.na(match("...", names(formals(median))))) {
+    median.gset <- function(x, na.rm = FALSE) {
+        if (gset_is_fuzzy_multiset(x))
+            stop("Operation not defined for fuzzy multisets.")
+        x <- if (gset_is_fuzzy_set(x, na.rm = TRUE))
+                 as.numeric(x) * .get_memberships(x)
+             else {
+                 n <- as.numeric(x)
+                 m <- .get_memberships(x)
+                 n[is.na(m)] <- NA
+                 m[is.na(m)] <- 1
+                 rep.int(n, times = m)
+             }
+        median(x, na.rm = na.rm)
     }
-    median(x, na.rm = na.rm)
+} else {
+    median.gset <- function(x, na.rm = FALSE, ...) {
+        if (gset_is_fuzzy_multiset(x))
+            stop("Operation not defined for fuzzy multisets.")
+        x <- if (gset_is_fuzzy_set(x, na.rm = TRUE))
+                 as.numeric(x) * .get_memberships(x)
+             else {
+                 n <- as.numeric(x)
+                 m <- .get_memberships(x)
+                 n[is.na(m)] <- NA
+                 m[is.na(m)] <- 1
+                 rep.int(n, times = m)
+             }
+        median(x, na.rm = na.rm, ...)
+    }
 }
+## </FIXME>
 
 ## cset Summary methods
 ## FIXME: can we call Summary.gset directly?
@@ -86,6 +111,13 @@ mean.cset <-
 function(x, ..., na.rm = FALSE)
     mean.gset(x, ..., na.rm = na.rm)
 
-median.cset <-
-function(x, na.rm = FALSE)
-    median.gset(x, na.rm = na.rm)
+## <FIXME>
+## Simplify when depending on R >= 3.4.0
+if(is.na(match("...", names(formals(median))))) {
+    median.cset <- function(x, na.rm = FALSE) 
+        median.gset(x, na.rm = na.rm)
+} else {
+    median.cset <- function(x, na.rm = FALSE, ...) 
+        median.gset(x, na.rm = na.rm, ...)
+}
+## </FIXME>

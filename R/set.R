@@ -121,7 +121,8 @@ function(x, i)
 {
     if (!is.character(i) || length(i) > 1L || !nzchar(i))
         i <- list(i)
-    .as.list(x)[[.lookup_elements(x, i)]]
+    if (length(lookup <- .lookup_elements(x, i)) < 1L) return(NULL)
+    .as.list(x)[[lookup]]
 }
 
 `[<-.set` <-
@@ -135,8 +136,9 @@ function(x, i = x, value)
 function(x, i, value)
 {
     if (!is.character(i) || length(i) > 1L) i <- list(i)
+    if (length(lookup <- .lookup_elements(x, i)) < 1L) return(x)
     .make_set_from_list(.list_sort(.list_unique(`[[<-`(.as.list(x),
-                        .lookup_elements(x, i), value))))
+                                                       lookup, value))))
 }
 
 ### internal stuff

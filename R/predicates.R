@@ -30,7 +30,7 @@ function(x, y)
     if(is.cset(x))
         length(x) != length(y)
     else
-        sapply(x, length) != sapply(y, length)
+        lengths(x) != lengths(y)
 }
 
 set_is_equal <-

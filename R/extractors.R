@@ -231,7 +231,7 @@ function(x)
     else if(any(x > 1, na.rm = TRUE))
         x
     else
-        rep(1L, length(x))
+        rep.int(1L, length(x))
 }
 
 .orderfun <-

@@ -84,7 +84,7 @@ static int _hadd(SEXP x, int i, SEXP h, int k) {
 //
 // (C) ceeboo 2008
 
-SEXP R_closure(SEXP x, SEXP R_op) {
+SEXP sets_closure(SEXP x, SEXP R_op) {
     if (!x || !isMatrix(x) || TYPEOF(x) != LGLSXP)
 	error("'x' not a logical matrix");
     if (!R_op || TYPEOF(R_op) != INTSXP)
@@ -295,7 +295,7 @@ static int _iss(int *x, int *y, int l)
 //
 // (C) ceeboo 2008
 
-SEXP R_reduction(SEXP x, SEXP R_op) {
+SEXP sets_reduction(SEXP x, SEXP R_op) {
     if (!x || !isMatrix(x) || TYPEOF(x) != LGLSXP)
 	error("'x' not a logical matrix");
     if (!R_op || TYPEOF(R_op) != INTSXP)

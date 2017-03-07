@@ -21,7 +21,7 @@ function(x, type = NULL, ylim = NULL,
 
     m <- cset_memberships(x)
     if (cset_is_fuzzy_multiset(x)) {
-        maxlen <- max(sapply(m, length), na.rm = TRUE)
+        maxlen <- max(lengths(m), na.rm = TRUE)
         m <- sapply(m, .expand_membership, len = maxlen)
     }
     barplot(m,
@@ -117,7 +117,7 @@ lines.tuple <-
 function(x, col = 1, universe = NULL, ...)
 {
     l <- as.list(x)
-    col <- rep(col, length.out = length(x))
+    col <- rep_len(col, length.out = length(x))
 
     ## expand charfun generators
     for (i in seq_along(l))

@@ -4,7 +4,7 @@ function(...)
     if (nargs() < 2L)
         return(..1)
     l <- list(...)
-    if (!all(len <- sapply(l, length)))
+    if (!all(len <- lengths(l)))
         return(set())
     .make_set_of_tuples_from_list_of_lists(.cartesian_product(l))
 }

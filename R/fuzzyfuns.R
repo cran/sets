@@ -58,13 +58,13 @@ function(mean = NULL, sd = c(1,1),
     if (!is.null(height) && (height < 0 || height > 1))
         stop("Height must be in the unit interval.")
 
-    sd <- rep(sd, length.out = 2)
-    log <- rep(log, length.out = 2)
+    sd <- rep_len(sd, length.out = 2)
+    log <- rep_len(log, length.out = 2)
 
     function(x) {
         if (is.null(mean))
-            mean <- x[trunc(seq(1, length(x), length.out = 4))[2:3]]
-        ret <- rep(height, length.out = length(x))
+            mean <- x[trunc(seq.int(1, length(x), length.out = 4))[2:3]]
+        ret <- rep_len(height, length.out = length(x))
 
         tmp <- dnorm(x[x <= mean[1]], mean = mean[1], sd = sd[1], log = log[1])
         if (!is.null(height))
@@ -121,14 +121,14 @@ class(fuzzy_sigmoid) <- "charfun_generator"
 fuzzy_trapezoid <-
 function(corners = NULL, height = c(1,1), return_base_corners = TRUE)
 {
-    height <- rep(height, length.out = 2)
+    height <- rep_len(height, length.out = 2)
     if (any(height > 1) || any(height < 0))
         stop("Height(s) must be in the unit interval.")
     if (!is.null(corners) && length(corners) != 4L)
         stop("Need four corner values.")
     function(x) {
         if (is.null(corners))
-            corners <- x[trunc(seq(1, length(x), length.out = 6))[2:5]]
+            corners <- x[trunc(seq.int(1, length(x), length.out = 6))[2:5]]
         ret <- approxfun(corners, c(0, height, 0), rule = 2)(x)
         if (return_base_corners)
             ret[match(corners[c(1,4)], x)] <- .Machine$double.eps
@@ -146,7 +146,7 @@ function(corners = NULL, height = 1, return_base_corners = TRUE)
         stop("Need three corner values.")
     function(x) {
         if (is.null(corners))
-            corners <- x[trunc(seq(1, length(x), length.out = 5))[2:4]]
+            corners <- x[trunc(seq.int(1, length(x), length.out = 5))[2:4]]
         ret <- approxfun(corners, c(0, height, 0), rule = 2)(x)
         if (return_base_corners)
             ret[match(corners[-2], x)] <- .Machine$double.eps
@@ -230,7 +230,7 @@ function(universe = NULL)
     if (is.null(universe))
         universe <- sets_options("universe")
     if (is.null(universe))
-        universe <- seq(0,20,0.1)
+        universe <- seq.int(0, 20, 0.1)
     as.set(eval(universe))
 }
 
@@ -308,7 +308,7 @@ function(FUN = fuzzy_normal, n = 5, ..., universe = NULL, names = NULL)
         function(i) FUN(i, universe = universe, ...)
 
     if (length(n) == 1L)
-        n <- .get_support(universe)[seq(from = 1, to = length(universe),
+        n <- .get_support(universe)[seq.int(from = 1, to = length(universe),
                                         length.out = n)]
     .structure(as.tuple(lapply(n, F)), names = names)
 }

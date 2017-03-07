@@ -30,8 +30,8 @@ function(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL, ...)
 
     ## recycle max_width and dots as needed
     if (!is.null(max_width))
-        max_width <- rep(max_width, length.out = l)
-    dots <- rep(dots, length.out = l)
+        max_width <- rep_len(max_width, length.out = l)
+    dots <- rep_len(dots, length.out = l)
 
     ## check existing labels
     ret <- names(x)
@@ -51,7 +51,7 @@ function(x, max_width = NULL, dots = "...", unique = FALSE, limit = NULL, ...)
 
             ## possibly add dots
             if (!is.null(dots))
-                ret[too_long] <- paste(ret[too_long], dots[too_long], sep = "")
+                ret[too_long] <- paste0(ret[too_long], dots[too_long])
           }
     }
 
@@ -67,7 +67,7 @@ function(x, limit = NULL, ...)
 
 LABEL.default <-
 function(x, limit = NULL, ...)
-    paste("<<", class(x)[1L], ">>", sep = "")
+    paste0("<<", class(x)[1L], ">>")
 
 LABEL.matrix <-
 function(x, limit = NULL, ...)
@@ -88,7 +88,7 @@ function(x, limit = NULL, quote = sets_options("quote"), ...) {
     if (is.null(limit))
         limit <- 2L
     if (quote)
-        x <- ifelse(is.na(x), x, paste("\"", x, "\"", sep = ""))
+        x <- ifelse(is.na(x), x, paste0("\"", x, "\""))
     .format_or_class(x, limit, ...)
 }
 
@@ -116,9 +116,9 @@ function(x, limit, ...)
     l <- length.set(x)
     if (l < limit) {
         if (is.integer(x))
-            format(ifelse(is.na(x), x, paste(x, "L", sep = "")), ...)
+            format(ifelse(is.na(x), x, paste0(x, "L")), ...)
         else
             format(x, ...)
     } else
-        paste("<<", class(x)[1L], "(", l, ")>>", sep = "")
+        paste0("<<", class(x)[1L], "(", l, ")>>")
 }

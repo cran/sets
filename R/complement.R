@@ -58,7 +58,7 @@ function(x, universe = gset_universe(x), bound = gset_bound(x))
     if (isTRUE(gset_is_set(x)) && bound == 1L)
         gset(set_complement(x, universe), universe = tuniverse, bound = 1L)
     else if (gset_is_crisp(x, na.rm = TRUE)) {
-        M <- gset(universe, rep(bound, length(universe)))
+        M <- gset(universe, rep.int(bound, length(universe)))
         .structure(.set_bound(.set_universe(gset_difference(M, x), tuniverse), bound),
                   class = c("gset", "cset"))
     } else if (gset_is_fuzzy_set(x, na.rm = TRUE) && bound == 1L)
@@ -70,7 +70,7 @@ function(x, universe = gset_universe(x), bound = gset_bound(x))
         )
     else {
         connector <- function(x, y) .N.(y)
-        M <- gset(universe, rep(bound, length(universe)))
+        M <- gset(universe, rep.int(bound, length(universe)))
         memberships <-
             .apply_connector_to_list_of_gsets_and_support(list(M, x),
                                                           universe,

@@ -1,8 +1,8 @@
 #### fuzzy inference
 
-`%is%` <- function(x, y) gset_charfun(x)(y)
-## FUN <- matchfun(function(x,y) isTRUE(all.equal(x,y)))
-##`%is%` <- function(x, y) cset_charfun(cset(x, matchfun = FUN))(y)
+##`%is%` <- function(x, y) gset_charfun(x)(y)
+ FUN <- matchfun(function(x,y) isTRUE(all.equal(x,y)))
+`%is%` <- function(x, y) cset_charfun(cset(x, matchfun = FUN))(y)
 
 fuzzy_inference <-
 function(system, values, implication = c("minimum", "product"))

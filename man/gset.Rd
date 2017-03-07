@@ -45,6 +45,7 @@
 \alias{gset_is_fuzzy_multiset}
 \alias{gset_is_set}
 \alias{length.gset}
+\alias{lengths.gset}
 \alias{mean.gset}
 \alias{median.gset}
 \alias{cut.gset}
@@ -104,8 +105,12 @@ is_element(e)
 
 \method{cut}{gset}(x, level = 1, type = c("alpha", "nu"), strict = FALSE, \dots)
 \method{mean}{gset}(x, \dots, na.rm = FALSE)
-\method{median}{gset}(x, na.rm = FALSE)
+% \method{median}{gset}(x, na.rm = FALSE)
+## S3 method for class 'gset'
+## median(x, na.rm = FALSE, ...)     [R >= 3.4.0]
+## median(x, na.rm)                  [R < 3.4.0]
 \method{length}{gset}(x)
+\method{lengths}{gset}(x, use.names = TRUE)
 }
 \arguments{
   \item{x}{For \code{e()}, \code{as.gset()} and \code{is.gset()}:
@@ -155,6 +160,7 @@ is_element(e)
   \item{level}{The minimum membership level.}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
+  \item{use.names}{logical; should the names of \code{x} be used in the result?}
   \item{\dots}{For \code{gset_\var{foo}()}: (g)set objects.  For
     the mean and sort methods: additional parameters internally passed to
     \code{\link{mean}} and \code{\link{order}}, respectively. For
@@ -205,6 +211,8 @@ is_element(e)
   relative cardinality, i.e. the memberships sum, or the absolute
   cardinality divided by the number of elements, respectively.
   The \code{length} method for gsets gives the (absolute) cardinality.
+  The \code{lengths} method coerces the set to a list
+  before applying the \code{length} method on its elements.
   \code{gset_transform_memberships} applies function \code{FOO} to 
   the membership vector of the supplied gset and returns the transformed
   gset. The transformed memberships are guaranteed to be in the unit

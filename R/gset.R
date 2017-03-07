@@ -150,7 +150,8 @@ function(x, i = x, value)
 function(x, i, value)
 {
     if (!is.character(i) || length(i) > 1L) i <- list(i)
-    gset(`[[<-`(.as.list(x), .lookup_elements(x, i), value),
+    if (length(lookup <- .lookup_elements(x, i)) < 1L) return(NULL)
+    gset(`[[<-`(.as.list(x), lookup, value),
          memberships = gset_memberships(x))
 }
 
@@ -268,7 +269,7 @@ function(support, memberships, universe = NULL, bound = NULL)
     ## is really only multi or fuzzy, simplify memberships.
     if (is.list(memberships)) {
         tmp <- lapply(memberships, .as.list)
-        if (all(sapply(tmp, length) == 1L)) {
+        if (all(lengths(tmp) == 1L)) {
             M <- unlist(memberships)
             if (!any(is.na(M)) && all(M == 1L))
                 memberships <- sapply(memberships, .get_memberships)
@@ -326,11 +327,11 @@ function(memberships, errmsg = NULL)
         }
     } else {
         if (any(memberships < 0, na.rm = TRUE))
-            stop(paste(errmsg,
-                       "Memberships must be positive.", sep = ""), call. = FALSE)
+            stop(paste0(errmsg,
+                        "Memberships must be positive."), call. = FALSE)
         if (any(memberships > 1, na.rm = TRUE) && any(memberships != trunc(memberships), na.rm = TRUE))
-            stop(paste(errmsg,
-                       "Memberships must be either all integer (multisets),\n  or all in the unit interval (fuzzy sets).", sep = ""), call. = FALSE)
+            stop(paste0(errmsg,
+                        "Memberships must be either all integer (multisets),\n  or all in the unit interval (fuzzy sets)."), call. = FALSE)
     }
 }
 

@@ -6,7 +6,7 @@ function(x)
     ## Cf. expand.grid().
     out <- vector("list", length(x))
     rep_fac <- 1L
-    d <- sapply(x, length)
+    d <- lengths(x)
     orep <- prod(d)
     for(i in seq_along(x)) {
         nx <- d[i]

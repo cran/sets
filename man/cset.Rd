@@ -41,6 +41,7 @@
 \alias{cset_is_set}
 \alias{cset_has_missings}
 \alias{length.cset}
+\alias{lengths.cset}
 \alias{matchfun}
 \alias{mean.cset}
 \alias{median.cset}
@@ -111,8 +112,12 @@ cset_combn(x, m)
 
 \method{cut}{cset}(x, level = 1, type = c("alpha", "nu"), strict = FALSE, \dots)
 \method{mean}{cset}(x, \dots, na.rm = FALSE)
-\method{median}{cset}(x, na.rm = FALSE)
+% \method{median}{cset}(x, na.rm = FALSE)
+## S3 method for class 'cset'
+## median(x, na.rm = FALSE, ...)     [R >= 3.4.0]
+## median(x, na.rm)                  [R < 3.4.0]
 \method{length}{cset}(x)
+\method{lengths}{cset}(x, use.names = TRUE)
 }
 \arguments{
   \item{x}{For \code{as.cset()} and \code{is.cset()}:
@@ -144,6 +149,7 @@ cset_combn(x, m)
   \item{m}{Number of elements to choose.}
   \item{method}{Currently, only \code{"Jaccard"} is implemented.}
   \item{level}{The minimum membership level.}
+  \item{use.names}{logical; should the names of \code{x} be used in the result?}
   \item{na.rm}{logical indicating whether \code{NA} values should be
     removed.}
   \item{\dots}{For \code{cset_\var{foo}()}: (c)set objects. For

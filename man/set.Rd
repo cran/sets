@@ -14,6 +14,7 @@
 \alias{set_complement}
 \alias{set_cardinality}
 \alias{length.set}
+\alias{lengths.set}
 \alias{set_power}
 \alias{set_cartesian}
 \alias{set_combn}
@@ -37,6 +38,7 @@ set_symdiff(\dots)
 set_complement(x, y)
 set_cardinality(x)
 \method{length}{set}(x)
+\method{lengths}{set}(x, use.names = TRUE)
 set_power(x)
 set_cartesian(\dots)
 set_combn(x, m)
@@ -47,6 +49,7 @@ set_combn(x, m)
   \item{y}{A set object.}
   \item{e}{An \R object.}
   \item{m}{Number of elements to choose.}
+  \item{use.names}{logical; should the names of \code{x} be used in the result?}
   \item{\dots}{For \code{set()}: \R objects, and set objects otherwise.}
 }
 \details{
@@ -64,7 +67,9 @@ set_combn(x, m)
   the (proper) subset predicate, \code{>} and \code{>=} for
   the (proper) superset predicate, and \code{==} and \code{!=} for
   (in)equality. The \code{length} method for sets gives the
-  cardinality. \code{set_combn} returns the set of all
+  cardinality. The \code{lengths} method coerces the set to a list
+  before applying the \code{length} method on its elements.
+  \code{set_combn} returns the set of all
   subsets of specified length. The \code{Summary} methods do also work if
   defined for the set elements. The \code{\link{mean}} and
   \code{\link[stats]{median}}
@@ -104,7 +109,8 @@ set_combn(x, m)
 \value{
   For the predicate functions, a logical. For \code{make_set_with_order},
   a list with two components \code{"set"} and \code{"order"}. For
-  \code{set_cardinality} and the length method, an integer value. For all
+  \code{set_cardinality} and the length method, an integer value.
+  For the \code{lengths} method, an integer vector. For all
   others, a set.
 }
 \seealso{
@@ -197,5 +203,10 @@ range(s)
 ## mean / median
 mean(s)
 median(s)
+
+## cardinality
+s <- set(1, list(1, 2))
+length(s)
+lengths(s)
 }
 \keyword{math}

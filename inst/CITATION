@@ -1,20 +1,14 @@
 citHeader("To cite sets in publications use:")
 
-citEntry(entry = "Article",
-  title        = "Generalized and Customizable Sets in {R}",
-  author       = personList(as.person("David Meyer"),
-                   as.person("Kurt Hornik")),
-  journal      = "Journal of Statistical Software",
-  year         = "2009",
-  volume       = "31",
-  number       = "2",
-  pages        = "1--27",
-  url          = "http://www.jstatsoft.org/v31/i02/",
-
-  textVersion  =
-  paste("David Meyer, Kurt Hornik (2009).",
-        "Generalized and Customizable Sets in R.",
-        "Journal of Statistical Software, 31(2), 1-27.",
-        "URL http://www.jstatsoft.org/v31/i02/.")
-)
-
+bibentry("Article",
+         title = "Generalized and Customizable Sets in {R}",
+         author =
+             c(person("David", "Meyer"),
+               person("Kurt", "Hornik")),
+         journal = "Journal of Statistical Software",
+         year = "2009",
+         volume = "31",
+         number = "2",
+         pages = "1--27",
+         doi = "10.18637/jss.v031.i02"
+         )

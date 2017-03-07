@@ -742,7 +742,7 @@ function(x) {
         .make_set_with_order(.make_set_from_list(lapply(unclass(x), FUN)))
     } else {
         .make_set_with_order(.make_set_from_list(unlist(lapply(unclass(x),
-                                                               function(i) seq(i$l, i$r)))))
+                                                               function(i) seq.int(i$l, i$r)))))
     }
 }
 
@@ -755,7 +755,7 @@ function(x, ...) {
     if (r[1] == -Inf) x <- x[-1]
     l <- length(x)
     if (l > 0L && r[2] == Inf) x <- x[-l]
-    unlist(lapply(unclass(x), function(i) seq(i$l, i$r)))
+    unlist(lapply(unclass(x), function(i) seq.int(i$l, i$r)))
 }
 
 ### print and summary stuff
@@ -1043,7 +1043,7 @@ function(x, reals = TRUE)
 .minimal_domain <-
 function(l)
 {
-    dom <- rep(sapply(l, interval_domain), sapply(l, length.interval))
+    dom <- rep.int(sapply(l, interval_domain), sapply(l, length.interval))
     if (any(dom == "N"))
         "N"
     else if (any(dom == "N0"))
@@ -1057,7 +1057,7 @@ function(l)
 .maximal_domain <-
 function(l)
 {
-    dom <- rep(sapply(l, interval_domain), sapply(l, length.interval))
+    dom <- rep.int(sapply(l, interval_domain), sapply(l, length.interval))
     if (any(dom == "R"))
         "R"
     else if (any(dom == "Z"))

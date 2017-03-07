@@ -5,6 +5,12 @@ length.set <-
 function(x)
     length(.as.list(x))
 
+lengths.gset <-
+lengths.cset <-
+lengths.set <-
+function(x, use.names = TRUE)
+    lengths(.as.list(x), use.names = use.names)
+
 gset_cardinality <-
 function(x, type = c("absolute", "relative"), na.rm = FALSE)
 {

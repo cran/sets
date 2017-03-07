@@ -28,7 +28,7 @@ function(x, operation = c("union", "intersection"), ...)
                                        )
                             )
     } else if (all(sapply(x, is.gset))) {
-        operation <- paste("gset_", match.arg(operation), sep = "")
+        operation <- paste0("gset_", match.arg(operation))
         len <- 0
         while ((newlen <- length(gset_support(x))) != len) {
             len <- newlen
@@ -40,7 +40,7 @@ function(x, operation = c("union", "intersection"), ...)
         }
         x
     } else {
-        operation <- paste("cset_", match.arg(operation), sep = "")
+        operation <- paste0("cset_", match.arg(operation))
         len <- 0
         while ((newlen <- length(cset_support(x))) != len) {
             len <- newlen
@@ -56,5 +56,5 @@ function(x, operation = c("union", "intersection"), ...)
 
 binary_closure <-
 function(x, operation = c("union", "intersection"))
-    .Call(R_closure, x,
+    .Call(sets_closure, x,
           pmatch(match.arg(operation), c("union", "intersection")))
