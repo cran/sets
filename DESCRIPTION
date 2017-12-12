@@ -1,5 +1,5 @@
 Package: sets
-Version: 1.0-17
+Version: 1.0-18
 Title: Sets, Generalized Sets, Customizable Sets and Intervals
 Description: Data structures and basic operations for ordinary sets,
              generalizations such as fuzzy sets, multisets, and
@@ -12,10 +12,10 @@ Suggests: proxy
 Imports: graphics,grDevices,stats,utils
 License: GPL-2
 NeedsCompilation: yes
-Packaged: 2017-03-06 14:46:37 UTC; hornik
+Packaged: 2017-12-11 22:04:47 UTC; meyer
 Author: David Meyer [aut, cre],
   Kurt Hornik [aut],
   Christian Buchta [ctb]
 Maintainer: David Meyer <David.Meyer@R-project.org>
 Repository: CRAN
-Date/Publication: 2017-03-07 13:54:20
+Date/Publication: 2017-12-12 06:47:44 UTC

@@ -1,5 +1,5 @@
-590907bfbf7d217abe6458d9c1da90b7 *DESCRIPTION
-1dc797e0653f9e5741e66ee7608a1909 *NAMESPACE
+d0cab1269b6f7530b2eef567ab2d6a65 *DESCRIPTION
+0c9756fde6b600ccb1d63a443b0aa53d *NAMESPACE
 3e7d78d674f57a5734355fe4a193459f *R/aaa_utilities.R
 6c9e578af5c153fa3f34c453315c7a88 *R/allEqual.R
 9204cca50c5ac824a5a61af72ff194ac *R/cardinality.R
@@ -39,13 +39,13 @@ e4f8ddf13f7086558b12ad82791c50e9 *R/str.R
 dc3e1e749f33b5b09615482e3126ef09 *R/tuple.R
 65b82578a52b864011312399e5be7d94 *R/union.R
 fbd933467fc28a9ac9af92e00153fd95 *R/zzz.R
-642749c056c430db6ac43ad88ed76b20 *build/vignette.rds
-577dde899d7576ba8fa908a449edb8d7 *data/fuzzy_docs.rda
+49d06cdea93554796395cdfc89466ad4 *build/vignette.rds
+2123429fb9d985fe595cd639e4a07b87 *data/fuzzy_docs.rda
 016cd5d8f03df96114edf303b03a93c2 *inst/CITATION
-a49b9ee3ffda51ece10e81c2f19ea32e *inst/NEWS.Rd
+3c5cea879d612a75723147236f76e06a *inst/NEWS.Rd
 69a15e9512e22cd66d2560144eaa22d0 *inst/doc/sets.R
 98afafc14ff6dac70c566794efec34e8 *inst/doc/sets.Rnw
-a43df6948cc26951526c3955d30dc287 *inst/doc/sets.pdf
+97b30643d5044d01fd5a42285e244c17 *inst/doc/sets.pdf
 21888d850904fabb5921bf5d8e262c3e *man/canonicalizeSetMapping.Rd
 e4445aff16665fa7185284b22d91e983 *man/closure.Rd
 2bf857c479b671e94433355928f3f896 *man/cset.Rd

@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-18}{
+  \itemize{
+    \item Do not export \code{as.list.function()} any more
+  }
+}
+
 \section{Changes in version 1.0-17}{
   \itemize{
     \item add \code{lengths} method
