@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sets 1.0-17\n"
+"POT-Creation-Date: 2017-08-12 22:22\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "Not implemented."
+msgstr ""
+
+msgid "closure only defined on set of (c,g)sets."
+msgstr ""
+
+msgid "Not implemented!"
+msgstr ""
+
+msgid "Unary '%s' not defined for \"%s\" objects."
+msgstr ""
+
+msgid "Generic '%s' not defined for \"%s\" objects."
+msgstr ""
+
+msgid "Cartesian product only defined for positive integers."
+msgstr ""
+
+msgid "Operator not defined."
+msgstr ""
+
+msgid "The empty set."
+msgstr ""
+
+msgid "A customizable set with 1 element."
+msgstr ""
+
+msgid "A customizable set with %g elements."
+msgstr ""
+
+msgid "A customizable set with cardinality %g."
+msgstr ""
+
+msgid "Need same match functions (or none) for all elements."
+msgstr ""
+
+msgid "Argument 'x' must be a generalized set."
+msgstr ""
+
+msgid "Argument 'x' must be a customizable set."
+msgstr ""
+
+msgid "Height must be in the unit interval."
+msgstr ""
+
+msgid "Need two mean values."
+msgstr ""
+
+msgid "Height(s) must be in the unit interval."
+msgstr ""
+
+msgid "Need four corner values."
+msgstr ""
+
+msgid "Need three corner values."
+msgstr ""
+
+msgid "Need four knots."
+msgstr ""
+
+msgid "Position vector must be named."
+msgstr ""
+
+msgid "Argument list must be named."
+msgstr ""
+
+msgid "Implication not available."
+msgstr ""
+
+msgid "Invalid parameter."
+msgstr ""
+
+msgid "'elements' needs to be specified alone."
+msgstr ""
+
+msgid "'membership' requires 'support'."
+msgstr ""
+
+msgid "'charfun' requires 'universe' (or a default universe)."
+msgstr ""
+
+msgid "Need either 'memberships' and 'support', or 'charfun' and 'universe'."
+msgstr ""
+
+msgid "Support must be a subset of the universe."
+msgstr ""
+
+msgid "A generalized set with 1 element."
+msgstr ""
+
+msgid "A generalized set with %g elements."
+msgstr ""
+
+msgid "A generalized set with cardinality %g."
+msgstr ""
+
+msgid "Length of support must match length of memberships."
+msgstr ""
+
+msgid "Memberships must not exceed bound!"
+msgstr ""
+
+msgid "For fuzzy multisets, the memberships must be (multi)sets."
+msgstr ""
+
+msgid "For fuzzy multisets, the memberships must be multisets over the unit interval."
+msgstr ""
+
+msgid "Memberships must be positive."
+msgstr ""
+
+msgid "Memberships must be either all integer (multisets),\n  or all in the unit interval (fuzzy sets)."
+msgstr ""
+
+msgid "Need numeric bounds."
+msgstr ""
+
+msgid "Positive integers start with 1."
+msgstr ""
+
+msgid "Non-negative integers start with 0."
+msgstr ""
+
+msgid "Exponentiation undefined for negative base."
+msgstr ""
+
+msgid "only defined for positive reals."
+msgstr ""
+
+msgid "not implemented for intervals."
+msgstr ""
+
+msgid "This should not happen."
+msgstr ""
+
+msgid "Power of intervals only defined for integer exponents."
+msgstr ""
+
+msgid "The empty interval."
+msgstr ""
+
+msgid "An interval."
+msgstr ""
+
+msgid "A sequence."
+msgstr ""
+
+msgid "A union of %d disjoint intervals."
+msgstr ""
+
+msgid "A union of %d sequences."
+msgstr ""
+
+msgid "Cannot plot tuple of fuzzy multisets."
+msgstr ""
+
+msgid "All fuzzy multisets ignored."
+msgstr ""
+
+msgid "Predicate undefined."
+msgstr ""
+
+msgid "reduction only defined on set of (c,g)sets."
+msgstr ""
+
+msgid "Labels must be unique."
+msgstr ""
+
+msgid "A set with 1 element."
+msgstr ""
+
+msgid "A set with %d elements."
+msgstr ""
+
+msgid "Operation not defined for fuzzy multisets."
+msgstr ""
+
+msgid "Operator only defined for (g,c)sets."
+msgstr ""
+
+msgid "Exactly one argument expected."
+msgstr ""
+
+msgid "Exactly two arguments expected."
+msgstr ""
+
+msgid "Exactly three arguments expected."
+msgstr ""
+
+msgid "Wrong arguments."
+msgstr ""

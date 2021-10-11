@@ -254,7 +254,7 @@ is_element(e)
   D. Meyer and K. Hornik (2009),
   Generalized and customizable sets in R,
   \emph{Journal of Statistical Software} \bold{31}(2), 1--27.
-  \url{http://www.jstatsoft.org/v31/i02/}
+  \doi{10.18637/jss.v031.i02}.
 }
 \examples{
 ## multisets

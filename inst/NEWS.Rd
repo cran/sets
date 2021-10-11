@@ -3,6 +3,12 @@
 
 \section{Changes in version 1.0-18}{
   \itemize{
+    \item no user-level changes
+  }
+}
+
+\section{Changes in version 1.0-18}{
+  \itemize{
     \item Do not export \code{as.list.function()} any more
   }
 }
