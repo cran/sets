@@ -802,7 +802,7 @@ function(x, ...)
 ## extractors
 interval_domain <-
 function(x)
-    attr(x, "domain")
+    attr(as.interval(x), "domain")
 
 ### predicates
 interval_is_uncountable <-
@@ -856,10 +856,11 @@ function(x)
 
 interval_is_left_closed <-
 function(x)
-    unclass(x)[[1]]$lc
+    unclass(as.interval(x))[[1]]$lc
 
 interval_is_right_closed <-
 function(x) {
+    x <- as.interval(x)
     i <- length.interval(x)
     unclass(x)[[i]]$rc
 }

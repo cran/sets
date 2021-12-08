@@ -41,6 +41,8 @@ function(...)
 "%D%" <-
 function(x, y)
 {
+    if (!is.cset(x)) x <- as.cset(x)
+    if (!is.cset(y)) y <- as.cset(y)
     if (is.set(x) && is.set(y))
         set_symdiff(x, y)
     else if (is.gset(x) && is.gset(y))

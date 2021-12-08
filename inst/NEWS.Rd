@@ -1,7 +1,15 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
-\section{Changes in version 1.0-18}{
+\section{Changes in version 1.0-20}{
+  \itemize{
+    \item Some small fixes in interval code
+    \item \code{[gc]set_complement(a, b)} now use the union of the universes
+  of \code{a} and \code{b}, and the max. bound of \code{a} and \code{b} if no global defaults are specified.
+  }
+}
+
+\section{Changes in version 1.0-19}{
   \itemize{
     \item no user-level changes
   }

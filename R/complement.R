@@ -15,8 +15,14 @@ function(x, y, matchfun = .exact_match)
 gset_complement <-
 function(x, y = NULL)
 {
-    Cx <- .gset_complement(x)
-    if (is.null(y)) Cx else gset_intersection(Cx, y)
+    if (is.null(y))
+        .gset_complement(x)
+    else
+        gset_intersection(.gset_complement(x,
+                         universe = set_union(gset_universe(x), gset_universe(y)),
+                         bound = max(gset_bound(x), gset_bound(y))),
+                         y
+                         )
 }
 
 cset_complement <-
@@ -32,8 +38,8 @@ function(x, y = NULL)
 
     Cx <- .make_cset_from_gset_and_orderfun_and_matchfun(
               .gset_complement(x,
-                               universe = cset_universe(x),
-                               bound = cset_bound(x)),
+                               universe = if(is.null(y)) cset_universe(x) else cset_union(cset_universe(x), cset_universe(y)),
+                               bound = if(is.null(y)) cset_bound(x) else max(cset_bound(x), cset_bound(y))),
                orderfun,
                matchfun
     )
