@@ -1,4 +1,8 @@
-citHeader("To cite sets in publications use:")
+citHeader(sprintf("To cite package %s in publications use:",
+                  sQuote(meta$Package)))
+
+bibentry("Manual",
+         other = unlist(citation(auto = meta), recursive = FALSE))
 
 bibentry("Article",
          title = "Generalized and Customizable Sets in {R}",

@@ -107,7 +107,8 @@ set_combn(x, m)
   
 }
 \value{
-  For the predicate functions, a logical. For \code{make_set_with_order},
+  For the predicate functions, a vector of logicals.
+  For \code{make_set_with_order},
   a list with two components \code{"set"} and \code{"order"}. For
   \code{set_cardinality} and the length method, an integer value.
   For the \code{lengths} method, an integer vector. For all
@@ -180,7 +181,7 @@ s2 >= s # same
 s < s
 
 ## complement, union, intersection, symmetric difference:
-s - 1L
+s - set(1L)
 s + set("a") # or use: s | set("a")
 s & s
 s \%D\% s2
@@ -208,5 +209,9 @@ median(s)
 s <- set(1, list(1, 2))
 length(s)
 lengths(s)
+
+## vectorization
+list(set(1), set(2), set()) == set(1)
 }
+
 \keyword{math}

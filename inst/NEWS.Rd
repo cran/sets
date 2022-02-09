@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-21}{
+  \itemize{
+    \item Vectorize all [cg]set predicates and check for correct arguments
+    \item add \code{as.vector()} methods for [cg]sets
+    \item rename element class to gset_element to avoid name clash with ggplot
+  }
+}
+
 \section{Changes in version 1.0-20}{
   \itemize{
     \item Some small fixes in interval code

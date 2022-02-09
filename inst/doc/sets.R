@@ -8,7 +8,7 @@ options(prompt = "R> ", continue = "+  ", width = 77)
 
 
 ###################################################
-### code chunk number 2: sets.Rnw:144-147
+### code chunk number 2: sets.Rnw:146-149
 ###################################################
 s <- list(1, "1")
 union(s, s)
@@ -23,19 +23,19 @@ print(s)
 
 
 ###################################################
-### code chunk number 4: sets.Rnw:321-322
+### code chunk number 4: sets.Rnw:323-324
 ###################################################
 set("test", c, set("a", 2.5), list(1, 2))
 
 
 ###################################################
-### code chunk number 5: sets.Rnw:326-327
+### code chunk number 5: sets.Rnw:328-329
 ###################################################
 set(1, pair(1,2), tuple(1L, 2L, 3L))
 
 
 ###################################################
-### code chunk number 6: sets.Rnw:331-333
+### code chunk number 6: sets.Rnw:333-335
 ###################################################
 s2 <- as.set(2:4)
 print(s2)
@@ -49,19 +49,19 @@ set(1) <= set(1,2)
 
 
 ###################################################
-### code chunk number 8: sets.Rnw:345-345
+### code chunk number 8: sets.Rnw:347-348
 ###################################################
-
+1:4 %e% set(1L, 2L, 3L)
 
 
 ###################################################
-### code chunk number 9: sets.Rnw:356-357
+### code chunk number 9: sets.Rnw:357-358
 ###################################################
 length(s)
 
 
 ###################################################
-### code chunk number 10: sets.Rnw:361-364
+### code chunk number 10: sets.Rnw:362-365
 ###################################################
 s | set("a")
 s & s2
@@ -69,20 +69,20 @@ s %D% s2
 
 
 ###################################################
-### code chunk number 11: sets.Rnw:368-370
+### code chunk number 11: sets.Rnw:369-371
 ###################################################
 s * s2
 s ^ 2L
 
 
 ###################################################
-### code chunk number 12: sets.Rnw:373-374
+### code chunk number 12: sets.Rnw:374-375
 ###################################################
 2 ^ s
 
 
 ###################################################
-### code chunk number 13: sets.Rnw:383-384
+### code chunk number 13: sets.Rnw:384-385
 ###################################################
 set_complement(set(1), set(1,2,3))
 
@@ -101,7 +101,7 @@ set_combn(s, 2L)
 
 
 ###################################################
-### code chunk number 16: sets.Rnw:409-412
+### code chunk number 16: sets.Rnw:410-413
 ###################################################
 cl <- closure(set(set(1), set(2), set(3)), "union")
 print(cl)
@@ -116,7 +116,7 @@ range(s)
 
 
 ###################################################
-### code chunk number 18: sets.Rnw:424-430
+### code chunk number 18: sets.Rnw:425-431
 ###################################################
 s2 <- set(1,2, c, list(1,2))
 print(s2)
@@ -140,47 +140,47 @@ set_outer(set(1,2), set(1,2,3), "/")
 
 
 ###################################################
-### code chunk number 21: sets.Rnw:497-499
+### code chunk number 21: sets.Rnw:498-500
 ###################################################
 X <- c("A", "B", "C")
 gset(support = X)
 
 
 ###################################################
-### code chunk number 22: sets.Rnw:504-505
+### code chunk number 22: sets.Rnw:505-506
 ###################################################
 gset(support = X, universe = LETTERS[1:10])
 
 
 ###################################################
-### code chunk number 23: sets.Rnw:508-510
+### code chunk number 23: sets.Rnw:509-511
 ###################################################
 multi <- 1:3
 gset(support = X, memberships = multi)
 
 
 ###################################################
-### code chunk number 24: sets.Rnw:513-515
+### code chunk number 24: sets.Rnw:514-516
 ###################################################
 ms <- c(0.1, 0.3, 1)
 gset(support = X, memberships = ms)
 
 
 ###################################################
-### code chunk number 25: sets.Rnw:519-520
+### code chunk number 25: sets.Rnw:520-521
 ###################################################
 gset(elements = list(e("A", 0.1), e("B", 0.2), e("C", 0.3)))
 
 
 ###################################################
-### code chunk number 26: sets.Rnw:524-526
+### code chunk number 26: sets.Rnw:525-527
 ###################################################
 f <- function(x) switch(x, A = 0.1, B = 0.2, C = 1, 0)
 gset(universe = X, charfun = f)
 
 
 ###################################################
-### code chunk number 27: sets.Rnw:531-534
+### code chunk number 27: sets.Rnw:532-535
 ###################################################
 ms2 <- list(c(0.1, 0.3, 0.4), c(1, 1),
   gset(support = ms, memberships = multi))
@@ -188,7 +188,7 @@ gset(support = X, memberships = ms2)
 
 
 ###################################################
-### code chunk number 28: sets.Rnw:549-554
+### code chunk number 28: sets.Rnw:550-555
 ###################################################
 X <- gset(c("A", "B", "C"), 4:6)
 Y <- gset(c("B", "C", "D"), 1:3)
@@ -198,7 +198,7 @@ X & Y
 
 
 ###################################################
-### code chunk number 29: sets.Rnw:560-563
+### code chunk number 29: sets.Rnw:561-564
 ###################################################
 X + Y
 X - Y
@@ -206,7 +206,7 @@ gset_product(X, Y)
 
 
 ###################################################
-### code chunk number 30: sets.Rnw:567-572
+### code chunk number 30: sets.Rnw:568-573
 ###################################################
 !gset(1, 0.3)
 X <- gset("a", universe = letters[1:3])
@@ -216,7 +216,7 @@ X <- gset("a", universe = letters[1:3])
 
 
 ###################################################
-### code chunk number 31: sets.Rnw:578-584
+### code chunk number 31: sets.Rnw:579-585
 ###################################################
 x <- gset(1:3, 1:3/3)
 y <- gset(1:2, 1:2/2)
@@ -227,27 +227,27 @@ gset_mean(set(1), set(1, 2))
 
 
 ###################################################
-### code chunk number 32: sets.Rnw:591-593
+### code chunk number 32: sets.Rnw:592-594
 ###################################################
 x <- gset(1:10, 1:10/10)
 gset_transform_memberships(x, pmax, 0.5)
 
 
 ###################################################
-### code chunk number 33: sets.Rnw:598-600
+### code chunk number 33: sets.Rnw:599-601
 ###################################################
 x <- gset(1, 2)
 gset_transform_memberships(x, `*`, 0.5)
 
 
 ###################################################
-### code chunk number 34: sets.Rnw:604-605
+### code chunk number 34: sets.Rnw:605-606
 ###################################################
 rep(x, 0.5)
 
 
 ###################################################
-### code chunk number 35: sets.Rnw:613-616
+### code chunk number 35: sets.Rnw:614-617
 ###################################################
 gset_dilate(y)
 gset_concentrate(y)
@@ -265,7 +265,7 @@ fuzzy_logic("Fodor")
 
 
 ###################################################
-### code chunk number 37: sets.Rnw:649-653
+### code chunk number 37: sets.Rnw:650-654
 ###################################################
 X <- gset(c("A", "B", "C"), c(0.3, 0.5, 0.8))
 print(X)
@@ -274,7 +274,7 @@ print(Y)
 
 
 ###################################################
-### code chunk number 38: sets.Rnw:656-660
+### code chunk number 38: sets.Rnw:657-661
 ###################################################
 fuzzy_logic("Zadeh")
 X & Y
@@ -283,7 +283,7 @@ gset_complement(X, Y)
 
 
 ###################################################
-### code chunk number 39: sets.Rnw:663-667
+### code chunk number 39: sets.Rnw:664-668
 ###################################################
 fuzzy_logic("Fodor")
 X & Y
@@ -298,13 +298,13 @@ fuzzy_logic("Zadeh")
 
 
 ###################################################
-### code chunk number 41: sets.Rnw:676-677
+### code chunk number 41: sets.Rnw:677-678
 ###################################################
 cut(X, 0.5)
 
 
 ###################################################
-### code chunk number 42: sets.Rnw:699-703
+### code chunk number 42: sets.Rnw:700-704
 ###################################################
 N <- fuzzy_normal(mean = 0, sd = 1)
 N(-3:3)
@@ -313,20 +313,20 @@ gset(charfun = N, universe = -3:3)
 
 
 ###################################################
-### code chunk number 43: sets.Rnw:708-709
+### code chunk number 43: sets.Rnw:709-710
 ###################################################
 fuzzy_normal_gset(universe = -3:3)
 
 
 ###################################################
-### code chunk number 44: sets.Rnw:715-717
+### code chunk number 44: sets.Rnw:716-718
 ###################################################
 fuzzy_poisson <- charfun_generator(dpois)
 gset(charfun = fuzzy_poisson(10), universe = seq(0, 20, 2))
 
 
 ###################################################
-### code chunk number 45: sets.Rnw:725-727
+### code chunk number 45: sets.Rnw:726-728
 ###################################################
 ## creating a series of fuzzy normal sets
 fuzzy_tuple(fuzzy_normal, 5)
@@ -395,7 +395,7 @@ lines(gset_mean(x, y), col = 3, lty = 2)
 
 
 ###################################################
-### code chunk number 54: sets.Rnw:821-829
+### code chunk number 54: sets.Rnw:822-830
 ###################################################
 x <- set("1", 1L, 1, 3.3 - 2.2, 1.1)
 print(x)
@@ -408,7 +408,7 @@ x | y
 
 
 ###################################################
-### code chunk number 55: sets.Rnw:833-839
+### code chunk number 55: sets.Rnw:834-840
 ###################################################
 X <- cset(x, matchfun = match)
 print(X)
@@ -419,7 +419,7 @@ X | Y
 
 
 ###################################################
-### code chunk number 56: sets.Rnw:849-857
+### code chunk number 56: sets.Rnw:850-858
 ###################################################
 FUN <- matchfun(function(x, y) isTRUE(all.equal(x, y)))
 X <- cset(x, matchfun = FUN)
@@ -432,7 +432,7 @@ X | Y
 
 
 ###################################################
-### code chunk number 57: sets.Rnw:862-867
+### code chunk number 57: sets.Rnw:863-868
 ###################################################
 sets_options("matchfun", match)
 cset(x)
@@ -442,14 +442,14 @@ cset(1:3) <= cset(c("1", "2", "3"))
 
 
 ###################################################
-### code chunk number 58: sets.Rnw:869-871
+### code chunk number 58: sets.Rnw:870-872
 ###################################################
 ### restore package defaults
 sets_options("matchfun", NULL)
 
 
 ###################################################
-### code chunk number 59: sets.Rnw:887-893
+### code chunk number 59: sets.Rnw:888-894
 ###################################################
 cset(letters[1:5], orderfun = 5:1)
 
@@ -460,7 +460,7 @@ as.character(Z)
 
 
 ###################################################
-### code chunk number 60: sets.Rnw:896-900
+### code chunk number 60: sets.Rnw:897-901
 ###################################################
 o <- ordered(c("a", "b", "a"), levels = c("b", "a"))
 as.set(o)
@@ -469,73 +469,73 @@ as.cset(o)
 
 
 ###################################################
-### code chunk number 61: sets.Rnw:904-906
+### code chunk number 61: sets.Rnw:905-907
 ###################################################
 as.cset(c("A", "quick", "brown", "fox"))
 as.cset(c("A", "quick", "brown", "fox", "quick"))
 
 
 ###################################################
-### code chunk number 62: sets.Rnw:922-924
+### code chunk number 62: sets.Rnw:923-925
 ###################################################
 set.seed(4711)
 l <- r2dtable(1000, r = 1:2, c = 2:1)
 
 
 ###################################################
-### code chunk number 63: sets.Rnw:931-932
+### code chunk number 63: sets.Rnw:932-933
 ###################################################
 l[1:2]
 
 
 ###################################################
-### code chunk number 64: sets.Rnw:936-938
+### code chunk number 64: sets.Rnw:937-939
 ###################################################
 s <- as.gset(l)
 print(s)
 
 
 ###################################################
-### code chunk number 65: sets.Rnw:941-943
+### code chunk number 65: sets.Rnw:942-944
 ###################################################
 for (i in s) s[[i]] <- i[1]
 print(s)
 
 
 ###################################################
-### code chunk number 66: sets.Rnw:947-948
+### code chunk number 66: sets.Rnw:948-949
 ###################################################
 gset_memberships(s) / 1000
 
 
 ###################################################
-### code chunk number 67: sets.Rnw:952-953
+### code chunk number 67: sets.Rnw:953-954
 ###################################################
 fisher.test(l[[1]])$p.value
 
 
 ###################################################
-### code chunk number 68: sets.Rnw:968-970
+### code chunk number 68: sets.Rnw:969-971
 ###################################################
 data("fuzzy_docs")
 print(fuzzy_docs[8:9])
 
 
 ###################################################
-### code chunk number 69: sets.Rnw:987-989
+### code chunk number 69: sets.Rnw:988-990
 ###################################################
 library("proxy")
 d <- dist(fuzzy_docs, gset_dissimilarity)
 
 
 ###################################################
-### code chunk number 70: sets.Rnw:992-993
+### code chunk number 70: sets.Rnw:993-994
 ###################################################
 cl1 <- hclust(d, "ward")
 
 
 ###################################################
-### code chunk number 71: sets.Rnw:998-1000
+### code chunk number 71: sets.Rnw:999-1001
 ###################################################
 labs1 <- cutree(cl1, 2)
 print(labs1)
@@ -548,7 +548,7 @@ plot(cl1)
 
 
 ###################################################
-### code chunk number 73: sets.Rnw:1021-1024
+### code chunk number 73: sets.Rnw:1022-1025
 ###################################################
 tdm <- set_outer(c("neural networks", "fuzzy", "image"),
   fuzzy_docs, `%in%`)
@@ -556,19 +556,19 @@ print(tdm)
 
 
 ###################################################
-### code chunk number 74: sets.Rnw:1027-1028
+### code chunk number 74: sets.Rnw:1028-1029
 ###################################################
 d <- dist(tdm, "Jaccard", by_rows = FALSE)
 
 
 ###################################################
-### code chunk number 75: sets.Rnw:1032-1033
+### code chunk number 75: sets.Rnw:1033-1034
 ###################################################
 cl2 <- hclust(d, "ward")
 
 
 ###################################################
-### code chunk number 76: sets.Rnw:1037-1040
+### code chunk number 76: sets.Rnw:1038-1041
 ###################################################
 labs2 <- cutree(cl2, 2)
 print(labs2)

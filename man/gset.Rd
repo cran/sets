@@ -53,7 +53,8 @@
 \title{Generalized sets}
 \description{Creation and manipulation of generalized sets.}
 \usage{
-gset(support, memberships, charfun, elements, universe, bound)
+gset(support, memberships, charfun, elements, universe, bound,
+     assume_numeric_memberships)
 as.gset(x)
 is.gset(x)
 gset_support(x)
@@ -138,6 +139,10 @@ is_element(e)
     defaults to the value of \code{sets_options("bound")}.
     If the latter is also \code{NULL}, the maximum multiplicity
     will be used in computations.}
+  \item{assume_numeric_memberships}{When applying \code{carfun()} to
+        the universe, should numeric memberships (i.e. fuzzy sets or
+	multisets) be assumed (default)? If \code{FALSE}, fuzzy multisets
+	will be created.}
   \item{FUN}{A function, to be applied to a membership vector.}
   \item{type}{For \code{gset_cardinality()}:
     cardinality type (either \code{"absolute"} or
@@ -292,5 +297,8 @@ gset_complement(A, B)
 ## other operations
 mean(gset(1:3, c(0.1,0.5,0.9)))
 median(gset(1:3, c(0.1,0.5,0.9)))
+
+## vectorization
+list(gset(1, 0.5), gset(2, 2L), gset()) <= gset(1, 2L)
 }
 \keyword{math}

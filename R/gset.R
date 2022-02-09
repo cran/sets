@@ -17,7 +17,8 @@
 
 gset <-
 function(support = NULL, memberships = NULL, charfun = NULL,
-         elements = NULL, universe = NULL, bound = NULL)
+         elements = NULL, universe = NULL, bound = NULL,
+         assume_numeric_memberships = TRUE)
 {
     Universe <- universe
     if(is.null(universe))
@@ -38,11 +39,13 @@ function(support = NULL, memberships = NULL, charfun = NULL,
     ## split support and memberships, and proceed
     if (!is.null(elements)) {
         support <- unlist(elements, recursive = FALSE)
-        memberships <- lapply(elements, .get_memberships)
+        memberships <- sapply(elements, .get_memberships)
     }
 
     ### universe & charfun specification:
     ## create memberships from charfun, and proceed
+    ## In general, create list of memberships (i.e., fuzzy multisets)
+    ## but assume numeric memberships if specified (and by default)
     if (!is.null(universe))
         universe <- if (is.interval(universe))
             as.set(as.numeric(universe))
@@ -51,9 +54,12 @@ function(support = NULL, memberships = NULL, charfun = NULL,
     if (!is.null(charfun)) {
         if (is.charfun_generator(charfun))
             charfun <- charfun()
-        memberships <- if (.domain_is_numeric(universe))
-            charfun(unlist(universe))
-        else
+        memberships <- if (assume_numeric_memberships) {
+            if (.domain_is_numeric(universe))
+                charfun(unlist(universe))
+            else
+                vapply(universe, charfun, double(1L))
+        } else
             lapply(universe, charfun)
         support <- universe
         .stop_if_memberships_are_invalid(memberships,
@@ -318,12 +324,14 @@ function(memberships, errmsg = NULL)
 {
     if (is.list(memberships)) {
         for (i in memberships) {
-            if (!gset_is_crisp(i, na.rm = TRUE))
-                stop("For fuzzy multisets, the memberships must be (multi)sets.",
-                     call. = FALSE)
-            if (!all(sapply(i,
-                            function(j) (is.na(j) || is.numeric(j)) && (j >= 0) && (j <= 1)), na.rm = TRUE))
-                stop("For fuzzy multisets, the memberships must be multisets over the unit interval.", call. = FALSE)
+            if (is.gset(i)) {
+                if (!gset_is_crisp(i, na.rm = TRUE))
+                    stop("For fuzzy multisets, the memberships must be (multi)sets.",
+                         call. = FALSE)
+                if (!all(sapply(i,
+                                function(j) (is.na(j) || is.numeric(j)) && (j >= 0) && (j <= 1)), na.rm = TRUE))
+                    stop("For fuzzy multisets, the memberships must be multisets over the unit interval.", call. = FALSE)
+            }
         }
     } else {
         if (any(memberships < 0, na.rm = TRUE))

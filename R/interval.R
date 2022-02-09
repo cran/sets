@@ -732,7 +732,13 @@ as.interval.tuple <- function(x) interval(x[[1]], x[[2]])
 as.interval.logical <-
 as.interval.NULL <- function(x) .empty_interval()
 
-as.list.interval <- function(x, ...) lapply(seq_along(x), function(i) x[[i]])
+as.vector.interval <-
+    function(x, ...)
+        as.list.interval(x, ...)
+
+as.list.interval <-
+    function(x, ...)
+        lapply(seq_along(x), function(i) x[[i]])
 
 make_set_with_order.interval <-
 function(x) {

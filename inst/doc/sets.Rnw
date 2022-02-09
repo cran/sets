@@ -1,7 +1,9 @@
 \documentclass[article,nojss]{jss}
 \usepackage{amsfonts,enumerate}
 
-\author{David Meyer\\WU Wirtschaftsuniversit{\"a}t Wien \And
+\pdfsuppressptexinfo=-1
+
+\author{David Meyer\\FH Technikum Wien \And
         Kurt Hornik\\WU Wirtschaftsuniversit{\"a}t Wien}
 \Plainauthor{David Meyer, Kurt Hornik}
 
@@ -343,7 +345,6 @@ set(1) <= set(1,2)
 @
 Note that all predicate functions are vectorized for convenience:
 <<>>=
-@
 1:4 %e% set(1L, 2L, 3L)
 @
 The sequence \code{1:4} as \emph{one} element would be looked up by

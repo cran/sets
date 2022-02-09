@@ -100,9 +100,9 @@ function(e1, e2)
     if(nargs() == 1L) {
         ## dispatch manually for subclasses
         if (inherits(e1, "set"))
-            Ops_set(e1, e2, .Generic = .Generic, .Class = .Class)
+            return(Ops_set(e1, e2, .Generic = .Generic, .Class = .Class))
         if (inherits(e1, "gset"))
-            Ops_gset(e1, e2, .Generic = .Generic, .Class = .Class)
+            return(Ops_gset(e1, e2, .Generic = .Generic, .Class = .Class))
 
         if(!(as.character(.Generic) %in% "!"))
             stop(gettextf("Unary '%s' not defined for \"%s\" objects.",
@@ -113,9 +113,9 @@ function(e1, e2)
 
     ## dispatch manually for subclasses
     if (inherits(e1, "set") && inherits(e2, "set"))
-        Ops_set(e1, e2, .Generic = .Generic, .Class = .Class)
+        return(Ops_set(e1, e2, .Generic = .Generic, .Class = .Class))
     if (inherits(e1, "gset") && inherits(e2, "gset"))
-        Ops_gset(e1, e2, .Generic = .Generic, .Class = .Class)
+        return(Ops_gset(e1, e2, .Generic = .Generic, .Class = .Class))
 
     if(!(as.character(.Generic)
          %in% c("<", "<=", ">", ">=", "==", "!=",
@@ -168,7 +168,7 @@ function(x, ...)
 format.cset <-
 function(x, ...) {
     FUN <- cset_orderfun(x)
-    x <- if (isTRUE(gset_is_set(x)))
+    x <- if (isTRUE(cset_is_set(x)))
         .as.list(x)
     else
         .make_list_of_elements_from_cset(x)

@@ -16,17 +16,17 @@ function(x, memberships = 1L)
 function(x, memberships)
     .structure(list(x),
                memberships = memberships,
-               class = "element")
+               class = "gset_element")
 
 
-print.element <-
+print.gset_element <-
 function(x, ...)
 {
     writeLines(format(x, ...))
     invisible(x[[1]])
 }
 
-format.element <-
+format.gset_element <-
 function(x, ...)
 {
     paste(paste(LABEL(x[[1]], ...), collapse = " "),
@@ -36,7 +36,15 @@ function(x, ...)
           sep = "")
 }
 
-LABEL.element <-
+LABEL.gset_element <-
 function(x, limit, ...)
     format(x, ...)
 
+
+as.vector.gset_element <-
+    function(x, ...)
+        list(x)
+
+as.list.gset_element <-
+    function(x, ...)
+        unclass(x)

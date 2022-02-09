@@ -19,15 +19,19 @@ function(x)
     out
 }
 
-### * .make_set_of_tuples_from_list_of_lists
+### * .make_list_of_tuples_from_list_of_lists
 
-.make_set_of_tuples_from_list_of_lists <-
+.make_list_of_tuples_from_list_of_lists <-
 function(x)
 {
     ret <- unlist(x, recursive = FALSE)
     dim(ret) <- c(length(x[[1L]]), length(x))
-    as.set(apply(ret, 1L, as.tuple))
+    apply(ret, 1L, as.tuple)
 }
+
+.make_set_of_tuples_from_list_of_lists <-
+function(x)
+    as.set(.make_list_of_tuples_from_list_of_lists(x))
 
 ### make sure that list elements are not destroyed during set unions
 

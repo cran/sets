@@ -88,7 +88,7 @@ function(x, support, matchfun = .exact_match)
         m
     else
         .get_memberships(x)[m]
-    tmp[is.na(m)] <- 0
+    tmp[is.na(m)] <- if (is.list(tmp)) list(set(0)) else 0
     tmp
 }
 

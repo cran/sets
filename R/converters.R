@@ -105,6 +105,10 @@ as.list.set <-
 function(x, ...)
     .as.list(x)
 
+as.vector.set <-
+    function(x, mode = "any")
+        as.vector(.as.list(x), mode = mode)
+
 ### gset converters
 
 as.gset <-
@@ -170,6 +174,10 @@ as.list.gset <-
 function(x, ...)
     .as.list(x)
 
+as.vector.gset <-
+function(x, mode = "any")
+    as.vector(.make_list_of_elements_from_cset(x), mode = mode)
+
 ### tuple converters
 
 as.tuple <-
@@ -210,6 +218,10 @@ function(x)
 as.list.tuple <-
 function(x, ...)
     unclass(x)
+
+as.vector.tuple <-
+    function(x, mode = "any")
+        as.vector(unclass(x), mode = mode)
 
 ### cset converters
 
@@ -255,6 +267,10 @@ function(x)
     dup <- duplicated(s[o])
     cset(as.gset(x), orderfun = order(x)[o][!dup])
 }
+
+as.vector.cset <-
+function(x, mode = "any")
+    as.vector(.make_list_of_elements_from_cset(x), mode = mode)
 
 as.list.cset <-
 function(x, ...)
