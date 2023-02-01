@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-22}{
+  \itemize{
+    \item Add ORCID IDs
+  }
+}
+
 \section{Changes in version 1.0-21}{
   \itemize{
     \item Vectorize all [cg]set predicates and check for correct arguments
