@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-23}{
+  \itemize{
+     \item Fix formals mismatch in .as.list.gset()
+  }
+}
+
+
+
 \section{Changes in version 1.0-22}{
   \itemize{
     \item Add ORCID IDs

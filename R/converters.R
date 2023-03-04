@@ -326,7 +326,7 @@ function(x, ...)
 
 .as.list.set <-
 .as.list.gset <-
-    unclass
+    function(x, ...) unclass(x)
 
 .as.list.cset <-
 function(x, ...)

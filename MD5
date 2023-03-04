@@ -1,4 +1,4 @@
-6f6ad76ad9255dda2fb5158ba859d73d *DESCRIPTION
+5f742671b7d9d6ee982d9e025df51de0 *DESCRIPTION
 f98c02c90213fcd952e268d85c155b69 *NAMESPACE
 706b918922d250519172942b7a509471 *R/aaa_utilities.R
 6c9e578af5c153fa3f34c453315c7a88 *R/allEqual.R
@@ -7,7 +7,7 @@ f98c02c90213fcd952e268d85c155b69 *NAMESPACE
 16aa12430b068f3c064ffc4e10fad0ea *R/closure.R
 5a106c6b410704fe790ffda869a3d7b6 *R/combn.R
 c41912f8bf54ffa919fa9f0521c8c3d0 *R/complement.R
-a0531663e076a27c13877142ef22e373 *R/converters.R
+7d994766e854a06c4d087bfc413b6c2e *R/converters.R
 a0952056443d46d2a401dde79187dedd *R/cset.R
 517c7086648b308afdb87eb76dcba7cd *R/cut.R
 fcfc7c23769b3eb583f06f9a6c029a2c *R/defuzzify.R
@@ -41,12 +41,12 @@ dc3e1e749f33b5b09615482e3126ef09 *R/tuple.R
 fbd933467fc28a9ac9af92e00153fd95 *R/zzz.R
 ea124a494ad7922985532ad3b308e4d5 *build/partial.rdb
 e54c4e3376b3366556b3406dc03e2fad *build/vignette.rds
-de1d310e18def60feede68f056a59a9c *data/fuzzy_docs.rda
+2123429fb9d985fe595cd639e4a07b87 *data/fuzzy_docs.rda
 364b7e3655ed37da534de61461fc0c1f *inst/CITATION
-fecf8dea0066fa9af5bae2c312be3226 *inst/NEWS.Rd
+1bf26a8620aa8d877d0deeb244aac27d *inst/NEWS.Rd
 80544abf96359a5453ba959b1ca49426 *inst/doc/sets.R
 1cb9d99fd1da2d663307c05cbca18661 *inst/doc/sets.Rnw
-2580840ca9735798669d501cd924f2eb *inst/doc/sets.pdf
+f4017737ddaea66d9bc1671562359909 *inst/doc/sets.pdf
 8fbc1096c92f2fbe1ab165c071b62e91 *inst/po/en@quot/LC_MESSAGES/R-sets.mo
 21888d850904fabb5921bf5d8e262c3e *man/canonicalizeSetMapping.Rd
 e4445aff16665fa7185284b22d91e983 *man/closure.Rd
