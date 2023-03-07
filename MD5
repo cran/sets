@@ -1,5 +1,5 @@
-5f742671b7d9d6ee982d9e025df51de0 *DESCRIPTION
-f98c02c90213fcd952e268d85c155b69 *NAMESPACE
+160af10e925289a90bcd6fd28ca9372e *DESCRIPTION
+aee79ef4ba13db65f79313172de6ad34 *NAMESPACE
 706b918922d250519172942b7a509471 *R/aaa_utilities.R
 6c9e578af5c153fa3f34c453315c7a88 *R/allEqual.R
 9204cca50c5ac824a5a61af72ff194ac *R/cardinality.R
@@ -43,10 +43,10 @@ ea124a494ad7922985532ad3b308e4d5 *build/partial.rdb
 e54c4e3376b3366556b3406dc03e2fad *build/vignette.rds
 2123429fb9d985fe595cd639e4a07b87 *data/fuzzy_docs.rda
 364b7e3655ed37da534de61461fc0c1f *inst/CITATION
-1bf26a8620aa8d877d0deeb244aac27d *inst/NEWS.Rd
+3caa8bf4b87056a6c80466cd16ced752 *inst/NEWS.Rd
 80544abf96359a5453ba959b1ca49426 *inst/doc/sets.R
 1cb9d99fd1da2d663307c05cbca18661 *inst/doc/sets.Rnw
-f4017737ddaea66d9bc1671562359909 *inst/doc/sets.pdf
+6d6ac4be30980d08c7bb03d99e03c2cf *inst/doc/sets.pdf
 8fbc1096c92f2fbe1ab165c071b62e91 *inst/po/en@quot/LC_MESSAGES/R-sets.mo
 21888d850904fabb5921bf5d8e262c3e *man/canonicalizeSetMapping.Rd
 e4445aff16665fa7185284b22d91e983 *man/closure.Rd
