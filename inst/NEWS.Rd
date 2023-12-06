@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{sets}}
 
+\section{Changes in version 1.0-25}{
+  \itemize{
+     \item fix small bug in \code{closure.c} (\code{error()} wrongly called)
+  }
+}
+
 
 \section{Changes in version 1.0-24}{
   \itemize{

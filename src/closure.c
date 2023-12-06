@@ -186,7 +186,7 @@ SEXP sets_closure(SEXP x, SEXP R_op) {
 	// Resize hash table.
 	if ((k = 2 * n) == LENGTH(ht)) {
 	    if (n > 1073741824)
-		error("size %d too large for hashing");
+		error("size %d too large for hashing", n);
 	    UNPROTECT_PTR(ht);
 
 	    ht = PROTECT(allocVector(INTSXP, k * 2));
